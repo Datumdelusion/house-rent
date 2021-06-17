@@ -3,7 +3,37 @@
 		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "uni-app"
+				"navigationBarTitleText": "首页"
+			}
+		},
+		{
+			"path": "pages/application/application",
+			"style": {
+				"navigationBarTitleText": "分类"
+			}
+		},
+		{
+			"path": "pages/mine/mine",
+			"style": {
+				"navigationBarTitleText": "我的"
+			}
+		},
+		{
+			"path": "pages/shoucang/shoucang",
+			"style": {
+				"navigationBarTitleText": "收藏"
+			}
+		},
+		{
+			"path": "pages/location/location",
+			"style": {
+				"navigationBarTitleText": "定位"
+			}
+		},
+		{
+			"path": "pages/city/city",
+			"style": {
+				"navigationBarTitleText": "选择地区"
 			}
 		}
 	],
@@ -12,5 +42,40 @@
 		"navigationBarTitleText": "uni-app",
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8"
+	},
+	"tabBar": {
+		"color": "#7A7E83",
+		"selectedColor": "#1296db",
+		"borderStyle": "black",
+		"backgroundColor": "#F8F8F8",
+		"list": [
+			{
+				"pagePath": "pages/index/index",
+				"iconPath": "static/image/home-xianxing.png",
+				"selectedIconPath": "static/image/home.png",
+				"text": "首页"
+			},
+			{
+				"pagePath": "pages/application/application",
+				"iconPath": "static/image/qiyeyuanquwuye-xianxing.png",
+				"selectedIconPath": "static/image/qiyeyuanquwuye.png",
+				"text": "好房"
+			},
+			{
+				"pagePath": "pages/shoucang/shoucang",
+				"iconPath": "static/image/shoucang-xianxing.png",
+				"selectedIconPath": "static/image/shoucang.png",
+				"text": "收藏"
+			},
+			{
+				"pagePath": "pages/mine/mine",
+				"iconPath": "static/image/yonghu-xianxing.png",
+				"selectedIconPath": "static/image/yonghu.png",
+				"text": "我的"
+			}
+		]
+	},
+	"easycom": {
+		"uni-(.*)": "@/components/uni-$1/uni-$1.vue"
 	}
 }

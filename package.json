@@ -58,11 +58,17 @@
     "@dcloudio/uni-quickapp-webview": "^2.0.0-31920210514002",
     "@dcloudio/uni-stat": "^2.0.0-31920210514002",
     "@vue/shared": "^3.0.0",
+    "axios": "^0.21.1",
     "core-js": "^3.6.5",
     "flyio": "^0.6.2",
+    "md5": "^2.3.0",
+    "node-sass": "^4.14.1",
     "regenerator-runtime": "^0.12.1",
+    "sass-loader": "^7.3.1",
     "vue": "^2.6.11",
-    "vuex": "^3.2.0"
+    "vue-axios": "^3.2.4",
+    "vuex": "^3.2.0",
+    "vuex-persistedstate": "^4.0.0-beta.3"
   },
   "devDependencies": {
     "@babel/runtime": "~7.12.0",
@@ -92,5 +98,10 @@
   ],
   "uni-app": {
     "scripts": {}
-  }
+  },
+  "description": "## Project setup ``` npm install ```",
+  "main": "babel.config.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
