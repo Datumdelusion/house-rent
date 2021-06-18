@@ -1,7 +1,7 @@
 <template>
   <view class="type-icon">
     <view class="type-wrapper" v-for="item in types" :key="item.id">
-      <van-icon class="one-type-icon" :name="item.icon" :style="{'backgroundColor': randomColor(item.id)}"/>
+      <uni-icons class="one-type-icon" :type="item.icon" :style="{'backgroundColor': randomColor(item.id)}"/>
       <view>{{ item.name }}</view>
     </view>
   </view>
@@ -14,9 +14,9 @@ export default {
   data() {
     return {
       types: [
-        {id: "1", name: "二手房", icon: "wap-home"},
+        {id: "1", name: "二手房", icon: "home"},
         {id: "2", name: "新房", icon: "hotel-o"},
-        {id: "3", name: "租房", icon: "goods-collect-o"},
+        {id: "3", name: "租房", icon: "shop"},
       ]
     }
   },
@@ -70,6 +70,5 @@ export default {
   color: #fff;
   width: 80rpx;
   height: 80rpx;
-  /* background-color: red; */
 }
 </style>

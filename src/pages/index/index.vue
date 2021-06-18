@@ -2,21 +2,21 @@
 	<view class="content">
 		<uni-nav-bar>
 		    <view slot="left">
-				<text>北京</text>
-				<uni-icons type="arrowdown"></uni-icons>
+				<text class="nav-bar-left-text">北京</text>
+				<uni-icons size="20" type="arrowdown"></uni-icons>
 			</view>
-			<uni-search-bar placeholder="输入搜索" v-model="textValue" :radius="100"></uni-search-bar>
+			<uni-easyinput placeholder="输入搜索" prefixIcon="search" v-model="textValue" confirmType="search"></uni-easyinput>
 		    <view slot="right">搜索</view>
 		</uni-nav-bar>
 		
 		<view class="hot-spot-wrapper">
-			<!-- <van-icon name="fire" class="hot-spot-icon"/> 热搜: -->
 			<text>
-				<text class="iconfont icon-tubiaozhuanqu-05" />
+				<text class="iconfont icon-tubiaozhuanqu-05" style="color: red;"/>
 				热搜:
 			</text>
 			<text v-for="(item, i) in hotspot" :key="i"> {{ item }} </text>
 		</view>
+		<type-icon />
 		<!-- <view class="recommend-wrapper">
 			<view>为您推荐</view>
 			<van-card
@@ -33,7 +33,6 @@
 			</van-card> -->
 			<view class="lookMore" @tap="turn2Application">
 				点击查看更多
-				<!-- <image style="height:40rpx;width:40rpx;" :src="require('static/image/elipsis.png')"/> -->
 				<text class="iconfont icon-shenglve"></text>
 			</view>
 		</view>
@@ -41,8 +40,12 @@
 </template>
 
 <script>
+	import TypeIcon from "./components/TypeIcon.vue"
 	export default {
 		name: "Home",
+		components: {
+			TypeIcon
+		},
 		data() {
 			return {
 				textValue: "",
@@ -69,7 +72,14 @@
 	}
 </script>
 
-<style>
+<style lang="scss" scoped>
+	/deep/ .uni-easyinput__content {
+		border-radius: 36rpx;
+		height: 60rpx;
+	}
+	.nav-bar-left-text {
+		margin-left: 30rpx;
+	}
 	.content {
 		height: 100vh;
 	}
