@@ -1,5 +1,5 @@
 <template>
-  <view class="list-card-wrapper">
+  <view class="list-card-wrapper" @click="turn2Page">
     <view style="float: left;">
       <image class="list-card-left-image" v-show="thumb" :src="thumb" />
       <slot class="list-card-tags" name="tag">
@@ -7,17 +7,20 @@
       </slot>      
     </view>
     <view class="list-card-content">
-      <slot name="content">
+      <slot name="content-header">
         <view class="list-card-header">
-          111
+          {{ head }}
         </view>
+      </slot>
+      <slot name="content-intro">
         <view class="list-card-intro">
-          简介
+          {{ intro }}
         </view>
+      </slot>
         <view class="list-card-price">
-          ￥33.3
+          <text>￥</text>
+          <text style="color: #f40; font-size: 1.2rem;">{{ price }}</text>
         </view>
-      </slot>      
     </view>
   </view>
 </template>
@@ -28,21 +31,43 @@
       thumb: {
         type: String,
         default() {
-          return "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg";
+          return "";
         }
       },
       tag: {
         type: String,
         default() {
-          return "12";
+          return "";
         }
-      }
+      },
+      price: {
+        type: String,
+        default() {
+          return "";
+        }
+      },
+      head: {
+        type: String,
+        default() {
+          return "";
+        }
+      },
+      intro: {
+        type: String,
+        default() {
+          return "";
+        }
+      },
     },
     name: "ListCard",
     data() {
       return {
-        
       };
+    },
+    methods: {
+      turn2Page() {
+        this.$emit("turn2Page");
+      }
     }
   }
 </script>
@@ -64,10 +89,14 @@
     .list-card-content {
       text-indent: 10rpx;
       .list-card-header {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
         
       }
       .list-card-intro {
         color: #999;
+        height: 70rpx;
       }
     }
   }

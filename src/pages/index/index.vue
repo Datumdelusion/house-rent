@@ -1,7 +1,7 @@
 <template>
   <view class="content">
     <uni-nav-bar>
-      <view slot="left">
+      <view slot="left" @click="chooseCity">
         <text class="nav-bar-left-text">北京</text>
         <uni-icons size="20" type="arrowdown"></uni-icons>
       </view>
@@ -17,21 +17,13 @@
       <text v-for="(item, i) in hotspot" :key="i"> {{ item }} </text>
     </view>
     <type-icon />
-    <list-card />
-    <!-- <view class="recommend-wrapper">
-			<view>为您推荐</view>
-			<van-card
-			 v-for="i in 4"
-			 :key="i"
-			 desc="2室1厅|75.1㎡|草桥欣园三区"
-			 price="535万"
-  		 :thumb="require('@/static/logo.png')"
-			>
-				<template #title>
-					<van-tag type="danger" style="margin-right:6rpx">必看好房</van-tag>
-  		 		草桥欣园三区 央产证 南北通透 有钥匙 看两居室
-				</template>
-			</van-card> -->
+    <list-card 
+      thumb="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
+      tag="热卖"
+      head="草桥欣园三区 央产证 南北通透 有钥匙 看两居室"
+      intro="2室1厅|75.1㎡|草桥欣园三区"
+      price="6500万"
+      @turn2Page="turn2Page" />
     <view class="lookMore" @tap="turn2Application">
       点击查看更多
       <text class="iconfont icon-shenglve"></text>
@@ -68,8 +60,18 @@
           url: '/pages/application/application'
         })
       },
+      chooseCity() { // 跳转到"选择城市"页面
+         uni.navigateTo({
+           url: '/pages/city/city'
+         });
+      },
       isReady() {
         this.loading = false;
+      },
+      turn2Page() { // 点击跳转页面
+        // uni.switchTab({
+        //   url: '/pages/application/application'
+        // });
       }
     }
   }
