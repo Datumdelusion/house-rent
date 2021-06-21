@@ -34,6 +34,7 @@
 
 <script>
   import TypeIcon from "./components/TypeIcon.vue"
+  
   export default {
     name: "Home",
     components: {
@@ -52,7 +53,24 @@
       }
     },
     onLoad() {
-
+      uni.getLocation({
+          type: 'gcj02', //返回可以用于uni.openLocation的经纬度
+          success: function (res) {
+              console.log(res);
+              const latitude = res.latitude;
+              const longitude = res.longitude;
+              uni.openLocation({
+                  latitude: latitude,
+                  longitude: longitude,
+                  success: function () {
+                      console.log('success');
+                  }
+              });
+          },
+          fail(err) {
+            console.log(err);
+          }
+      });
     },
     methods: {
       turn2Application() { // 跳转到别的页面中

@@ -1,7 +1,7 @@
 <template>
   <view>
     <uni-search-bar shape="round" v-model="value" placeholder="请输入搜索关键词" />
-    <uni-indexed-list :options="dataList" @click="onClick"/>
+    <uni-indexed-list :options="dataList" @click="onClick" style="margin-top: 88rpx;"/>
     <uni-popup ref="popup" type="center">
       <!-- <text class="popup-content">{{ msg }}</text> -->
       <uni-icons class="popup-content" size="25" type="spinner-cycle" />
