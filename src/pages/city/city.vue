@@ -2,10 +2,6 @@
   <view>
     <uni-search-bar shape="round" v-model="value" placeholder="请输入搜索关键词" />
     <uni-indexed-list :options="dataList" @click="onClick" style="margin-top: 88rpx;"/>
-    <uni-popup ref="popup" type="center">
-      <!-- <text class="popup-content">{{ msg }}</text> -->
-      <uni-icons class="popup-content" size="25" type="spinner-cycle" />
-    </uni-popup>
   </view>
 </template>
 
@@ -50,8 +46,9 @@ export default {
       console.log(value);
     },
     onClick(msg) { // {"item": {"key":"A", "name": "A2城市", "itemIndex": 1, "checked": false}, "select":[]}
-      this.msg = msg.item.name;
-      this.$refs.popup.open();
+      uni.showLoading({
+        title: '获取信息中'
+      });
     }
   },
   watch: {},
@@ -80,18 +77,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .popup-content {
-    width: 100rpx;
-    text-align: center;
-    display: inline-block;
-    line-height: 100rpx;
-    height: 100rpx;
-    // background-color: #fff;
-    color: #409eff;
-    -webkit-animation: load 1.2s linear 0s infinite;
-  }
-  @-webkit-keyframes load {
-    0% {transform: rotate(0);}
-    100% {transform: rotate(360deg);}
-  }
 </style>

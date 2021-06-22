@@ -1,0 +1,28 @@
+<template>
+  <view>
+    <map
+    style="width: 100%;"
+    :longitude="longitude"
+    :latitude="latitude"
+    :markers="markList"
+    ></map>
+  </view>
+</template>
+
+<script>
+  export default {
+    data() {
+      return {
+        longitude: 114.56463,
+        latitude: 26.000098,
+        markList: [
+          {id: 1, latitude: 26.000098, longitude: 114.56463, title: '测试marker', width: 20, height: 30, alpha: 0.5}
+        ]
+      }
+    }
+  }
+</script>
+
+<style>
+
+</style>

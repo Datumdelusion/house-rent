@@ -17,28 +17,29 @@
       <text v-for="(item, i) in hotspot" :key="i"> {{ item }} </text>
     </view>
     <type-icon />
-    <list-card 
-      thumb="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
-      tag="热卖"
-      head="草桥欣园三区 央产证 南北通透 有钥匙 看两居室"
-      intro="2室1厅|75.1㎡|草桥欣园三区"
-      price="6500万"
-      @turn2Page="turn2Page" />
+    <list-card thumb="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg" tag="热卖"
+      head="草桥欣园三区 央产证 南北通透 有钥匙 看两居室" intro="2室1厅|75.1㎡|草桥欣园三区" price="6500万" @turn2Page="turn2Page" />
     <view class="lookMore" @tap="turn2Application">
       点击查看更多
       <text class="iconfont icon-shenglve"></text>
     </view>
+    
+    <showLocation />
   </view>
   </view>
 </template>
 
 <script>
-  import TypeIcon from "./components/TypeIcon.vue"
+  import { amapPlugin } from '../../utils/importMap.js';
   
+  import TypeIcon from "./components/TypeIcon.vue"
+  import showLocation from "../location/showLocation.nvue";
+
   export default {
     name: "Home",
     components: {
-      TypeIcon
+      TypeIcon,
+      showLocation
     },
     data() {
       return {
@@ -53,24 +54,28 @@
       }
     },
     onLoad() {
+      // #ifdef MP-WEIXIN
+      amapPlugin.getRegeo({
+        success(res) {
+          console.log('返回的信息位置', res);
+        },
+        fail(err) {
+          console.log(err);
+        }
+      })
+      // #endif
+      // #ifdef APP-PLUS
       uni.getLocation({
-          type: 'gcj02', //返回可以用于uni.openLocation的经纬度
-          success: function (res) {
-              console.log(res);
-              const latitude = res.latitude;
-              const longitude = res.longitude;
-              uni.openLocation({
-                  latitude: latitude,
-                  longitude: longitude,
-                  success: function () {
-                      console.log('success');
-                  }
-              });
-          },
-          fail(err) {
-            console.log(err);
-          }
-      });
+        type: 'gcj02',
+        geocode: true,
+        success(res) {
+          console.log('返回的信息位置', res);
+        },
+        fail(err) {
+          console.log(err);
+        }
+      })
+      // #endif
     },
     methods: {
       turn2Application() { // 跳转到别的页面中
@@ -79,9 +84,9 @@
         })
       },
       chooseCity() { // 跳转到"选择城市"页面
-         uni.navigateTo({
-           url: '/pages/city/city'
-         });
+        uni.navigateTo({
+          url: '/pages/city/city'
+        });
       },
       isReady() {
         this.loading = false;
