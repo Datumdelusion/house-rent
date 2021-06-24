@@ -2,9 +2,10 @@
   <view class="list-card-wrapper" @click="turn2Page">
     <view style="float: left;">
       <image class="list-card-left-image" v-show="thumb" :src="thumb" />
-      <slot class="list-card-tags" name="tag">
-        <uni-tag class="list-card-tags" v-show="tag" :text="tag" type="error" :mark="true"></uni-tag>
-      </slot>      
+      <slot name="tag">
+        <!-- <uni-tag class="list-card-tags" v-show="tag" :text="tag" type="error" :mark="true"></uni-tag> -->
+        <view class="list-card-tags" v-show="tag"> {{ tag }} </view>
+      </slot>
     </view>
     <view class="list-card-content">
       <slot name="content-header">
@@ -81,6 +82,17 @@
       position: absolute;
       top: 0;
       left: 0;
+      color: #fff;
+      background-color: #dd524d;
+      border: 2rpx solid #dd524d;
+      border-top-right-radius: 30rpx;
+      border-bottom-right-radius: 30rpx;
+      width: 100rpx;
+      text-align: center;
+      padding: 4rpx 0;
+      font-size: 26rpx;
+      height: 35rpx;
+      line-height: 35rpx;
     }
     .list-card-left-image {
       width: 160rpx;

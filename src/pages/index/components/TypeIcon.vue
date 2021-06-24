@@ -81,6 +81,7 @@
     width: 80rpx;
     height: 80rpx;
     line-height: 80rpx;
+    text-align: center;
     font-weight: normal;
   }
 </style>

@@ -2,11 +2,12 @@
   <view class="content">
     <uni-nav-bar>
       <view slot="left" @click="chooseCity">
-        <text class="nav-bar-left-text">北京</text>
+        <text>{{location}}</text>
+        <!-- <text>北京</text> -->
         <uni-icons size="20" type="arrowdown"></uni-icons>
       </view>
-      <uni-easyinput placeholder="输入搜索" prefixIcon="search" v-model="textValue" confirmType="search"></uni-easyinput>
-      <view slot="right">搜索</view>
+      <uni-easyinput placeholder="输入搜索" prefixIcon="search" v-model="textValue" confirmType="search" @confirm="onSearch"/>
+      <view slot="right" @click="onSearch">搜索</view>
     </uni-nav-bar>
 
     <view class="hot-spot-wrapper">
@@ -14,7 +15,7 @@
         <text class="iconfont icon-tubiaozhuanqu-05" style="color: red;" />
         热搜:
       </text>
-      <text v-for="(item, i) in hotspot" :key="i"> {{ item }} </text>
+      <text v-for="(item, i) in hotspot" :key="i" @click="hotSearch(item)"> {{ item }} </text>
     </view>
     <type-icon />
     <list-card thumb="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg" tag="热卖"
@@ -24,7 +25,6 @@
       <text class="iconfont icon-shenglve"></text>
     </view>
     
-    <showLocation />
   </view>
   </view>
 </template>
@@ -33,13 +33,11 @@
   import { amapPlugin } from '../../utils/importMap.js';
   
   import TypeIcon from "./components/TypeIcon.vue"
-  import showLocation from "../location/showLocation.nvue";
 
   export default {
     name: "Home",
     components: {
-      TypeIcon,
-      showLocation
+      TypeIcon
     },
     data() {
       return {
@@ -50,17 +48,26 @@
           "海特花园小区",
           "新起点嘉园"
         ],
-        loading: true
+        location: "紫禁城"
       }
     },
     onLoad() {
       // #ifdef MP-WEIXIN
+      let _this = this;
+      uni.showLoading({
+        title: "获取地理位置中"
+      })
       amapPlugin.getRegeo({
         success(res) {
           console.log('返回的信息位置', res);
+          if(res.length) {
+            _this.location = res[0].regeocodeData.addressComponent.district;
+            uni.hideLoading();
+          }
         },
         fail(err) {
           console.log(err);
+           uni.hideLoading();
         }
       })
       // #endif
@@ -88,13 +95,17 @@
           url: '/pages/city/city'
         });
       },
-      isReady() {
-        this.loading = false;
+      hotSearch(hotspot) { // FIXME🧊🍺: 调用搜索函数
+        this.textValue = hotspot;
+        // 调用搜索函数...
       },
-      turn2Page() { // 点击跳转页面
+      turn2Page(item) { // 点击跳转页面
         // uni.switchTab({
         //   url: '/pages/application/application'
         // });
+      },
+      onSearch() { // 点击搜索
+        console.log(this.textValue);
       }
     }
   }
@@ -104,10 +115,6 @@
   /deep/ .uni-easyinput__content {
     border-radius: 36rpx;
     height: 60rpx;
-  }
-
-  .nav-bar-left-text {
-    margin-left: 30rpx;
   }
 
   .content {
