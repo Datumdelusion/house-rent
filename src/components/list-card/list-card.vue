@@ -22,6 +22,9 @@
           <text>￥</text>
           <text style="color: #f40; font-size: 1.2rem;">{{ price }}</text>
         </view>
+        <view v-if="shoucang">
+          <text class="love-icon iconfont" :class="isShoucang ? 'icon-xihuan' : 'icon-xihuan-xianxing'" @click="clickShoucang(isShoucang)"></text>
+        </view>
     </view>
   </view>
 </template>
@@ -59,15 +62,26 @@
           return "";
         }
       },
+      shoucang: {
+        type: Boolean,
+        default() {
+          return false
+        }
+      },
+      isShoucang: {
+        type: Boolean,
+        default() {
+          return false
+        }
+      }
     },
     name: "ListCard",
-    data() {
-      return {
-      };
-    },
     methods: {
       turn2Page() {
         this.$emit("turn2Page");
+      },
+      clickShoucang(isShoucang) {
+        this.$emit('clickShoucang', isShoucang)
       }
     }
   }
@@ -110,6 +124,16 @@
         color: #999;
         height: 70rpx;
       }
+    }
+  }
+  .love-icon {
+    position: absolute;
+    right: 70rpx;
+    bottom: 50%;
+    transform: translateY(50%);
+    font-size: 40rpx;
+    &.icon-xihuan {
+      color: #d81e06;
     }
   }
 </style>

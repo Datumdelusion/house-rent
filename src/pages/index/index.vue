@@ -18,8 +18,16 @@
       <text v-for="(item, i) in hotspot" :key="i" @click="hotSearch(item)"> {{ item }} </text>
     </view>
     <type-icon />
-    <list-card thumb="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg" tag="热卖"
-      head="草桥欣园三区 央产证 南北通透 有钥匙 看两居室" intro="2室1厅|75.1㎡|草桥欣园三区" price="6500万" @turn2Page="turn2Page" />
+    <list-card 
+      thumb="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
+      tag="热卖"
+      head="草桥欣园三区 央产证 南北通透 有钥匙 看两居室"
+      intro="2室1厅|75.1㎡|草桥欣园三区"
+      price="6500万"
+      :shoucang="true"
+      :isShoucang="true"
+      @turn2Page="turn2Page"
+      @clickShoucang="clickShoucang" />
     <view class="lookMore" @tap="turn2Application">
       点击查看更多
       <text class="iconfont icon-shenglve"></text>
@@ -106,6 +114,9 @@
       },
       onSearch() { // 点击搜索
         console.log(this.textValue);
+      },
+      clickShoucang(isShoucang) { // 点击收藏
+        console.log("1");
       }
     }
   }

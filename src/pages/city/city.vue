@@ -1,7 +1,7 @@
 <template>
   <view>
-    <uni-search-bar v-model="value" placeholder="请输入搜索关键词" @confirm="onSearch" />
-    <uni-indexed-list :options="dataList" @click="onClick" style="margin-top: 88rpx;" v-if="showCity"/>
+    <uni-search-bar v-model="value" placeholder="请输入搜索关键词" @confirm="onSearch" @clear="onSearch" />
+    <uni-indexed-list :options="dataList" @click="onClick" v-if="showCity" />
     <view v-else>
       <view class="search-head">找到{{ resultList.length }}个结果</view>
       <view class="result-list" v-for="(item, index) in resultList" :key="index" @click="onClick(item)">
@@ -52,13 +52,17 @@ export default {
   methods: {
     onSearch(value) { // TODO:搜索
       console.log(value);
-      if (value) { // 若搜索内容不为空，查找相关内容
+      uni.showLoading({
+        title: "搜索ing..."
+      });
+      if (value && value.value) { // 若搜索内容不为空，查找相关内容
         this.resultList = this.filterBySearch(value.value);
         this.showCity = false;
       } else { // 若搜索内容为空
         this.resultList = [];
         this.showCity = true;
       }
+      uni.hideLoading();
     },
     filterBySearch(value) {
       let arr = [];
@@ -72,12 +76,11 @@ export default {
       return arr;
     },
     onClick(msg) { // {"item": {"key":"A", "name": "A2城市", "itemIndex": 1, "checked": false}, "select":[]}
-      if (msg) {
+      if (msg.item) {
         console.log(msg.item.name);
+      } else {
+        console.log(msg);
       }
-      uni.showLoading({
-        title: '获取信息中'
-      });
     }
   },
   watch: {},
@@ -110,6 +113,9 @@ export default {
     background-color: #f7f7f7;
     padding: 14rpx 10rpx;
     border-bottom: 2rpx solid rgba(0, 0, 0 , 0.3);
+  }
+  /deep/ .uni-indexed-list {
+    margin-top: 88rpx;
   }
   .result-list {
     margin: 28rpx;
