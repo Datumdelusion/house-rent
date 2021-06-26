@@ -13,6 +13,42 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-zhangdan-xianxing:before {
+  content: "\e89e";
+}
+
+.icon-caiwu-xianxing:before {
+  content: "\e8ae";
+}
+
+.icon-youxiajiaogouxuan:before {
+  content: "\e8b7";
+}
+
+.icon-jia:before {
+  content: "\e8e1";
+}
+
+.icon-zhengquewancheng-yuankuang:before {
+  content: "\e8e4";
+}
+
+.icon-cuowuguanbiquxiao:before {
+  content: "\e8e7";
+}
+
+.icon-gantanhao-yuankuang:before {
+  content: "\e8ec";
+}
+
+.icon-biaotou-zhengxu:before {
+  content: "\e8f8";
+}
+
+.icon-biaotou-daoxu:before {
+  content: "\e8f9";
+}
+
 .icon-shanchu:before {
   content: "\e677";
 }
@@ -27,10 +63,6 @@
 
 .icon-fangwuzujin:before {
   content: "\e63d";
-}
-
-.icon-fangwufangchan:before {
-  content: "\e689";
 }
 
 .icon-fangwudingwei:before {

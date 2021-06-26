@@ -75,11 +75,18 @@ export default {
       });
       return arr;
     },
-    onClick(msg) { // {"item": {"key":"A", "name": "A2城市", "itemIndex": 1, "checked": false}, "select":[]}
+    onClick(msg) {
+      let pages = getCurrentPages();
+      let prevPage = pages[pages.length - 2]; // 上一个页面
       if (msg.item) {
-        console.log(msg.item.name);
+        // {"item": {"key":"A", "name": "A2城市", "itemIndex": 1, "checked": false}, "select":[]}
+        // console.log(msg.item.name);
+        prevPage.$vm.setMyCity(msg.item.name);
+        uni.navigateBack();
       } else {
-        console.log(msg);
+        // console.log(msg);
+        prevPage.$vm.setMyCity(msg);
+        uni.navigateBack();
       }
     }
   },

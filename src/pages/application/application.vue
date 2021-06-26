@@ -1,5 +1,12 @@
 <template>
-  <view class="application">application</view>
+  <view class="application">
+    <view class="application-head">
+      <text>区域</text>
+      <text>类型</text>
+      <text>租金</text>
+      <text>房源特色</text>
+    </view>
+  </view>
 </template>
 
 <script>

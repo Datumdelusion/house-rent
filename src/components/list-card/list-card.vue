@@ -91,6 +91,7 @@
   .list-card-wrapper {
     position: relative;
     background-color: #fff;
+    border-bottom: 1rpx solid rgba(0, 0, 0, 0.2);
     overflow: hidden;
     .list-card-tags {
       position: absolute;
@@ -118,7 +119,6 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        
       }
       .list-card-intro {
         color: #999;
@@ -134,6 +134,12 @@
     font-size: 40rpx;
     &.icon-xihuan {
       color: #d81e06;
+      animation: mylove 1s linear;
     }
+  }
+  @keyframes mylove {
+    from { transform: scale(1) translateY(55%);}
+    50% { transform: scale(1.3) translateY(55%);}
+    to { transform: scale(1) translateY(55%);}
   }
 </style>
