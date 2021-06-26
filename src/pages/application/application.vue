@@ -1,10 +1,10 @@
 <template>
   <view class="application">
-    <view class="application-head">
-      <text>区域</text>
-      <text>类型</text>
-      <text>租金</text>
-      <text>房源特色</text>
+    <view class="application-options-head">
+      <text v-for="(item,index) in options" :class="currentOption === index ? 'option-active' : ''" @click="changeActive(index)">
+        {{ item }}
+        <text class="iconfont" :class="currentOption === index ? 'icon-biaotou-zhengxu' : 'icon-biaotou-daoxu'" />
+      </text>
     </view>
   </view>
 </template>
@@ -13,9 +13,18 @@
 
 export default {
   components: {},
-  data: () => ({}),
+  data() {
+    return {
+      currentOption: -1,
+      options: ["区域", "类型", "租金", "房源特色"]
+    }
+  },
   computed: {},
-  methods: {},
+  methods: {
+    changeActive(index) { // 根据点击修改激活状态
+      this.currentOption = index;
+    }
+  },
   watch: {},
 
   // 页面周期函数--监听页面加载
@@ -41,4 +50,16 @@ export default {
 };
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+  .application-options-head {
+    width: 100%;
+    padding: 18rpx 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background: linear-gradient(to top, #FAF8F9, #F0EFF0);
+    .option-active {
+      color: #2281b3;
+    }
+  }
+</style>
