@@ -8,9 +8,13 @@
 
 <script>
   export default {
+	name: "loading",
     methods: {
-      open() {
+      open() { // 开！
         this.$refs.popup.open();
+      },
+	  close() { // 关！
+        this.$refs.popup.close();
       }
     }
   }

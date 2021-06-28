@@ -23,8 +23,7 @@
       点击查看更多
       <text class="iconfont icon-shenglve"></text>
     </view>
-    
-    <showLocation />
+	<showLocation />
   </view>
   </view>
 </template>
@@ -33,13 +32,12 @@
   import { amapPlugin } from '../../utils/importMap.js';
   
   import TypeIcon from "./components/TypeIcon.vue"
-  import showLocation from "../location/showLocation.nvue";
+  import showLocation from "../location/showLocation.nvue"
 
   export default {
     name: "Home",
     components: {
-      TypeIcon,
-      showLocation
+      TypeIcon
     },
     data() {
       return {
@@ -54,20 +52,8 @@
       }
     },
     onLoad() {
-      // #ifdef MP-WEIXIN
+      // #ifdef MP-WEIXIN || APP-PLUS
       amapPlugin.getRegeo({
-        success(res) {
-          console.log('返回的信息位置', res);
-        },
-        fail(err) {
-          console.log(err);
-        }
-      })
-      // #endif
-      // #ifdef APP-PLUS
-      uni.getLocation({
-        type: 'gcj02',
-        geocode: true,
         success(res) {
           console.log('返回的信息位置', res);
         },

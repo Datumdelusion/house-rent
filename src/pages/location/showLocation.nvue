@@ -1,26 +1,48 @@
 <template>
-  <view>
-    <map
-    style="width: 100%;"
-    :longitude="longitude"
-    :latitude="latitude"
-    :markers="markList"
-    ></map>
-  </view>
+	<view>
+		<map style="width: 100%;" :longitude="longitude" :latitude="latitude" :markers="markers"></map>
+		<button type="default" @tap="clickme">点我点我</button>
+	</view>
 </template>
 
 <script>
-  export default {
-    data() {
-      return {
-        longitude: 114.56463,
-        latitude: 26.000098,
-        markList: [
-          {id: 1, latitude: 26.000098, longitude: 114.56463, title: '测试marker', width: 20, height: 30, alpha: 0.5}
-        ]
-      }
-    }
-  }
+	export default {
+		data() {
+			return {
+				longitude: 114.56463,
+				latitude: 26.000098,
+				
+			}
+		},
+		methods: {
+			clickme() {
+				let a = {
+					id: 1,
+					latitude: 26.000098,
+					longitude: 114.56463,
+					title: '测试marker',
+					width: '20',
+					height: '30'
+				};
+				// this.markers.push(a);
+			}
+		},
+		computed: {
+			markers() {
+				return [{
+					id: 1,
+					latitude: 26.000098,
+					longitude: 114.56463,
+					title: '测试marker',
+					width: '50',
+					height: '50'
+				}]
+			}
+		},
+		onReady: function(res) {
+			this.mapContext = uni.createMapContext('my-map', this); //创建mapContext对象，为了用uni提供的组件控制方法
+		}
+	}
 </script>
 
 <style>
