@@ -107,12 +107,17 @@
 			},
 			clear() {
 				this.searchVal = ""
+        // #ifndef APP-PLUS
+        uni.hideKeyboard()
+        // #endif
+        // #ifdef APP-PLUS
+        plus.key.hideSoftKeybord()
+        // #endif
+        this.$emit("clear", {
+        	value: this.searchVal
+        });
 			},
 			cancel() {
-				this.$emit("cancel", {
-					value: this.searchVal
-				});
-				this.searchVal = ""
 				this.show = false
 				this.showSync = false
 				// #ifndef APP-PLUS

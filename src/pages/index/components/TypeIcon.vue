@@ -1,7 +1,10 @@
 <template>
   <view class="type-icon">
     <view class="type-wrapper" v-for="item in types" :key="item.id">
-      <uni-icons size="25" class="one-type-icon" :type="item.icon" :style="{'backgroundColor': randomColor(item.id)}" />
+      <!-- <uni-icons size="25" class="one-type-icon" :type="item.icon" :style="{'backgroundColor': randomColor(item.id)}" /> -->
+      <view class="one-type-icon" :style="{'backgroundColor': randomColor(item.id)}">
+        <text class="iconfont" :class="item.icon" />
+      </view>
       <view>{{ item.name }}</view>
     </view>
   </view>
@@ -15,17 +18,17 @@
         types: [{
             id: "1",
             name: "二手房",
-            icon: "home"
+            icon: "icon-fangwu"
           },
           {
             id: "2",
             name: "新房",
-            icon: "hotel-o"
+            icon: "icon-fangwufangchan"
           },
           {
             id: "3",
             name: "租房",
-            icon: "shop"
+            icon: "icon-fangwuzujin"
           },
         ]
       }
@@ -81,6 +84,11 @@
     width: 80rpx;
     height: 80rpx;
     line-height: 80rpx;
+    text-align: center;
     font-weight: normal;
+    .iconfont {
+      color: #333;
+      font-size: 44rpx;
+    }
   }
 </style>

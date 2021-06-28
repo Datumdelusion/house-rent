@@ -1,7 +1,13 @@
 <template>
   <view>
-    <uni-search-bar shape="round" v-model="value" placeholder="请输入搜索关键词" />
-    <uni-indexed-list :options="dataList" @click="onClick" style="margin-top: 88rpx;"/>
+    <uni-search-bar v-model="value" placeholder="请输入搜索关键词" @confirm="onSearch" @clear="onSearch" />
+    <uni-indexed-list :options="dataList" @click="onClick" v-if="showCity" />
+    <view v-else>
+      <view class="search-head">找到{{ resultList.length }}个结果</view>
+      <view class="result-list" v-for="(item, index) in resultList" :key="index" @click="onClick(item)">
+        {{ item }}
+      </view>
+    </view>
   </view>
 </template>
 
@@ -37,18 +43,51 @@ export default {
         {letter: "X", data: ["X1城市", "X2城市", "X3城市", "X4城市", "X5城市", "X6城市"]}
       ],
       value: "",
-      msg: ""
+      msg: "",
+      showCity: true,
+      resultList: []
     }
   },
   computed: {},
   methods: {
     onSearch(value) { // TODO:搜索
       console.log(value);
-    },
-    onClick(msg) { // {"item": {"key":"A", "name": "A2城市", "itemIndex": 1, "checked": false}, "select":[]}
       uni.showLoading({
-        title: '获取信息中'
+        title: "搜索ing..."
       });
+      if (value && value.value) { // 若搜索内容不为空，查找相关内容
+        this.resultList = this.filterBySearch(value.value);
+        this.showCity = false;
+      } else { // 若搜索内容为空
+        this.resultList = [];
+        this.showCity = true;
+      }
+      uni.hideLoading();
+    },
+    filterBySearch(value) {
+      let arr = [];
+      this.dataList.forEach(v => {
+        v.data.forEach(i => {
+          if (i.includes(value)) {
+            arr.push(i);
+          }
+        })
+      });
+      return arr;
+    },
+    onClick(msg) {
+      let pages = getCurrentPages();
+      let prevPage = pages[pages.length - 2]; // 上一个页面
+      if (msg.item) {
+        // {"item": {"key":"A", "name": "A2城市", "itemIndex": 1, "checked": false}, "select":[]}
+        // console.log(msg.item.name);
+        prevPage.$vm.setMyCity(msg.item.name);
+        uni.navigateBack();
+      } else {
+        // console.log(msg);
+        prevPage.$vm.setMyCity(msg);
+        uni.navigateBack();
+      }
     }
   },
   watch: {},
@@ -77,4 +116,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  .search-head {
+    background-color: #f7f7f7;
+    padding: 14rpx 10rpx;
+    border-bottom: 2rpx solid rgba(0, 0, 0 , 0.3);
+  }
+  /deep/ .uni-indexed-list {
+    margin-top: 88rpx;
+  }
+  .result-list {
+    margin: 28rpx;
+    border-bottom: 2rpx solid #ccc;
+  }
 </style>
