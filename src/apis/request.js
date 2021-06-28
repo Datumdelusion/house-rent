@@ -11,7 +11,7 @@ const UNAUTHORIZED = 401;
 export function request(config) {
   // 1.创建axios实例
   const instance = axios.create({
-    baseURL: process.env.NODE_ENV == 'development' ? "https://kumamon.cn.utools.club" : "https://www.baidu.com",
+    baseURL: process.env.NODE_ENV == 'development' ? "192.168.2.8:8888" : "https://www.baidu.com",
     timeout: 5000,
   });
 

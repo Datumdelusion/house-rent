@@ -23,7 +23,7 @@
           <text style="color: #f40; font-size: 1.2rem;">{{ price }}</text>
         </view>
         <view v-if="shoucang">
-          <text class="love-icon iconfont" :class="isShoucang ? 'icon-xihuan' : 'icon-xihuan-xianxing'" @click="clickShoucang(isShoucang)"></text>
+          <text class="love-icon iconfont" :class="isShoucang ? 'icon-xihuan' : 'icon-xihuan-xianxing'" @click.stop="clickShoucang(isShoucang)"></text>
         </view>
     </view>
   </view>

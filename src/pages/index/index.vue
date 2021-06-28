@@ -28,7 +28,7 @@
     
     <view class="seperator" />
     
-    <list-card v-for="item in dataList"
+    <list-card v-for="item in dataList" :key="item.id"
       :thumb="item.thumb"
       :tag="item.tag"
       :head="item.head"
@@ -36,8 +36,7 @@
       :price="item.price"
       :shoucang="item.shoucang"
       :isShoucang="item.isShoucang"
-      @turn2Page="turn2Page"
-      @clickShoucang="clickShoucang(item)" />
+      @turn2Page="turn2Page" />
     <view class="lookMore" @tap="turn2Application">
       点击查看更多
       <text class="iconfont icon-shenglve"></text>
@@ -63,12 +62,12 @@
         ],
         dataList: [
           {
+            id: 1,
             thumb: "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
             tag: "热卖",
             head: "草桥欣园三区 央产证 南北通透 有钥匙 看两居室",
             intro: "2室1厅|75.1㎡|草桥欣园三区",
             price: "6500万",
-            shoucang: true,
             isShoucang: true
           }
         ],
@@ -119,9 +118,6 @@
       },
       onSearch() { // 点击搜索
         console.log(this.textValue);
-      },
-      clickShoucang(item) { // 点击收藏
-        item.isShoucang = !item.isShoucang;
       },
       setMyCity(location) { // 设置城区名字
         this.location = location;
