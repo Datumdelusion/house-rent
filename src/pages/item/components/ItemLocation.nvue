@@ -1,0 +1,38 @@
+<template>
+  <view>
+    <view class="map-title">区位介绍</view>
+    <map style="width: 100%;border:1px solid #ccc" :longitude="longitude" :latitude="latitude" :markers="markers"></map>
+  </view>
+</template>
+
+<script>
+  export default {
+    name: "ItemLocation",
+    data() {
+      return {
+        longitude: 114.56463,
+        latitude: 26.000098,
+        markers: [
+        	{
+        		id: 1,
+        		latitude: 26.000098,
+        		longitude: 114.56463,
+        		title: '测试marker',
+        		width: '20',
+        		height: '30'
+        	}
+        ]
+      }
+    }
+  }
+</script>
+
+<style lang="scss" scoped>
+ .map-title {
+   font-size: 40rpx;
+   font-weight: 700;
+   margin: 12rpx 0;
+   padding-top: 12rpx;
+   border-top: 2rpx dashed #ccc;
+ }
+</style>

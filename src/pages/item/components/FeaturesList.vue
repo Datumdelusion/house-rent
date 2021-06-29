@@ -1,12 +1,12 @@
 <template>
   <view class="feature-list-wrapper">
-    <view>
+    <view style="display: block">
       <text class="name">位置:</text>
       <text>坐北朝南</text>
     </view>
     <view>
       <text class="name">楼层:</text>
-      <text>-1</text>
+      <text>1</text>
     </view>
     <view>
       <text class="name">电梯:</text>
@@ -15,10 +15,6 @@
     <view>
       <text class="name">年代:</text>
       <text>2007年建成</text>
-    </view>
-    <view>
-      <text class="name">供暖:</text>
-      <text>集体供暖</text>
     </view>
     <view>
       <text class="name">绿化:</text>
@@ -43,7 +39,7 @@
     & > view {
       display: inline-block;
       width: 48%;
-      margin-bottom: 4rpx;
+      margin-bottom: 10rpx;
     }
     .name {
       color: #999;

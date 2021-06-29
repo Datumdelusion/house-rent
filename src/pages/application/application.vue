@@ -4,6 +4,7 @@
     <view style="margin-top: 78rpx;">
       <scroll-view scroll-y="true" style="height: 93vh;" @scrolltolower="getCard">
         <list-card v-for="item in dataList" :key="item.id"
+          :no="item.id"
           :thumb="item.thumb"
           :tag="item.tag"
           :head="item.head"
@@ -11,9 +12,8 @@
           :price="item.price"
           :shoucang="item.shoucang"
           :isShoucang="item.isShoucang"
-          @turn2Page="turn2Page(item)"
           @clickShoucang="clickShoucang(item)" />
-      </scroll-view>      
+      </scroll-view>
     </view>
   </view>
 </template>
@@ -110,11 +110,6 @@
           }
         })
       },
-      turn2Page(item) { // 点击跳转页面
-        uni.navigateTo({
-          url: `/pages/item/item?id=${item.id}`
-        });
-      },
       clickShoucang(item) { // 点击收藏
         item.isShoucang = !item.isShoucang;
       },
@@ -146,9 +141,3 @@
     /* onShareAppMessage(options) {}, */
   };
 </script>
-
-<style lang="scss" scoped>
-  .application-wrapper {
-    height: 100vh;
-  }
-</style>

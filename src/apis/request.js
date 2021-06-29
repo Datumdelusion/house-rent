@@ -31,18 +31,21 @@ export function request(config) {
 
   // 2.2响应拦截
   instance.interceptors.response.use((res) => {
-      // res.response中得到 "错误代号" 和 "信息”
-      const code  = res.data.code;
-      // console.log(res);
-      // 若出错, 尤其是401错误时, 即表示token过期
-      if (+code === UNAUTHORIZED) {
-        alert("登录过期, 请重新登录");
-        // router.replace({path: '/'});
-      }
+      // // res.response中得到 "错误代号" 和 "信息”
+      // const code  = res.data.code;
+      // // console.log(res);
+      // // 若出错, 尤其是401错误时, 即表示token过期
+      // if (+code === UNAUTHORIZED) {
+      //   alert("登录过期, 请重新登录");
+      //   // router.replace({path: '/'});
+      // }
       return res.data;
     }, (err) => {
         // 返回错误信息
         console.log(err);
+        uni.showToast({
+          title: err.userPromptMsg
+        })
         return Promise.reject(err.response ? err.response.status : err); //返回接口返回的错误信息
     }
   );
@@ -51,7 +54,7 @@ export function request(config) {
   return instance(config);
 }
 
-// #ifdef MP-WEIXIN
+// #ifdef MP-WEIXIN || APP-PLUS
 
 //真机获取
 axios.defaults.adapter = function (config) {

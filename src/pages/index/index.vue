@@ -29,6 +29,7 @@
     <view class="seperator" />
     
     <list-card v-for="item in dataList" :key="item.id"
+      :no="item.id"
       :thumb="item.thumb"
       :tag="item.tag"
       :head="item.head"
@@ -36,7 +37,7 @@
       :price="item.price"
       :shoucang="item.shoucang"
       :isShoucang="item.isShoucang"
-      @turn2Page="turn2Page" />
+       />
     <view class="lookMore" @tap="turn2Application">
       点击查看更多
       <text class="iconfont icon-shenglve"></text>
@@ -48,6 +49,7 @@
 
 <script>
   import { amapPlugin } from '../../utils/importMap.js';
+  import { test } from "../../apis/test.js";
 
   export default {
     name: "Home",
@@ -75,6 +77,11 @@
       }
     },
     onLoad() {
+      test().then(res => {
+        console.log(res)
+      }).catch(err => {
+        console.log("shit: ", err);
+      })
       // #ifdef MP-WEIXIN || APP-PLUS
       /* 获取用户定位信息 */
       let _this = this;
@@ -110,11 +117,6 @@
       hotSearch(hotspot) { // FIXME🧊🍺: 调用搜索函数
         this.textValue = hotspot;
         // 调用搜索函数...
-      },
-      turn2Page(item) { // 点击跳转页面
-        // uni.navigateTo({
-        //   url: '/pages/application/application'
-        // });
       },
       onSearch() { // 点击搜索
         console.log(this.textValue);

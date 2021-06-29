@@ -32,6 +32,10 @@
 <script>
   export default {
     props: {
+      no: {
+        type: Number,
+        required: true
+      },
       thumb: {
         type: String,
         default() {
@@ -77,10 +81,12 @@
     },
     name: "ListCard",
     methods: {
-      turn2Page() {
-        this.$emit("turn2Page");
+      turn2Page() { // 跳转到具体信息页面
+        uni.navigateTo({
+          url: `/pages/item/item?id=${this.no}`
+        });
       },
-      clickShoucang(isShoucang) {
+      clickShoucang(isShoucang) { // 点击收藏
         this.$emit('clickShoucang', isShoucang)
       }
     }
@@ -93,6 +99,7 @@
     background-color: #fff;
     border-bottom: 1rpx solid rgba(0, 0, 0, 0.2);
     overflow: hidden;
+    margin-bottom: 8rpx;
     .list-card-tags {
       position: absolute;
       top: 0;
@@ -134,12 +141,12 @@
     font-size: 40rpx;
     &.icon-xihuan {
       color: #d81e06;
-      animation: mylove 1s linear;
+      animation: mylove 0.5s linear;
     }
   }
   @keyframes mylove {
-    from { transform: scale(1) translateY(55%);}
-    50% { transform: scale(1.3) translateY(55%);}
-    to { transform: scale(1) translateY(55%);}
+    from { transform: scale(1) translateY(50%);}
+    50% { transform: scale(1.3) translateY(50%);}
+    to { transform: scale(1) translateY(50%);}
   }
 </style>

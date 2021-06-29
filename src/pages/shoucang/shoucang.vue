@@ -1,14 +1,109 @@
 <template>
-  <view class="shoucang">shoucang</view>
+  <view class="shoucang-wrapper">
+    <view>
+      <scroll-view scroll-y="true" style="height: 100vh;" @scrolltolower="getShoucang">
+        <list-card v-for="item in dataList" :key="item.id"
+          :no="item.id"
+          :thumb="item.thumb"
+          :tag="item.tag"
+          :head="item.head"
+          :intro="item.intro"
+          :price="item.price"
+          :shoucang="item.shoucang"
+          :isShoucang="item.isShoucang"
+          @clickShoucang="clickShoucang(item)" />
+      </scroll-view>
+    </view>
+  </view>
 </template>
 
 <script>
 
 export default {
+  name: "shoucang",
   components: {},
-  data: () => ({}),
+  data() {
+    return {
+      dataList: [
+          {
+            id: 1,
+            thumb: "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
+            tag: "热卖",
+            head: "草桥欣园三区 央产证 南北通透 有钥匙 看两居室",
+            intro: "2室1厅|75.1㎡|草桥欣园三区",
+            price: "6500万",
+            shoucang: true,
+            isShoucang: false
+          },
+          {
+            id: 2,
+            thumb: "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
+            tag: "HOT",
+            head: "草桥欣园一区 央产证 南北通透 有钥匙 看两居室",
+            intro: "3室2厅|76.1㎡|草桥欣园一区",
+            price: "6500万",
+            shoucang: true,
+            isShoucang: false
+          },
+          {
+            id: 3,
+            thumb: "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
+            tag: "SALE",
+            head: "草桥欣园二区 央产证 南北通透 有钥匙 看两居室",
+            intro: "5室4厅|77.1㎡|草桥欣园二区",
+            price: "6500万",
+            shoucang: true,
+            isShoucang: false
+          },
+          {
+            id: 4,
+            thumb: "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
+            tag: "SALE",
+            head: "草桥欣园二区 央产证 南北通透 有钥匙 看两居室",
+            intro: "5室4厅|77.1㎡|草桥欣园二区",
+            price: "6500万",
+            shoucang: true,
+            isShoucang: false
+          },
+          {
+            id: 5,
+            thumb: "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
+            tag: "SALE",
+            head: "草桥欣园二区 央产证 南北通透 有钥匙 看两居室",
+            intro: "5室4厅|77.1㎡|草桥欣园二区",
+            price: "6500万",
+            shoucang: true,
+            isShoucang: false
+          },
+          {
+            id: 6,
+            thumb: "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
+            tag: "SALE",
+            head: "草桥欣园二区 央产证 南北通透 有钥匙 看两居室",
+            intro: "5室4厅|77.1㎡|草桥欣园二区",
+            price: "6500万",
+            shoucang: true,
+            isShoucang: false
+          },
+          {
+            id: 7,
+            thumb: "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
+            tag: "SALE",
+            head: "草桥欣园二区 央产证 南北通透 有钥匙 看两居室",
+            intro: "5室4厅|77.1㎡|草桥欣园二区",
+            price: "6500万",
+            shoucang: true,
+            isShoucang: false
+          }
+        ]
+    }
+  },
   computed: {},
-  methods: {},
+  methods: {
+    getShoucang() {
+      console.log("到底啦！");
+    }
+  },
   watch: {},
 
   // 页面周期函数--监听页面加载
