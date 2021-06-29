@@ -49,4 +49,17 @@ public class Location extends BaseEntity {
     private Double longitude;
 
 
+    @Override
+    public String toString() {
+        return "Location{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", pinyin='" + pinyin + '\'' +
+                ", pid=" + pid +
+                ", genealogy='" + genealogy + '\'' +
+                ", level=" + level +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                "}\n";
+    }
 }

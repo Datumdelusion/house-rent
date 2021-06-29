@@ -2,6 +2,7 @@ package com.datum.houserent.model.entity.base;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -30,6 +31,7 @@ public abstract class BaseEntity {
 
     @JsonIgnore
     @ApiModelProperty(value = "是否已经删除")
+    @TableLogic
     @TableField("deleted")
     private Integer deleted;
 

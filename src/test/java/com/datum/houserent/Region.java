@@ -5,18 +5,18 @@ package com.datum.houserent;
  * @date 2021/6/28 21:12
  */
 public class Region extends City {
-    private Integer region;
+    private String region;
 
-    public Region(Integer province, Integer city, Integer region, String name) {
+    public Region(String province, String city, String region, String name) {
         super(province, city, name);
         this.region = region;
     }
 
-    public Integer getRegion() {
+    public String getRegion() {
         return region;
     }
 
-    public void setRegion(Integer region) {
+    public void setRegion(String region) {
         this.region = region;
     }
 

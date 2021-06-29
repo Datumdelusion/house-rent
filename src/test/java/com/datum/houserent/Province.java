@@ -7,23 +7,23 @@ import java.util.List;
  * @date 2021/6/28 20:43
  */
 public class Province {
-    private Integer province;
+    private String province;
 
     private String name;
 
     public Province() {
     }
 
-    public Province(Integer province,String name) {
+    public Province(String province,String name) {
         this.province = province;
         this.name = name;
     }
 
-    public Integer getProvince() {
+    public String getProvince() {
         return province;
     }
 
-    public void setProvince(Integer province) {
+    public void setProvince(String province) {
         this.province = province;
     }
     public String getName() {

@@ -1,16 +1,26 @@
 package com.datum.houserent;
 
+import com.datum.houserent.dao.mapper.LocationMapper;
+import com.datum.houserent.model.entity.Location;
+import com.datum.houserent.service.LocationService;
+import com.datum.houserent.utils.JsonUtil;
 import net.sourceforge.pinyin4j.PinyinHelper;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 @SpringBootTest
 class HouseRentApplicationTests {
+
+    @Autowired
+    LocationService locationService;
+
 
     @Test
     void contextLoads() {
@@ -21,12 +31,12 @@ class HouseRentApplicationTests {
         List<Region> regions = new ArrayList<>();
 
         try {
-            BufferedReader reader=new BufferedReader(new FileReader(file));
+            BufferedReader reader = new BufferedReader(new FileReader(file));
             String line = "";
 
             int all = 0;
             while (!((line = reader.readLine()) == null)) {
-                if (line.contains("{")||line.contains("}")) {
+                if (line.contains("{") || line.contains("}")) {
                     continue;
                 }
                 all++;
@@ -35,19 +45,79 @@ class HouseRentApplicationTests {
                 String name = split[3].trim();
                 String[] numbers = splitId(id);
                 if (!"00".equals(numbers[0]) && "00".equals(numbers[1]) && "00".equals(numbers[2])) {
-                    provinces.add(new Province(Integer.parseInt(numbers[0]), name));
+                    provinces.add(new Province(numbers[0], name));
                 }
-                if (!"00".equals(numbers[0]) && !"00".equals(numbers[1])&&"00".equals(numbers[2])) {
-                    cities.add(new City(Integer.parseInt(numbers[0]), Integer.parseInt(numbers[1]), name));
+                if (!"00".equals(numbers[0]) && !"00".equals(numbers[1]) && "00".equals(numbers[2])) {
+                    cities.add(new City(numbers[0], numbers[1], name));
                 }
-                if (!"00".equals(numbers[0]) &&!"00".equals(numbers[2])) {
-                    regions.add(new Region(Integer.parseInt(numbers[0]), Integer.parseInt(numbers[1]), Integer.parseInt(numbers[2]), name));
+                if (!"00".equals(numbers[0]) && !"00".equals(numbers[2])) {
+                    regions.add(new Region(numbers[0], numbers[1], numbers[2], name));
                 }
 
             }
-            System.out.println(provinces);
-            System.out.println(cities);
-            System.out.println(regions);
+//            System.out.println(provinces);
+//            System.out.println(cities);
+//            System.out.println(regions);
+
+            List<Location> provincesList = new ArrayList<>();
+            for (Province province : provinces) {
+                Location location = new Location();
+                location.setName(province.getName());
+                location.setId(Integer.parseInt(province.getProvince()));
+                location.setPid(-1);
+                location.setPinyin(getHanziInitials(province.getName()));
+
+                String[] strings = {province.getProvince()};
+                String s = JsonUtil.toJsonString(strings);
+                location.setGenealogy(s);
+
+                location.setLevel(1);
+                provincesList.add(location);
+            }
+//            System.out.println(provincesList);
+            locationService.saveBatch(provincesList);
+
+            List<Location> citiesList = new ArrayList<>();
+            for (City city : cities) {
+                Location location = new Location();
+                location.setName(city.getName());
+
+                String idSt = city.getProvince() + city.getCity();
+                int id = Integer.parseInt(idSt);
+                location.setId(id);
+
+                location.setPid(Integer.parseInt(city.getProvince()));
+                location.setPinyin(getHanziInitials(city.getName()));
+
+                String[] strings = {city.getProvince(), city.getCity()};
+                String s = JsonUtil.toJsonString(strings);
+                location.setGenealogy(s);
+
+                location.setLevel(2);
+                citiesList.add(location);
+            }
+
+            locationService.saveBatch(citiesList);
+
+            List<Location> regionsList = new ArrayList<>();
+            for (Region region : regions) {
+                Location location = new Location();
+                location.setName(region.getName());
+
+                String idSt = region.getProvince() + region.getCity() + region.getRegion();
+                int id = Integer.parseInt(idSt);
+                location.setId(id);
+
+                location.setPid(Integer.parseInt(region.getProvince() + region.getCity()));
+                location.setPinyin(getHanziInitials(region.getName()));
+
+                location.setGenealogy(JsonUtil.toJsonString(new String[]{region.getProvince(), region.getCity(), region.getRegion()}));
+
+                location.setLevel(3);
+                regionsList.add(location);
+            }
+            locationService.saveBatch(regionsList);
+
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -61,7 +131,7 @@ class HouseRentApplicationTests {
 
         strings[1] = idString.substring(2, 4);
 
-        strings[2] = idString.substring(4, 6);
+        strings[2] = idString.substring(4);
 
 
         return strings;
@@ -69,17 +139,17 @@ class HouseRentApplicationTests {
 
     public static String getHanziInitials(String hanzi) {
         String result = null;
-        if(null != hanzi && !"".equals(hanzi)) {
+        if (null != hanzi && !"".equals(hanzi)) {
             char[] charArray = hanzi.toCharArray();
             StringBuffer sb = new StringBuffer();
             for (char ch : charArray) {
                 // 逐个汉字进行转换， 每个汉字返回值为一个String数组（因为有多音字）
                 String[] stringArray = PinyinHelper.toHanyuPinyinStringArray(ch);
-                if(null != stringArray) {
+                if (null != stringArray) {
                     sb.append(stringArray[0].charAt(0));
                 }
             }
-            if(sb.length() > 0) {
+            if (sb.length() > 0) {
                 result = sb.toString().toUpperCase();
             }
         }
@@ -88,9 +158,16 @@ class HouseRentApplicationTests {
 
     @Test
     void pinyin() {
-        String hello = getHanziInitials("重庆市");
-        System.out.println(hello);
+        Location entity = new Location();
+        entity.setId(12);
+        entity.setName("测试");
+        locationService.save(entity);
+    }
 
+    @Test
+    void sub() {
+        String id = "442000117";
+        System.out.println(id.substring(4));
     }
 
 }
