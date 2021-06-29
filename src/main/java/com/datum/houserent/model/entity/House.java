@@ -77,7 +77,7 @@ public class House extends BaseEntity {
     private Integer storey;
 
     @ApiModelProperty(value = "(bool)是否电梯")
-    private Integer elevator;
+    private Boolean elevator;
 
     @ApiModelProperty(value = "建成年份")
     private Integer years;

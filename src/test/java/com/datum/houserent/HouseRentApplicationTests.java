@@ -1,25 +1,65 @@
 package com.datum.houserent;
 
 import com.datum.houserent.dao.mapper.LocationMapper;
+import com.datum.houserent.model.entity.House;
 import com.datum.houserent.model.entity.Location;
+import com.datum.houserent.service.HouseService;
 import com.datum.houserent.service.LocationService;
 import com.datum.houserent.utils.JsonUtil;
 import net.sourceforge.pinyin4j.PinyinHelper;
+import org.jsoup.Connection;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @SpringBootTest
 class HouseRentApplicationTests {
 
     @Autowired
     LocationService locationService;
+    @Autowired
+    HouseService houseService;
+
+    @Test
+    void houseJsoup() throws IOException {
+        Connection connect = Jsoup.connect("https://cd.ziroom.com/x/808105461.html");
+        Document document = connect.get();
+
+        House house = new House();
+        String name = document.getElementsByClass("Z_name").text();
+        Set<String> pics = document.getElementsByClass("Z_slider").stream().map(e -> {
+            String attr = e.getElementsByTag("img").first().attr("src");
+            return attr.substring(2);
+        }).collect(Collectors.toSet());
+        String neighborhood = document.getElementsByClass("Z_village_info").text().split(" ")[0];
+        String[] message = document.getElementsByClass("Z_home_o").text().split(" ");
+        String location = message[1];
+        Integer storey = Integer.parseInt(message[2].substring(2, 3));
+        boolean elevator = message[3].charAt(2) == '有';
+        Integer year = Integer.parseInt(message[4].substring(2, 6));
+        Double green = Double.parseDouble(message[6].substring(2, 4)) / 100;
+
+
+
+        house.setName(name);
+        house.setHead(pics.iterator().next());
+        house.setPics(JsonUtil.toJsonString(pics));
+        house.setNeighbourhood(neighborhood);
+        house.setDetailLocation(location);
+        house.setStorey(storey);
+        house.setElevator(elevator);
+        house.setYears(year);
+        house.setGreenArea(green);
+
+        System.out.println(house);
+    }
 
 
     @Test

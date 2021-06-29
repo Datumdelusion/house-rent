@@ -20,6 +20,8 @@ repositories {
 
 dependencies {
 
+    implementation group: 'org.jsoup', name: 'jsoup', version: '1.13.1'
+
     //拼音
     implementation group: 'com.belerweb', name: 'pinyin4j', version: '2.5.1'
     //权限认证
