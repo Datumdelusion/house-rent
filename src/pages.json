@@ -36,7 +36,16 @@
 				"navigationBarTitleText": "选择地区"
 			}
 		}
-	],
+	    ,{
+            "path" : "pages/item/item",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",

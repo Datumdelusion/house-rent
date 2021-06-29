@@ -1,8 +1,8 @@
 <template>
   <view class="application-wrapper">
     <app-head />
-    <view style="height: 80vh;">
-      <scroll-view scroll-y="true" :refresher-enabled="true">
+    <view style="margin-top: 78rpx;">
+      <scroll-view scroll-y="true" style="height: 93vh;" @scrolltolower="getCard">
         <list-card v-for="item in dataList" :key="item.id"
           :thumb="item.thumb"
           :tag="item.tag"
@@ -11,7 +11,7 @@
           :price="item.price"
           :shoucang="item.shoucang"
           :isShoucang="item.isShoucang"
-          @turn2Page="turn2Page"
+          @turn2Page="turn2Page(item)"
           @clickShoucang="clickShoucang(item)" />
       </scroll-view>      
     </view>
@@ -111,14 +111,16 @@
         })
       },
       turn2Page(item) { // 点击跳转页面
-      console.log("111");
-        // uni.navigateTo({
-        //   url: '/pages/application/application'
-        // });
+        uni.navigateTo({
+          url: `/pages/item/item?id=${item.id}`
+        });
       },
       clickShoucang(item) { // 点击收藏
         item.isShoucang = !item.isShoucang;
       },
+      getCard() { // 滚动到底部拉取更多
+        console.log("到底啦！");
+      }
     },
     watch: {},
 
@@ -146,16 +148,7 @@
 </script>
 
 <style lang="scss" scoped>
-  .application-options-head {
-    width: 100%;
-    padding: 18rpx 0;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    background: linear-gradient(to top, #FAF8F9, #F0EFF0);
-
-    .option-active {
-      color: #2281b3;
-    }
+  .application-wrapper {
+    height: 100vh;
   }
 </style>

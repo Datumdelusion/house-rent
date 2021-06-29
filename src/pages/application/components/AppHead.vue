@@ -1,5 +1,5 @@
 <template>
-  <view class="application">
+  <view class="application-head-wrapper">
     <view class="application-options-head">
       <text v-for="(item,index) in options" :class="currentOption === index ? 'option-active' : ''"
         @click="changeActive(index)">
@@ -146,6 +146,12 @@
 </script>
 
 <style lang="scss" scoped>
+  .application-head-wrapper {
+    position: fixed;
+    z-index: 100;
+	  top: 0;
+    width: 100%;
+  }
   .application-options-head {
     position: relative;
     z-index: 100;
