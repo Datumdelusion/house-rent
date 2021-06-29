@@ -1,0 +1,6 @@
+spring:
+  datasource:
+    driver-class-name: com.p6spy.engine.spy.P6SpyDriver
+    url: jdbc:p6spy:mysql://121.40.192.118:3306/house_rent
+    username: community_shop
+    password: qwe123456

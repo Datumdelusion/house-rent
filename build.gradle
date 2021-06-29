@@ -1,0 +1,43 @@
+plugins {
+    id 'org.springframework.boot' version '2.5.1'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+}
+
+group = 'com.datum'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    //拼音
+    implementation group: 'com.belerweb', name: 'pinyin4j', version: '2.5.1'
+    //权限认证
+    implementation group: 'cn.dev33', name: 'sa-token-spring-boot-starter', version: '1.20.0'
+    //sql语句拦截器
+    implementation group: 'p6spy', name: 'p6spy', version: '3.9.1'
+    //knife4j文档
+    implementation group: 'com.github.xiaoymin', name: 'knife4j-spring-boot-starter', version: '3.0.2'
+    //mybatis-plus
+    implementation group: 'com.baomidou', name: 'mybatis-plus-boot-starter', version: '3.4.3.1'
+
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly 'org.projectlombok:lombok'
+    runtimeOnly 'mysql:mysql-connector-java'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+test {
+    useJUnitPlatform()
+}
