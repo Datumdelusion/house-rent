@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.datum.houserent.model.entity.base.BaseEntity;
 import java.time.LocalDate;
+
+import com.datum.houserent.model.entity.enums.OrientationType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -68,10 +70,10 @@ public class House extends BaseEntity {
     private Double area;
 
     @ApiModelProperty(value = "（枚举）房屋朝向")
-    private Integer orientation;
+    private OrientationType orientation;
 
     @ApiModelProperty(value = "（枚举）户型：三室一厅")
-    private Integer style;
+    private String style;
 
     @ApiModelProperty(value = "楼层")
     private Integer storey;

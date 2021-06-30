@@ -10,6 +10,7 @@ mybatis-plus:
       logic-delete-field: deleted
       logic-delete-value: 1
       logic-not-delete-value: 0
+  type-enums-package: com.datum.houserent.model.entity.enums
 spring:
   profiles:
     active: dev

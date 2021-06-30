@@ -3,6 +3,7 @@ package com.datum.houserent;
 import com.datum.houserent.dao.mapper.LocationMapper;
 import com.datum.houserent.model.entity.House;
 import com.datum.houserent.model.entity.Location;
+import com.datum.houserent.model.entity.enums.OrientationType;
 import com.datum.houserent.service.HouseService;
 import com.datum.houserent.service.LocationService;
 import com.datum.houserent.utils.JsonUtil;
@@ -11,11 +12,14 @@ import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.*;
+import java.text.DecimalFormat;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -28,25 +32,62 @@ class HouseRentApplicationTests {
     HouseService houseService;
 
     @Test
-    void houseJsoup() throws IOException {
-        Connection connect = Jsoup.connect("https://cd.ziroom.com/x/808105461.html");
+    void addHouse() throws IOException {
+        List<String> urls=new ArrayList<>();
+
+        urls.add("https://hz.ziroom.com/x/749934533.html");
+//        urls.add("");
+//        urls.add("");
+//        urls.add("");
+//        urls.add("");
+//        urls.add("");
+//        urls.add("");
+//        urls.add("");
+//        urls.add("");
+//        urls.add("");
+//        urls.add("");
+
+
+        for (String url : urls) {
+            houseJsoup(url);
+        }
+
+
+    }
+
+    @Test
+    void houseJsoup(String url) throws IOException {
+//        Connection connect = Jsoup.connect("https://hz.ziroom.com/x/749934533.html");
+        Connection connect = Jsoup.connect(url);
         Document document = connect.get();
 
         House house = new House();
         String name = document.getElementsByClass("Z_name").text();
         Set<String> pics = document.getElementsByClass("Z_slider").stream().map(e -> {
             String attr = e.getElementsByTag("img").first().attr("src");
-            return attr.substring(2);
+            String[] split = attr.substring(20).split("\\.");
+            return split[0];
         }).collect(Collectors.toSet());
+        pics.removeIf(String::isEmpty);
         String neighborhood = document.getElementsByClass("Z_village_info").text().split(" ")[0];
         String[] message = document.getElementsByClass("Z_home_o").text().split(" ");
         String location = message[1];
-        Integer storey = Integer.parseInt(message[2].substring(2, 3));
+        Integer storey = Integer.parseInt(message[2].substring(2).split("/")[0]);
         boolean elevator = message[3].charAt(2) == '有';
         Integer year = Integer.parseInt(message[4].substring(2, 6));
         Double green = Double.parseDouble(message[6].substring(2, 4)) / 100;
+        String[] home = document.getElementsByClass("Z_home_b").text().split(" ");
+        String replace = home[0].replace("约", "").replace("㎡", "");
+        double area = Double.parseDouble(replace);
+        String orientation = home[2];
+        String style = home[4];
+        String desc = document.getElementsByClass("Z_rent_desc").text();
+        List<String> icons = new ArrayList<>();
+        Elements z_info_icons = document.getElementsByClass("Z_info_icons").get(0).getElementsByTag("dd");
+        z_info_icons.forEach(element -> icons.add(element.getElementsByTag("i").first().attr("class").split(" ")[1].replace("icon", "icon-")));
 
-
+        Random random = new Random();
+        DecimalFormat decimalFormat = new DecimalFormat("#.00");
 
         house.setName(name);
         house.setHead(pics.iterator().next());
@@ -57,8 +98,22 @@ class HouseRentApplicationTests {
         house.setElevator(elevator);
         house.setYears(year);
         house.setGreenArea(green);
-
-        System.out.println(house);
+        house.setArea(area);
+        house.setOrientation(OrientationType.getType(orientation));
+        house.setStyle(style);
+        house.setBrief(desc);
+        house.setUsp(JsonUtil.toJsonString(icons));
+        house.setCheckInTime(LocalDate.now().plusMonths((int) (random.nextDouble() * 10)));
+        house.setLeaseTerm(random.nextInt(18));
+        double money = 0;
+        if (money < 500) {
+            money = random.nextDouble() * 10000;
+        }
+        house.setMoneyMonth(Double.parseDouble(decimalFormat.format(money)));
+        house.setLocationOne(50);
+        house.setLocationTwo(5001);
+        house.setLocationThree(500100 + random.nextInt(20));
+        houseService.save(house);
     }
 
 
