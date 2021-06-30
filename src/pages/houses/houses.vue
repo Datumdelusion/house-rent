@@ -1,5 +1,5 @@
 <template>
-  <view class="shoucang-wrapper">
+  <view class="houses-wrapper">
     <view>
       <scroll-view scroll-y="true" style="height: 100vh;" @scrolltolower="getShoucang">
         <list-card v-for="item in dataList" :key="item.id"
@@ -11,8 +11,11 @@
           :price="item.price"
           :shoucang="item.shoucang"
           :isShoucang="item.isShoucang"
-          @clickShoucang="clickShoucang(item)" />
+          />
       </scroll-view>
+    </view>
+    <view class="icon-plus-wrapper" @click="addhouse">
+      <text class="iconfont icon-jia" style="font-size: 50rpx;" />
     </view>
   </view>
 </template>
@@ -28,21 +31,19 @@ export default {
           {
             id: 1,
             thumb: "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
-            tag: "热卖",
             head: "草桥欣园三区 央产证 南北通透 有钥匙 看两居室",
             intro: "2室1厅|75.1㎡|草桥欣园三区",
             price: "6500万",
-            shoucang: true,
+            shoucang: false,
             isShoucang: true
           },
           {
             id: 2,
             thumb: "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
-            tag: "HOT",
             head: "草桥欣园一区 央产证 南北通透 有钥匙 看两居室",
             intro: "3室2厅|76.1㎡|草桥欣园一区",
             price: "6500万",
-            shoucang: true,
+            shoucang: false,
             isShoucang: true
           },
           {
@@ -52,7 +53,7 @@ export default {
             head: "草桥欣园二区 央产证 南北通透 有钥匙 看两居室",
             intro: "5室4厅|77.1㎡|草桥欣园二区",
             price: "6500万",
-            shoucang: true,
+            shoucang: false,
             isShoucang: true
           },
           {
@@ -62,7 +63,7 @@ export default {
             head: "草桥欣园二区 央产证 南北通透 有钥匙 看两居室",
             intro: "5室4厅|77.1㎡|草桥欣园二区",
             price: "6500万",
-            shoucang: true,
+            shoucang: false,
             isShoucang: true
           },
           {
@@ -72,7 +73,7 @@ export default {
             head: "草桥欣园二区 央产证 南北通透 有钥匙 看两居室",
             intro: "5室4厅|77.1㎡|草桥欣园二区",
             price: "6500万",
-            shoucang: true,
+            shoucang: false,
             isShoucang: true
           },
           {
@@ -82,7 +83,7 @@ export default {
             head: "草桥欣园二区 央产证 南北通透 有钥匙 看两居室",
             intro: "5室4厅|77.1㎡|草桥欣园二区",
             price: "6500万",
-            shoucang: true,
+            shoucang: false,
             isShoucang: true
           },
           {
@@ -92,7 +93,7 @@ export default {
             head: "草桥欣园二区 央产证 南北通透 有钥匙 看两居室",
             intro: "5室4厅|77.1㎡|草桥欣园二区",
             price: "6500万",
-            shoucang: true,
+            shoucang: false,
             isShoucang: true
           }
         ]
@@ -100,11 +101,13 @@ export default {
   },
   computed: {},
   methods: {
-    getShoucang() {
+    getShoucang() { // 滚动到底部
       console.log("到底啦！");
     },
-    clickShoucang(item) {
-      item.isShoucang = !item.isShoucang;
+    addhouse() { // 添加房屋
+      uni.navigateTo({
+        url: '../addhouse/addhouse'
+      });
     }
   },
   watch: {},
@@ -132,4 +135,17 @@ export default {
 };
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+  .icon-plus-wrapper {
+    border-radius: 50%;
+    width: 80rpx;
+    height: 80rpx;
+    line-height: 80rpx;
+    background-color: rgb(0, 122, 255);
+    color: #fff;
+    text-align: center;
+    position: absolute;
+    bottom: 80rpx;
+    right: 20rpx;
+  }
+</style>

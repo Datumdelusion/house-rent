@@ -49,7 +49,6 @@
 
 <script>
   import { amapPlugin } from '../../utils/importMap.js';
-  import { test } from "../../apis/test.js";
 
   export default {
     name: "Home",
@@ -77,11 +76,6 @@
       }
     },
     onLoad() {
-      test().then(res => {
-        console.log(res)
-      }).catch(err => {
-        console.log("shit: ", err);
-      })
       // #ifdef MP-WEIXIN || APP-PLUS
       /* 获取用户定位信息 */
       let _this = this;

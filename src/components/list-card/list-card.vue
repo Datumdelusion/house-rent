@@ -4,7 +4,7 @@
       <image class="list-card-left-image" v-show="thumb" :src="thumb" />
       <slot name="tag">
         <!-- <uni-tag class="list-card-tags" v-show="tag" :text="tag" type="error" :mark="true"></uni-tag> -->
-        <view class="list-card-tags" v-show="tag"> {{ tag }} </view>
+        <view class="list-card-tags" v-if="tag"> {{ tag }} </view>
       </slot>
     </view>
     <view class="list-card-content">
@@ -24,6 +24,12 @@
         </view>
         <view v-if="shoucang">
           <text class="love-icon iconfont" :class="isShoucang ? 'icon-xihuan' : 'icon-xihuan-xianxing'" @click.stop="clickShoucang(isShoucang)"></text>
+        </view>
+        <view style="display: inline-block; display: flex;" class="btn-group" v-if="isBtn">
+          <slot name="btnGroup">
+            <button type="default" size="mini">确定</button>
+            <button type="default" size="mini">取消</button>
+          </slot>
         </view>
     </view>
   </view>
@@ -69,13 +75,19 @@
       shoucang: {
         type: Boolean,
         default() {
-          return false
+          return false;
         }
       },
       isShoucang: {
         type: Boolean,
         default() {
-          return false
+          return false;
+        }
+      },
+      isBtn: {
+        type: Boolean,
+        default() {
+          return false;
         }
       }
     },
@@ -142,6 +154,15 @@
     &.icon-xihuan {
       color: #d81e06;
       animation: mylove 0.5s linear;
+    }
+  }
+  .btn-group {
+    position: absolute;
+    right: 35rpx;
+    bottom: 35rpx;
+    transform: translateY(50%);
+    button {
+      margin-right: 5rpx;
     }
   }
   @keyframes mylove {

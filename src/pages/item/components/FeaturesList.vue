@@ -1,22 +1,22 @@
 <template>
   <view class="feature-list-wrapper">
-    <view style="display: block">
+    <view class="feature-item-wrapper" style="display: block">
       <text class="name">位置:</text>
       <text>坐北朝南</text>
     </view>
-    <view>
+    <view class="feature-item-wrapper">
       <text class="name">楼层:</text>
       <text>1</text>
     </view>
-    <view>
+    <view class="feature-item-wrapper">
       <text class="name">电梯:</text>
       <text>有</text>
     </view>
-    <view>
+    <view class="feature-item-wrapper">
       <text class="name">年代:</text>
       <text>2007年建成</text>
     </view>
-    <view>
+    <view class="feature-item-wrapper">
       <text class="name">绿化:</text>
       <text>60%</text>
     </view>
@@ -36,7 +36,7 @@
 
 <style lang="scss" scoped>
   .feature-list-wrapper {
-    & > view {
+    & > .feature-item-wrapper {
       display: inline-block;
       width: 48%;
       margin-bottom: 10rpx;

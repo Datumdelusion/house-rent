@@ -40,7 +40,43 @@
             "path" : "pages/item/item",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "",
+                "navigationBarTitleText": "租房信息",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/exchange/exchange",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "交易列表",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/houses/houses",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "我的房源",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/order/order",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "订单列表",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/addhouse/addhouse",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "添加房屋",
                 "enablePullDownRefresh": false
             }
             

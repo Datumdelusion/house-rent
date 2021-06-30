@@ -1,5 +1,5 @@
 <template>
-  <view class="shoucang-wrapper">
+  <view class="exchange-wrapper">
     <view>
       <scroll-view scroll-y="true" style="height: 100vh;" @scrolltolower="getShoucang">
         <list-card v-for="item in dataList" :key="item.id"
@@ -9,9 +9,14 @@
           :head="item.head"
           :intro="item.intro"
           :price="item.price"
-          :shoucang="item.shoucang"
           :isShoucang="item.isShoucang"
-          @clickShoucang="clickShoucang(item)" />
+          :isBtn="true"
+          >
+            <template #btnGroup>
+              <button type="default" size="mini" style="margin-right: 10rpx;">同意</button>
+              <button type="default" size="mini" style="margin-right: 10rpx;">拒绝</button>
+            </template>
+          </list-card>
       </scroll-view>
     </view>
   </view>
@@ -102,9 +107,6 @@ export default {
   methods: {
     getShoucang() {
       console.log("到底啦！");
-    },
-    clickShoucang(item) {
-      item.isShoucang = !item.isShoucang;
     }
   },
   watch: {},
