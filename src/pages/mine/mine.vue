@@ -6,7 +6,11 @@
     </view>
     <uni-card>
       <uni-list :border="false">
-
+        <uni-list-item clickable link to="../order/order" :ellipsis="1" title="历史交易">
+          <template #header>
+            <text class="iconfont icon-zhangdan-xianxing" style="font-size: 36rpx; margin-right: 10rpx"/>
+          </template>
+        </uni-list-item>
         <uni-list-item clickable link to="../exchange/exchange" :ellipsis="1" title="我的交易">
           <template #header>
             <text class="iconfont icon-caiwu-xianxing" style="font-size: 36rpx; margin-right: 10rpx"/>

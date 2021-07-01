@@ -83,7 +83,7 @@ export default {
         if (res.authSetting['scope.address']) {
           that.getUserAddress();
         }
-        wxuni.getLocation({
+        uni.getLocation({
           type: 'gcj02',
           success: ({ longitude, latitude }) => {},
           fail: (error) => {}

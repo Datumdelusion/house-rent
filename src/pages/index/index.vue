@@ -78,23 +78,23 @@
     onLoad() {
       // #ifdef MP-WEIXIN || APP-PLUS
       /* 获取用户定位信息 */
-      let _this = this;
-      uni.showLoading({
-        title: "获取地理位置中"
-      })
-      amapPlugin.getRegeo({
-        success(res) {
-          console.log('返回的信息位置', res);
-          if(res.length) {
-            _this.location = res[0].regeocodeData.addressComponent.district;
-            uni.hideLoading();
-          }
-        },
-        fail(err) {
-          console.log(err);
-           uni.hideLoading();
-        }
-      })
+      // let _this = this;
+      // uni.showLoading({
+      //   title: "获取地理位置中"
+      // })
+      // amapPlugin.getRegeo({
+      //   success(res) {
+      //     console.log('返回的信息位置', res);
+      //     if(res.length) {
+      //       _this.location = res[0].regeocodeData.addressComponent.district;
+      //       uni.hideLoading();
+      //     }
+      //   },
+      //   fail(err) {
+      //     console.log(err);
+      //      uni.hideLoading();
+      //   }
+      // })
       // #endif
     },
     methods: {

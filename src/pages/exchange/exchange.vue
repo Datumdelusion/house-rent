@@ -13,8 +13,8 @@
           :isBtn="true"
           >
             <template #btnGroup>
-              <button type="default" size="mini" style="margin-right: 10rpx;">同意</button>
-              <button type="default" size="mini" style="margin-right: 10rpx;">拒绝</button>
+              <button type="default" size="mini" style="background-color: #07C160; color: #fff;margin-right: 10rpx;">同意</button>
+              <button type="default" size="mini" style="background-color: #EE0A24; color: #fff;margin-right: 10rpx;">拒绝</button>
             </template>
           </list-card>
       </scroll-view>
@@ -33,7 +33,6 @@ export default {
           {
             id: 1,
             thumb: "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
-            tag: "热卖",
             head: "草桥欣园三区 央产证 南北通透 有钥匙 看两居室",
             intro: "2室1厅|75.1㎡|草桥欣园三区",
             price: "6500万",
@@ -43,7 +42,6 @@ export default {
           {
             id: 2,
             thumb: "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
-            tag: "HOT",
             head: "草桥欣园一区 央产证 南北通透 有钥匙 看两居室",
             intro: "3室2厅|76.1㎡|草桥欣园一区",
             price: "6500万",

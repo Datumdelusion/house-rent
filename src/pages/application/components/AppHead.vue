@@ -19,20 +19,8 @@
         <button type="default" @click="confirmArea">确定</button>
       </view>
     </uni-popup>
-    <!-- 类型 -->
-    <uni-popup class="myPopup" ref="popup1" type="top">
-      <view class="myPopup-content">
-        <picker-view class="picker-view" :indicator-style="indicatorStyle" :value="searchCondition.type"
-          @change="typeChange">
-          <picker-view-column>
-            <view class="item" v-for="(item, index) in chooseList.types" :key="index"> {{ item }} </view>
-          </picker-view-column>
-        </picker-view>
-        <button type="default" @click="confirmType">确定</button>
-      </view>
-    </uni-popup>
     <!-- 租金 -->
-    <uni-popup class="myPopup" ref="popup2" type="top">
+    <uni-popup class="myPopup" ref="popup1" type="top">
       <view class="myPopup-content">
         <picker-view class="picker-view" :indicator-style="indicatorStyle" :value="searchCondition.money"
           @change="moneyChange">
@@ -44,7 +32,7 @@
       </view>
     </uni-popup>
     <!-- 房源特色 -->
-    <uni-popup class="myPopup" ref="popup3" type="top">
+    <uni-popup class="myPopup" ref="popup2" type="top">
       <view class="myPopup-content">
         <view style="height: 80rpx;"></view>
         <view class="myChoice" style="height: 300rpx;">
@@ -66,22 +54,19 @@
     data() {
       return {
         currentOption: -1,
-        options: ["区域", "类型", "租金", "房源特色"],
+        options: ["区域", "租金", "房源特色"],
         searchCondition: {
           area: [0],
-          type: [0],
           money: [0],
           features: []
         },
         tempCondition: {
           area: [0],
-          type: [0],
           money: [0],
           features: []
         },
         chooseList: {
           areas: [1,11,12,13,14,15,16,17,18,19],
-          types: ["不限", "合租", "整租", "自如寓", "豪宅"],
           money: ["不限", "1500元以下", "1500-2500元", "2500-4000元", "4000-6000元", "6000-8000元"],
           features: [
             {id: 1, isSelect: false, name: "健身房"},
@@ -109,13 +94,6 @@
       confirmArea() { // 确认更换"区域"
         this.searchCondition.area = this.tempCondition.area;
         this.$refs.popup0.close();
-      },
-      typeChange(e) { // 滚动更改“类型”
-        this.tempCondition.type = e.detail.value;
-      },
-      confirmType() { // 确认更改"类型"
-         this.searchCondition.type = this.tempCondition.type;
-         this.$refs.popup1.close();
       },
       moneyChange(e) { // 滚动更改"租金"
         this.tempCondition.money = e.detail.value;

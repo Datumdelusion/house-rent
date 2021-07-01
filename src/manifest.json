@@ -78,7 +78,11 @@
             "urlCheck" : false
         },
         "usingComponents" : true,
-        "permission" : {}
+        "permission" : {
+          "scope.userLocation": {
+            "desc": "您的位置将用于绑定您的区域"
+          }
+        }
     },
     "mp-alipay" : {
         "usingComponents" : true
