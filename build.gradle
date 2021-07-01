@@ -32,6 +32,8 @@ dependencies {
     implementation group: 'com.github.xiaoymin', name: 'knife4j-spring-boot-starter', version: '3.0.2'
     //mybatis-plus
     implementation group: 'com.baomidou', name: 'mybatis-plus-boot-starter', version: '3.4.3.1'
+    //微信小程序
+    implementation group: 'com.github.binarywang', name: 'weixin-java-miniapp', version: '4.1.0'
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
     compileOnly 'org.projectlombok:lombok'

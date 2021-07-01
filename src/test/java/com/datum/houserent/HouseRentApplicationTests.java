@@ -1,5 +1,8 @@
 package com.datum.houserent;
 
+import cn.binarywang.wx.miniapp.api.WxMaService;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.datum.houserent.config.WxMaConfig;
 import com.datum.houserent.dao.mapper.LocationMapper;
 import com.datum.houserent.model.entity.House;
 import com.datum.houserent.model.entity.Location;
@@ -7,6 +10,7 @@ import com.datum.houserent.model.entity.enums.OrientationType;
 import com.datum.houserent.service.HouseService;
 import com.datum.houserent.service.LocationService;
 import com.datum.houserent.utils.JsonUtil;
+import me.chanjar.weixin.common.service.WxService;
 import net.sourceforge.pinyin4j.PinyinHelper;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -21,6 +25,7 @@ import java.io.*;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @SpringBootTest
@@ -30,6 +35,55 @@ class HouseRentApplicationTests {
     LocationService locationService;
     @Autowired
     HouseService houseService;
+
+    @Autowired
+    WxMaService wxMaService;
+
+    @Autowired
+    WxMaConfig wxMaConfig;
+    @Test
+    void wxminiapp() {
+        System.out.println(wxMaConfig.getAppid());
+
+    }
+
+    @Test
+    void setHouse() {
+        Random random = new Random();
+        List<House> list = houseService.list();
+
+        Map<Integer, Location> locations = locationService
+                .list(new LambdaQueryWrapper<Location>()
+                        .eq(Location::getPid, 5001))
+                .stream()
+                .collect(Collectors
+                        .toMap(Location::getId, Function.identity()));
+        List<House> houseUpdates = new ArrayList<>();
+        for (House house : list) {
+            Integer locationThree = house.getLocationThree();
+            Location location = locations.get(locationThree);
+            House houseUpdate = new House();
+            houseUpdate.setId(house.getId());
+            if (random.nextBoolean()) {
+                houseUpdate.setLatitude(location.getLatitude() + testRandom());
+            } else {
+                houseUpdate.setLatitude(location.getLatitude() - testRandom());
+            }
+            if (random.nextBoolean()) {
+                houseUpdate.setLongitude(location.getLongitude() + testRandom());
+            } else {
+                houseUpdate.setLongitude(location.getLongitude() - testRandom());
+            }
+            houseUpdates.add(houseUpdate);
+        }
+        houseService.updateBatchById(houseUpdates);
+    }
+
+    @Test
+    double testRandom() {
+        Random random = new Random();
+        return ((double) random.nextInt(10000))/1000000;
+    }
 
     @Test
     void addHouse() throws IOException {

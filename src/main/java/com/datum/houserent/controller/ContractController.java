@@ -1,6 +1,7 @@
 package com.datum.houserent.controller;
 
 
+import com.datum.houserent.support.ResponsePack;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RestController;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2021-06-27
  */
 @RestController
-@RequestMapping("/contract")
+@ResponsePack
 public class ContractController {
 
 }

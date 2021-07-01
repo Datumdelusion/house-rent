@@ -1,18 +1,15 @@
-package com.datum.houserent.model.vo;
+package com.datum.houserent.model.vo.house;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.datum.houserent.model.core.OutputConverter;
 import com.datum.houserent.model.entity.House;
-import com.datum.houserent.model.entity.enums.OrientationType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
-
-import java.time.LocalDate;
 
 /**
  * @author datum
@@ -42,11 +39,11 @@ public class HouseVO implements OutputConverter<HouseVO, House> {
     @ApiModelProperty(value = "（枚举）户型：三室一厅")
     private String style;
 
-    @ApiModelProperty(value = "纬度")
-    private Double latitude;
-
     @ApiModelProperty(value = "经度")
     private Double longitude;
+
+    @ApiModelProperty(value = "纬度")
+    private Double latitude;
 
     @ApiModelProperty(value = "月付价格")
     @TableField("money_month")

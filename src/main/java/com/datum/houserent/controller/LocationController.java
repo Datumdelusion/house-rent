@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.datum.houserent.model.entity.Location;
 import com.datum.houserent.model.vo.LocationVO;
 import com.datum.houserent.service.LocationService;
+import com.datum.houserent.support.ResponsePack;
 import com.datum.houserent.utils.BeanUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -27,6 +28,7 @@ import java.util.List;
  */
 @Api(tags = "地理信息-控制器")
 @RestController
+@ResponsePack
 public class LocationController {
 
     /**

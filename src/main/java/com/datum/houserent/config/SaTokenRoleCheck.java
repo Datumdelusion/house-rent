@@ -1,6 +1,9 @@
 package com.datum.houserent.config;
 
 import cn.dev33.satoken.stp.StpInterface;
+import com.datum.houserent.exception.BadRequestException;
+import com.datum.houserent.model.entity.User;
+import com.datum.houserent.service.UserService;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -12,6 +15,27 @@ import java.util.List;
  */
 @Component
 public class SaTokenRoleCheck implements StpInterface {
+
+    private final UserService userService;
+
+    public SaTokenRoleCheck(UserService userService) {
+        this.userService = userService;
+    }
+
+    private final List<String> user = new ArrayList<String>() {{
+            add("user");
+        }};
+    private final List<String> lessor = new ArrayList<String>() {{
+        add("lessor");
+    }};
+    private final List<String> userLessor = new ArrayList<String>() {{
+        add("user");
+        add("lessor");
+    }};
+    private final List<String> admin = new ArrayList<String>() {{
+        add("admin");
+    }};
+
     /**
      * 返回指定 LoginId 所拥有的权限码集合
      *
@@ -33,11 +57,19 @@ public class SaTokenRoleCheck implements StpInterface {
      */
     @Override
     public List<String> getRoleList(Object loginId, String loginType) {
-
-        //通过loginid查找usertype
-        //分配权限
-        List<String> list = new ArrayList<>();
-        list.add("admin");
-        return list;
+        Integer type = userService.getById(Integer.parseInt((String) loginId)).getUserType();
+        if (type == 0) {
+            return admin;
+        }
+        if (type == 1) {
+            return user;
+        }
+        if (type == 2) {
+            return lessor;
+        }
+        if (type == 3) {
+            return userLessor;
+        }
+        throw new BadRequestException("没有权限类型", "没有登录权限");
     }
 }

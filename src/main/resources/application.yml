@@ -13,7 +13,9 @@ mybatis-plus:
   type-enums-package: com.datum.houserent.model.entity.enums
 spring:
   profiles:
-    active: dev
+    active:
+    - dev
+    - miniapp
   jackson:
     serialization:
       FAIL_ON_EMPTY_BEANS: false
