@@ -16,6 +16,7 @@ spring:
     active:
     - dev
     - miniapp
+    - qiniu
   jackson:
     serialization:
       FAIL_ON_EMPTY_BEANS: false

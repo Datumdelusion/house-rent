@@ -48,9 +48,9 @@ public class LocationController {
 
         List<Location> locations;
         if (id != null) {
-            locations = locationService.list(new LambdaQueryWrapper<Location>().eq(Location::getPid, id));
+            locations = locationService.list(new LambdaQueryWrapper<Location>().eq(Location::getPid, id).orderByAsc(Location::getPinyin));
         } else {
-            locations = locationService.list(new LambdaQueryWrapper<Location>().eq(Location::getPid, NONE_PID));
+            locations = locationService.list(new LambdaQueryWrapper<Location>().eq(Location::getPid, NONE_PID).orderByAsc(Location::getPinyin));
         }
         return BeanUtil.convert(locations, LocationVO.class);
     }

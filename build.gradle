@@ -20,6 +20,8 @@ repositories {
 
 dependencies {
 
+    implementation 'com.qiniu:qiniu-java-sdk:7.7.0'
+    
     implementation group: 'org.jsoup', name: 'jsoup', version: '1.13.1'
 
     //拼音

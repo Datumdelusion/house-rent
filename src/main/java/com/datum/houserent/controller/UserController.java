@@ -10,6 +10,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.datum.houserent.exception.BadRequestException;
 import com.datum.houserent.model.entity.User;
 import com.datum.houserent.model.vo.token.Token;
+import com.datum.houserent.model.vo.user.LoginBody;
 import com.datum.houserent.model.vo.user.UserInfo;
 import com.datum.houserent.service.UserService;
 import com.datum.houserent.support.ResponsePack;
@@ -17,11 +18,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import me.chanjar.weixin.common.error.WxErrorException;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.util.DigestUtils;
+import org.springframework.web.bind.annotation.*;
 
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import javax.validation.Valid;
 
 /**
  * <p>
@@ -36,6 +36,8 @@ import org.springframework.web.bind.annotation.RestController;
 @ResponsePack
 public class UserController {
 
+    private final String SALT = "b58ec155a97f46878f120c41ed14f5d5";
+
     private final WxMaService wxMaService;
     private final UserService userService;
 
@@ -44,8 +46,8 @@ public class UserController {
         this.userService = userService;
     }
 
-    @RequestMapping(value = "/common/user/login", method = RequestMethod.POST)
-    @ApiOperation("使用微信code登录")
+    @RequestMapping(value = "/common/user/login", method = RequestMethod.GET)
+    @ApiOperation("（已弃用）使用微信code登录")
     public Token login(@ApiParam("code") @RequestParam String code) {
         User user;
         try {
@@ -61,7 +63,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/common/user/userInfo", method = RequestMethod.GET)
-    @ApiOperation("获取用户头像昵称信息")
+    @ApiOperation("（已弃用）获取用户头像昵称信息")
     public UserInfo getUserInfo() {
         Integer loginId = (Integer) StpUtil.getLoginId();
         User user = userService.getOne(new LambdaQueryWrapper<User>().eq(User::getId, loginId));
@@ -69,10 +71,26 @@ public class UserController {
         return new UserInfo();
     }
 
-    @RequestMapping(value = "/common/login", method = RequestMethod.POST)
+    @RequestMapping(value = "/common/login", method = RequestMethod.GET)
     @ApiOperation("测试登录")
     public Token testLogin(@RequestParam Integer loginId) {
         StpUtil.login(loginId);
+        return new Token(StpUtil.getTokenValue());
+    }
+
+    @ApiOperation("用户账号密码登录")
+    @RequestMapping(value = "/common/login", method = RequestMethod.POST)
+    public Token loginByPassword(@Valid @RequestBody LoginBody loginBody) {
+        String md5Password = DigestUtils.md5DigestAsHex((SALT + loginBody.getPassword()).getBytes());
+        User user = userService.getOne(new LambdaQueryWrapper<User>().eq(User::getName, loginBody.getName()).select(User::getId, User::getPassword));
+        if (user == null) {
+            throw new BadRequestException("用户不存在", "账号或者密码错误");
+        }
+        if (!md5Password.equals(user.getPassword())) {
+            throw new BadRequestException("密码错误", "账号或密码错误");
+        }
+        StpUtil.login(user.getId());
+
         return new Token(StpUtil.getTokenValue());
     }
 }

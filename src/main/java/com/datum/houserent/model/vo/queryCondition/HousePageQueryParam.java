@@ -1,6 +1,8 @@
-package com.datum.houserent.model.vo.core;
+package com.datum.houserent.model.vo.queryCondition;
 
 import com.datum.houserent.model.entity.House;
+import com.datum.houserent.model.vo.core.ConditionPageQueryParam;
+import com.datum.houserent.model.vo.core.QueryField;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -12,6 +14,9 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class HousePageQueryParam extends ConditionPageQueryParam<House> {
+
+    @ApiModelProperty("地理位置区类型名称")
+    private String locationName;
 
     @ApiModelProperty("地理位置id（区类型）")
     @QueryField("location_three")

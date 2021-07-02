@@ -1,9 +1,14 @@
 package com.datum.houserent.service.impl;
 
+import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.datum.houserent.exception.BadRequestException;
+import com.datum.houserent.exception.ServiceException;
 import com.datum.houserent.model.entity.House;
 import com.datum.houserent.dao.mapper.HouseMapper;
+import com.datum.houserent.model.entity.enums.HouseStatus;
 import com.datum.houserent.model.vo.house.HouseVO;
 import com.datum.houserent.model.vo.core.PageQueryDTO;
 import com.datum.houserent.service.HouseService;
@@ -81,5 +86,38 @@ public class HouseServiceImpl extends BaseServiceImpl<HouseMapper, House> implem
                 e.printStackTrace();
             }
         }
+    }
+
+    /**
+     * 改变房源的状态
+     * @param houseId 房源id
+     * @param houseStatus 房源状态
+     * @param lessor 房源主人id
+     */
+    @Override
+    public void changeHouseState(Integer houseId,Integer lessor, HouseStatus houseStatus) {
+        House house = getById(houseId);
+        if (!house.getLessor().equals(lessor)) {
+            throw new BadRequestException("非房源拥有者", "确认该房源属于当前账号？");
+        }
+        if (house.getStatus() == houseStatus) {
+            throw new BadRequestException("房源已是"+houseStatus+"状态", "已经是"+houseStatus+"状态了");
+        }
+        if (!update(new LambdaUpdateWrapper<House>()
+                .eq(House::getId, houseId)
+                .set(House::getStatus, houseStatus))) {
+            throw new ServiceException("保存房源状态失败", "服务器繁忙，稍后再试");
+        }
+    }
+
+    /**
+     * 用户访问了一个房源，房源热度+1
+     *
+     * @param houseId 房源id
+     */
+    @Override
+    public void somebodyVisited(Integer houseId) {
+        House hou = getById(houseId);
+        update(new LambdaUpdateWrapper<House>().eq(House::getId, houseId).set(House::getClout, hou.getClout() + 1));
     }
 }

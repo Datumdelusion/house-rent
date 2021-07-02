@@ -1,0 +1,5 @@
+qiniu:
+  accessKey: VeSK1SKx_t19sLgstpeO-kfO8EzHkHrXu6LfaZOV
+  secretKey: 5k_G2jcR441vnDc_mUQItJeaFqZOmvBU8Kb0QSUT
+  bucket: datum-houserent
+  url: http://qvmeb7fx0.hn-bkt.clouddn.com

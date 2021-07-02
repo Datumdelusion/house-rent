@@ -1,13 +1,12 @@
 package com.datum.houserent.model.vo.house;
 
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.datum.houserent.model.core.OutputConverter;
 import com.datum.houserent.model.entity.House;
-import com.datum.houserent.model.entity.User;
+import com.datum.houserent.model.entity.enums.HouseStatus;
 import com.datum.houserent.model.entity.enums.OrientationType;
-import com.datum.houserent.model.vo.user.Lessor;
+import com.datum.houserent.model.vo.user.UserVO;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -23,7 +22,7 @@ public class HouseDetailVO implements OutputConverter<HouseDetailVO, House> {
     private Integer id;
 
     @ApiModelProperty(value = "出租者")
-    private Lessor lessor;
+    private UserVO lessor;
 
     @ApiModelProperty(value = "房屋名称")
     private String name;
@@ -35,13 +34,13 @@ public class HouseDetailVO implements OutputConverter<HouseDetailVO, House> {
     private String[] pics;
 
     @ApiModelProperty(value = "一级区域")
-    private Integer locationOne;
+    private String locationOneName;
 
     @ApiModelProperty(value = "二级区域")
-    private Integer locationTwo;
+    private String locationTwoName;
 
     @ApiModelProperty(value = "三级区域")
-    private Integer locationThree;
+    private String locationThreeName;
 
     @ApiModelProperty(value = "小区名称")
     private String neighbourhood;
@@ -94,4 +93,9 @@ public class HouseDetailVO implements OutputConverter<HouseDetailVO, House> {
     @ApiModelProperty(value = "热度浏览量")
     private Integer clout;
 
+    @ApiModelProperty(value = "（bool）是否已出租")
+    private HouseStatus status;
+
+    @ApiModelProperty("是否收藏")
+    private Boolean star;
 }

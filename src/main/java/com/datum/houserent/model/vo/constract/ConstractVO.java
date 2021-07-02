@@ -1,41 +1,32 @@
-package com.datum.houserent.model.entity;
+package com.datum.houserent.model.vo.constract;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.datum.houserent.model.entity.base.BaseEntity;
-import io.swagger.annotations.ApiModel;
+import com.datum.houserent.model.core.OutputConverter;
+import com.datum.houserent.model.entity.Contract;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.experimental.Accessors;
 
 import java.time.LocalDate;
 
 /**
- * <p>
- * 
- * </p>
- *
  * @author datum
- * @since 2021-06-27
+ * @date 2021/7/2 22:18
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
-@Accessors(chain = true)
-@ApiModel(value = "Contract对象", description = "")
-public class Contract extends BaseEntity {
+public class ConstractVO implements OutputConverter<ConstractVO, Contract> {
 
-    private static final long serialVersionUID = 1L;
-
-    @TableId(value = "id", type = IdType.AUTO)
+    @ApiModelProperty("合约id")
     private Integer id;
 
-    @TableField("house_id")
+    @ApiModelProperty("房源id")
     private Integer houseId;
 
+    @ApiModelProperty("房源名称")
+    private String houseName;
+
     @ApiModelProperty(value = "租房者")
-    @TableField("user_id")
     private Integer userId;
 
     @ApiModelProperty(value = "出租者")
@@ -45,19 +36,15 @@ public class Contract extends BaseEntity {
     private LocalDate time;
 
     @ApiModelProperty(value = "价钱")
-    @TableField("rent_money")
     private Double rentMoney;
 
     @ApiModelProperty(value = "（bool）出租人确认")
-    @TableField("lessor_sign")
     private Boolean lessorSign;
 
     @ApiModelProperty(value = "（bool）租房人确认")
-    @TableField("user_sign")
     private Boolean userSign;
 
     @ApiModelProperty(value = "（bool）合约是否成功")
     private Boolean success;
-
 
 }

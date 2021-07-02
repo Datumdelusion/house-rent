@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.datum.houserent.model.core.OutputConverter;
 import com.datum.houserent.model.entity.House;
+import com.datum.houserent.model.entity.enums.HouseStatus;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -21,7 +22,7 @@ import lombok.experimental.Accessors;
 @ApiModel(value = "House对象", description = "")
 public class HouseVO implements OutputConverter<HouseVO, House> {
 
-    @TableId(value = "id", type = IdType.AUTO)
+    @ApiModelProperty("房源id")
     private Integer id;
 
     @ApiModelProperty(value = "房屋名称")
@@ -51,4 +52,7 @@ public class HouseVO implements OutputConverter<HouseVO, House> {
 
     @ApiModelProperty(value = "热度浏览量")
     private Integer clout;
+
+    @ApiModelProperty(value = "（bool）是否已出租")
+    private HouseStatus status;
 }
