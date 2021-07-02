@@ -53,7 +53,12 @@
             rules: [{required: true, errorMessage: '用户名不能为空'}]
           },
           password: {
-            rules: [{required: true, errorMessage: '密码不能为空'}]
+            rules: [{required: true, errorMessage: '密码不能为空'}, 
+            {
+                minLength: 6,
+                maxLength: 12,
+                message: '密码长度应在 6 到 12 个字符',
+            }]
           }
         },
         rule2: {
@@ -61,7 +66,12 @@
             rules: [{required: true, errorMessage: '用户名不能为空'}]
           },
           password: {
-            rules: [{required: true, errorMessage: '密码不能为空'}]
+            rules: [{required: true, errorMessage: '密码不能为空'}, 
+            {
+                minLength: 6,
+                maxLength: 12,
+                message: '密码长度应在 6 到 12 个字符',
+            }]
           },
           password2: {
             rules: [{required: true, errorMessage: '请再次输入密码'}]

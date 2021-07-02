@@ -17,6 +17,7 @@
               <button type="default" size="mini" style="background-color: #EE0A24; color: #fff;margin-right: 10rpx;">拒绝</button>
             </template>
           </list-card>
+          <van-empty v-if="dataList.length === 0" description="噢, 这里似乎空空如也..." />
       </scroll-view>
     </view>
   </view>

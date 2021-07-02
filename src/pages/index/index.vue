@@ -120,9 +120,13 @@
       hotSearch(hotspot) { // FIXME🧊🍺: 调用搜索函数
         this.textValue = hotspot;
         // 调用搜索函数...
+        this.onSearch();
       },
       onSearch() { // 点击搜索
-        console.log(this.textValue);
+        // console.log(this.textValue);
+        uni.navigateTo({
+          url: `/pages/search/search?textValue=${this.textValue}&location=${this.location}`
+        })
       },
       setMyCity(location) { // 设置城区名字
         this.location = location;

@@ -12,6 +12,7 @@
           :isShoucang="item.isShoucang"
           >
           </list-card>
+          <van-empty v-if="dataList.length === 0" description="噢, 这里似乎空空如也..." />
       </scroll-view>
     </view>
   </view>
