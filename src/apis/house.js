@@ -4,7 +4,7 @@ const baseUrl = '/houses';
 
 export function pageHouses(form) {
   return request({
-    url: `${baseUrl}`,
+    url: `/common${baseUrl}`,
     method: "get",
     params: form
   })
@@ -12,7 +12,7 @@ export function pageHouses(form) {
 
 export function getHouse(houseId) {
   return request({
-    url: `${baseUrl}/detail/${houseId}`,
+    url: `/common${baseUrl}/detail/${houseId}`,
     method: "get"
   })
 }

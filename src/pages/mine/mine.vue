@@ -2,7 +2,9 @@
   <view class="mine">
     <view class="mine-header" @click="turn2login">
       <image style="width: 130rpx; height: 130rpx; background-color: #eeeeee;border-radius: 50%;" src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"></image>
-      <text style="margin-left: 30rpx; color: #fff;height: 70rpx;">点击注册/登录</text>
+      <text style="margin-left: 30rpx; color: #fff;height: 70rpx;">
+        {{ title }}
+      </text>
     </view>
     <uni-card>
       <uni-list :border="false">
@@ -11,7 +13,12 @@
             <text class="iconfont icon-zhangdan-xianxing" style="font-size: 36rpx; margin-right: 10rpx"/>
           </template>
         </uni-list-item>
-        <uni-list-item clickable link to="../exchange/exchange" :ellipsis="1" title="我的交易">
+        <uni-list-item clickable link to="../contract/contract" :ellipsis="1" title="我的租房订单">
+          <template #header>
+            <text class="iconfont icon-btn_addhouse" style="font-size: 36rpx; margin-right: 10rpx"/>
+          </template>
+        </uni-list-item>
+        <uni-list-item clickable link to="../exchange/exchange" :ellipsis="1" title="我的房源交易">
           <template #header>
             <text class="iconfont icon-caiwu-xianxing" style="font-size: 36rpx; margin-right: 10rpx"/>
           </template>
@@ -28,7 +35,7 @@
         </uni-list-item>
       </uni-list>
     </uni-card>
-    <button type="default" class="mine-button" v-if="true">退出登录</button>
+    <button type="default" class="mine-button" v-if="isLogin">退出登录</button>
   </view>
 </template>
 
@@ -38,15 +45,18 @@ export default {
   components: {},
   data() {
     return {
-      
+      isLogin: uni.getStorageSync("isLogin") || false,
+      title: "点击注册/登录"
     }
   },
   computed: {},
   methods: {
     turn2login() { // 跳转到login页面
-      uni.navigateTo({
-        url: "../login/login"
-      })
+      if (!this.isLogin) {
+        uni.navigateTo({
+          url: "../login/login"
+        });
+      }
     }
   },
   watch: {},

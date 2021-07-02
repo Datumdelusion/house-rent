@@ -4,7 +4,7 @@ const baseUrl = "/location";
 
 export function getLocations() {
   return request({
-    url: `${baseUrl}`,
+    url: `/common${baseUrl}`,
     method: "get",
     params: {
       id: 5001

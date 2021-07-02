@@ -1,14 +1,10 @@
 <template>
-  <view class="houses-wrapper">
+  <view class="contract-wrapper">
     <view>
-      <scroll-view scroll-y="true" style="height: 100vh;" @scrolltolower="getShoucang">
+      <scroll-view scroll-y="true" style="height: 100vh;">
         <uni-swipe-action>
           <uni-swipe-action-item v-for="item in dataList" :key="item.id">
             <template #right>
-              <text style="background-color: #07C160;color:#fff;margin-bottom:8rpx;padding:0 20px;
-              display:inline-block;text-align:center;height:160rpx;line-height:160rpx;" @click="handleChange(item)">
-                修改
-              </text>
               <text style="background-color: #dd524d;color:#fff;margin-bottom:8rpx;padding:0 20px;
               display:inline-block;text-align:center;height:160rpx;line-height:160rpx;" @click="handleDelete(item)">
                 删除
@@ -22,16 +18,15 @@
               :head="item.head"
               :intro="item.intro"
               :price="item.price"
-              :shoucang="item.shoucang"
-              :isShoucang="item.isShoucang"
+              :isBtn="true"
               >
+                <template #btnGroup>
+                  <button type="primary" size="mini" @click.stop="handleConfirm">确认合约</button>
+                </template>
               </list-card>
           </uni-swipe-action-item>
         </uni-swipe-action>
       </scroll-view>
-    </view>
-    <view class="icon-plus-wrapper" @click="addhouse">
-      <text class="iconfont icon-jia" style="font-size: 50rpx;" />
     </view>
   </view>
 </template>
@@ -39,7 +34,7 @@
 <script>
 
 export default {
-  name: "shoucang",
+  name: "contract",
   components: {},
   data() {
     return {
@@ -50,8 +45,6 @@ export default {
             head: "草桥欣园一区 央产证 南北通透 有钥匙 看两居室",
             intro: "3室2厅|76.1㎡|草桥欣园一区",
             price: "6500万",
-            shoucang: false,
-            isShoucang: true
           }
         ]
     }
@@ -61,18 +54,11 @@ export default {
     getShoucang() { // 滚动到底部
       console.log("到底啦！");
     },
-    addhouse() { // 添加房屋
-      uni.navigateTo({
-        url: '../addhouse/addhouse'
-      });
+    handleConfirm() { // 添加房屋
+      console.log("1");
     },
     handleDelete(item) { // 点击删除按钮
       console.log("id: ", item.id);
-    },
-    handleChange(item) { // 点击修改按钮
-      uni.navigateTo({
-        url: `../addhouse/addhouse?id=${item.id}`
-      })
     }
   },
   watch: {},
@@ -100,17 +86,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-  .icon-plus-wrapper {
-    border-radius: 50%;
-    width: 80rpx;
-    height: 80rpx;
-    line-height: 80rpx;
-    background-color: rgb(0, 122, 255);
-    color: #fff;
-    text-align: center;
-    position: absolute;
-    bottom: 80rpx;
-    right: 20rpx;
-  }
-</style>
+<style></style>

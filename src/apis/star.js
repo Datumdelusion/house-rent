@@ -1,6 +1,6 @@
 import { request } from "./request.js";
 
-const baseUrl = "/star";
+const baseUrl = "/common/star";
 
 export function myStars() {
   return request({
@@ -11,7 +11,7 @@ export function myStars() {
 
 export function starIt(houseId) {
   return request({
-    url: `${baseUrl}/houseId`,
+    url: `${baseUrl}/${houseId}`,
     method: "put",
     data: {
       houseId
@@ -19,12 +19,22 @@ export function starIt(houseId) {
   })
 }
 
-export function cancelStar(houseId) {
+export function cancelStarByHouseId(houseId) {
   return request({
-    url: `${baseUrl}/houseId`,
+    url: `${baseUrl}/house/${houseId}`,
     method: "delete",
     data: {
       houseId
+    }
+  })
+}
+
+export function cancelStarByStarId(starId) {
+  return request({
+    url: `${baseUrl}/star/${starId}`,
+    method: "delete",
+    data: {
+      starId
     }
   })
 }

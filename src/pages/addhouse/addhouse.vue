@@ -82,12 +82,14 @@
 </template>
 
 <script>
-  const qiniu = require('qiniu-js');
+  const qiniu = require("../../utils/qiniuUploader.js");
+  import { getUploadToken } from "../../apis/upload.js";
 
   export default {
     name: "addHouse",
     data() {
       return {
+        url: "http://qvmeb7fx0.hn-bkt.clouddn.com",
         items: [{
             value: "icon-luyouqi",
             name: "路由器",
@@ -177,39 +179,23 @@
       submitForm() { // 提交按钮
         console.log("提交");
       },
-      randomLetters(count) { // 生成count个随机的小写字母
-        let str = "";
-        for (let i = 0; i < count; i++) {
-          const ranNum = Math.ceil(Math.random() * 25);
-          str += String.fromCharCode(65 + ranNum);
-        }
-        return str;
-      },
-      upload(file) { // 上传文件
-        // let token = await ?();
-        let key = this.randomLetters(10);
-        const observable = qiniu.upload(file, key, token)
-        observer = { // 配置上传相关函数
-          next(res) {
-            // ...
-          },
-          error(err) {
-            uni.showToast({
-              title: '上传失败'
-            });
-            console.log(err);
-          },
-          complete(res) {
-            // ...
-            console.log(res);
-          }
-        }
-        const subscription = observable.subscribe(observer) // 上传开始
+      upload: async function (file) { // 上传文件
+        console.log(file.file);
+        let result = await getUploadToken();
+        qiniu.upload(file.file.url, (res) => {
+          console.log(res);
+        }, (error) => {
+          console.log(error);
+        }, {
+          region: "SCN",
+          uptoken: result.data.uploadToken,
+          domain: this.url,
+          shouldUseQiniuFileName: true
+        })
       },
       afterRead(event) { // 上传文件
-        console.log(this.formData.pics);
         console.log(event.detail);
-        // this.upload(event.detail);
+        this.upload(event.detail);
       }
     }
   }

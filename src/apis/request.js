@@ -11,17 +11,18 @@ const UNAUTHORIZED = 401;
 export function request(config) {
   // 1.创建axios实例
   const instance = axios.create({
-    baseURL: process.env.NODE_ENV == 'development' ? "http://192.168.2.8:8888/house-rent-api/common" : "https://www.baidu.com",
+    baseURL: process.env.NODE_ENV == 'development' ? "http://192.168.2.8:8888/house-rent-api" : "https://www.baidu.com",
     timeout: 5000,
   });
 
   // 2.1请求拦截
   instance.interceptors.request.use((config) => {
     // 获取token, 若token存在则在请求头上添加token  
-    const token = uni.getStorageSync('satoken');
-    if (token) {
-      config.headers.satoken = token;
-    }
+    // const token = uni.getStorageSync('satoken');
+    // if (token) {
+    //   config.headers.satoken = token;
+    // }
+    config.headers.satoken = "f12c232d-6518-464f-805e-b854bc3656e6";
     return config;
   },
     (err) => {

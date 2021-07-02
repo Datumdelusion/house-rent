@@ -2,7 +2,7 @@
   <view class="item-condition-wrapper">
     <view class="condition-title">房屋条件</view>
     <!-- 图标以及相关名字 -->
-    <view style="display: flex; align-items: center;">
+    <view style="display: flex; justify-content: flex-start; align-items: center;flex-wrap: wrap;">
       <view class="condition-item" v-for="item in iconList">
         <text class="iconfont" :class="item"/>
         <view>{{ items[item] }}</view>
@@ -15,15 +15,6 @@
   export default {
     name: "ItemCondition",
     props: ["usp"],
-    mounted() {
-      this.$nextTick(function(){
-        console.log(this.$props);
-        console.log(this.usp);
-        // this.iconList = this.$props.usp.filter(v => {
-        //   return this.items.hasOwnProperty(v);
-        // });
-      })
-    },
     data() {
       return {
         items: {
@@ -37,6 +28,13 @@
             "icon-yigui": "衣柜"
         },
         iconList: []
+      }
+    },
+    watch: {
+      usp(val, oldVal) {
+        this.iconList = this.$props.usp.filter(v => {
+          return this.items.hasOwnProperty(v);
+        });
       }
     }
   }
@@ -53,6 +51,7 @@
   .condition-item {
     text-align: center;
     margin-right: 30rpx;
+    margin-bottom: 20rpx;
     .iconfont {
       font-size: 60rpx;
     }

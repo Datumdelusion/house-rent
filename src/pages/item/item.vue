@@ -27,6 +27,7 @@
   import ItemLocation from "./components/ItemLocation.nvue";
   
   import { getHouse } from "../../apis/house.js";
+  import { starIt, cancelStarByHouseId } from "../../apis/star.js";
   
 	export default {
     name: "item",
@@ -38,7 +39,10 @@
       ItemLocation
     },
     onLoad(option) {
-      console.log("id: ", option.id);
+      // console.log("id: ", option.id);
+      uni.showLoading({
+        title: "拼命加载中……"
+      })
       // 获取房屋具体信息
       getHouse(option.id).then(res => {
         /* 数据处理 */
@@ -56,8 +60,10 @@
           width: '20',
           height: '30'
         })
+        uni.hideLoading();
       }).catch(err => {
         console.log(err);
+        uni.hideLoading();
       })
     },
 		data() {
@@ -68,7 +74,24 @@
 		},
     methods: {
       starUpdate() { // 收藏更改
-        
+        // console.log(this.info.id);
+        if (this.info.star) {
+          cancelStarByHouseId(this.info.id).then(res => {
+            if (res.data) {
+              this.info.star = false;
+            }
+          }).catch(err => {
+            console.log(err);
+          })
+        } else {
+          starIt(this.info.id).then(res => {
+            if (res.data) {
+              this.info.star = true;
+            }
+          }).catch(err => {
+            console.log(err);
+          })
+        }
       }
     }
 	}

@@ -93,6 +93,15 @@
             }
             
         }
+        ,{
+            "path" : "pages/contract/contract",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "租房合约",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

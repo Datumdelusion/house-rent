@@ -4,7 +4,7 @@ const baseUrl = "/login";
 
 export function loginTest() {
   return request({
-    url: `${baseUrl}`,
+    url: `/common${baseUrl}`,
     method: "get",
     params: {
       loginId: "1"
@@ -14,7 +14,7 @@ export function loginTest() {
 
 export function login(data) {
   return request({
-    url: `${baseUrl}`,
+    url: `/common${baseUrl}`,
     method: "post",
     data: data
   })
