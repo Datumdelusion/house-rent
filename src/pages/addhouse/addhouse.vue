@@ -1,10 +1,18 @@
 <template>
   <view class="addhouse-wrapper">
     <uni-forms ref="form" :rules="rules">
-      <uni-forms-item label="所在地址" name="city">
-        <uni-list :border="false" label="所在位置">
-          <uni-list-item link to="../location/location"></uni-list-item>
-        </uni-list>
+      <uni-forms-item label="预览图" name="pics">
+        <!-- <uni-file-picker v-model="formData.pics" title="最多选择五张图片" 
+        limit="5" file-mediatype="image" :auto-upload="false" ref="files">
+        </uni-file-picker>
+        <button type="default" size="mini" style="background-color: #007AFF; margin-top: 10rpx; color: #fff;"
+        @click="click2upload">上传</button> -->
+        <van-uploader accept="image" :file-list="formData.pics" :max-count="3" @afterRead="afterRead">
+        </van-uploader>
+      </uni-forms-item>
+      <uni-forms-item label="所在区域" name="region">
+        <uni-easyinput type="text" v-model="formData.region" placeholder="请选择区域" />
+        <view @click="choosePlace">冲冲冲</view>
       </uni-forms-item>
       <uni-forms-item label="具体地址" name="address">
         <uni-easyinput type="text" v-model="formData.address" placeholder="请输入具体地址" />
@@ -50,7 +58,7 @@
       <uni-forms-item label="房屋条件" name="condition">
         <checkbox-group @change="conditionChange">
           <label v-for="item in items" :key="item.value" style="display: block; margin-bottom: 10rpx;">
-              <checkbox :value="item.value" :checked="item.checked" /> <text>{{item.name}}</text>
+            <checkbox :value="item.value" :checked="item.checked" /> <text>{{item.name}}</text>
           </label>
         </checkbox-group>
       </uni-forms-item>
@@ -66,8 +74,7 @@
     name: "addHouse",
     data() {
       return {
-        items: [
-          {
+        items: [{
             value: "icon-luyouqi",
             name: "路由器",
             checked: false
@@ -109,6 +116,8 @@
           }
         ],
         formData: {
+          pics: [],
+          region: "",
           address: "",
           name: "",
           intro: "",
@@ -123,20 +132,16 @@
         },
         rules: {
           address: {
-            rules: [
-              {
-                required: true,
-                errorMessage: "请输入地址"
-              }
-            ]
+            rules: [{
+              required: true,
+              errorMessage: "请输入地址"
+            }]
           },
           name: {
-            rules: [
-              {
-                required: true,
-                errorMessage: "请输入姓名"
-              }
-            ]
+            rules: [{
+              required: true,
+              errorMessage: "请输入姓名"
+            }]
           },
         }
       }
@@ -150,6 +155,45 @@
       },
       submitForm() { // 提交按钮
         console.log("提交");
+      },
+      choosePlace() {
+        uni.navigateTo({
+          url: "../location/location"
+        })
+      },
+      randomLetters(count) { // 生成count个随机的小写字母
+        let str = "";
+        for (let i = 0; i < count; i++) {
+          const ranNum = Math.ceil(Math.random() * 25);
+          str += String.fromCharCode(65 + ranNum);
+        }
+        return str;
+      },
+      upload(file) { // 上传文件
+        // let token = await ?();
+        let key = this.randomLetters(10);
+        const observable = qiniu.upload(file, key, token)
+        observer = { // 配置上传相关函数
+          next(res) {
+            // ...
+          },
+          error(err) {
+            uni.showToast({
+              title: '上传失败'
+            });
+            console.log(err);
+          },
+          complete(res) {
+            // ...
+            console.log(res);
+          }
+        }
+        const subscription = observable.subscribe(observer) // 上传开始
+      },
+      afterRead(event) { // 上传文件
+        console.log(this.formData.pics);
+        console.log(event.detail);
+        // this.upload(event.detail);
       }
     }
   }

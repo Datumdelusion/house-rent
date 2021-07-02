@@ -73,7 +73,7 @@ export default {
   // 页面周期函数--监听页面加载
   onLoad() {
     let that = this;
-    wx.getSetting({
+    uni.getSetting({
       success(res) {
         // if (res.authSetting['scope.userLocation']) {
         //   that.geUsertLocation();

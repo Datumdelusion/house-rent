@@ -3,7 +3,7 @@
     <view>
       <scroll-view scroll-y="true" style="height: 100vh;" @scrolltolower="getShoucang">
         <uni-swipe-action>
-          <uni-swipe-action-item v-for="item in dataList" :key="item.id" @click="bindClick">
+          <uni-swipe-action-item v-for="item in dataList" :key="item.id">
             <template #right>
               <text style="background-color: #07C160;color:#fff;margin-bottom:8rpx;padding:0 20px;
               display:inline-block;text-align:center;height:160rpx;line-height:160rpx;" @click="handleChange(item)">

@@ -77,7 +77,10 @@
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "添加房屋",
-                "enablePullDownRefresh": false
+                "enablePullDownRefresh": false,
+                "usingComponents": {
+                  "van-uploader": "/wxcomponents/vant/dist/uploader/index"
+                }
             }
             
         }
