@@ -59,10 +59,16 @@ export default {
     getUserAddress() { // 用户选择地址
       uni.chooseLocation({
         success: ({ name, address, longitude, latitude }) => {
-          console.log(name, longitude, latitude);
+          let pages = getCurrentPages();
+          let prevPage = pages[pages.length - 2]; // 上一个页面
+          prevPage.$vm.setRegion(address);
+          uni.navigateBack();
+          console.log(name, address, longitude, latitude);
           this.address = address;
         },
         fail: (error) => {
+          uni.navigateBack();
+          console.log("omg");
           console.log(error);
         }
       })

@@ -11,16 +11,16 @@ const UNAUTHORIZED = 401;
 export function request(config) {
   // 1.创建axios实例
   const instance = axios.create({
-    baseURL: process.env.NODE_ENV == 'development' ? "192.168.2.8:8888" : "https://www.baidu.com",
+    baseURL: process.env.NODE_ENV == 'development' ? "http://192.168.2.8:8888/house-rent-api/common" : "https://www.baidu.com",
     timeout: 5000,
   });
 
   // 2.1请求拦截
   instance.interceptors.request.use((config) => {
     // 获取token, 若token存在则在请求头上添加token  
-    const token = uni.getStorageSync('token');
+    const token = uni.getStorageSync('satoken');
     if (token) {
-      config.headers.accessToken = token;
+      config.headers.satoken = token;
     }
     return config;
   },
@@ -31,13 +31,13 @@ export function request(config) {
 
   // 2.2响应拦截
   instance.interceptors.response.use((res) => {
-      // // res.response中得到 "错误代号" 和 "信息”
+      // res.response中得到 "错误代号" 和 "信息”
       // const code  = res.data.code;
-      // // console.log(res);
-      // // 若出错, 尤其是401错误时, 即表示token过期
+      // console.log(res);
+      // 若出错, 尤其是401错误时, 即表示token过期
       // if (+code === UNAUTHORIZED) {
       //   alert("登录过期, 请重新登录");
-      //   // router.replace({path: '/'});
+      //   uni.switchTab()
       // }
       return res.data;
     }, (err) => {
@@ -63,7 +63,7 @@ axios.defaults.adapter = function (config) {
     var buildURL = require('axios/lib/helpers/buildURL');
     uni.request({
       method: config.method.toUpperCase(),
-      url: buildURL(config.url, config.params, config.paramsSerializer),
+      url: config.baseURL + buildURL(config.url, config.params, config.paramsSerializer),
       header: config.headers,
       data: config.data,
       dataType: config.dataType,

@@ -10,10 +10,10 @@
     <!-- 区域 -->
     <uni-popup class="myPopup" ref="popup0" type="top">
       <view class="myPopup-content">
-        <picker-view class="picker-view" :indicator-style="indicatorStyle" :value="searchCondition.area"
-          @change="areaChange">
+        <picker-view class="picker-view" :indicator-style="indicatorStyle" :value="searchCondition.locationName"
+          @change="locationNameChange">
           <picker-view-column>
-            <view class="item" v-for="(item, index) in chooseList.areas" :key="index"> {{ item }} </view>
+            <view class="item" v-for="(item, index) in chooseList.locationName" :key="index"> {{ item }} </view>
           </picker-view-column>
         </picker-view>
         <button type="default" @click="confirmArea">确定</button>
@@ -22,17 +22,17 @@
     <!-- 租金 -->
     <uni-popup class="myPopup" ref="popup1" type="top">
       <view class="myPopup-content">
-        <picker-view class="picker-view" :indicator-style="indicatorStyle" :value="searchCondition.money"
-          @change="moneyChange">
+        <picker-view class="picker-view" :indicator-style="indicatorStyle" :value="searchCondition.upperPrice"
+          @change="upperPriceChange">
           <picker-view-column>
-            <view class="item" v-for="(item, index) in chooseList.money" :key="index"> {{ item }} </view>
+            <view class="item" v-for="(item, index) in chooseList.upperPrice" :key="index"> {{ item }} </view>
           </picker-view-column>
         </picker-view>
         <button type="default" @click="confirmMoney">确定</button>
       </view>
     </uni-popup>
     <!-- 房源特色 -->
-    <uni-popup class="myPopup" ref="popup2" type="top">
+    <!-- <uni-popup class="myPopup" ref="popup2" type="top">
       <view class="myPopup-content">
         <view style="height: 80rpx;"></view>
         <view class="myChoice" style="height: 300rpx;">
@@ -42,7 +42,7 @@
         </view>
         <button type="default" @click="confirmFeatures">确定</button>
       </view>
-    </uni-popup>
+    </uni-popup> -->
   </view>
 </template>
 
@@ -54,27 +54,29 @@
     data() {
       return {
         currentOption: -1,
-        options: ["区域", "租金", "房源特色"],
+        options: ["区域", "租金"],
         searchCondition: {
-          area: [0],
-          money: [0],
-          features: []
+          locationName: [],
+          upperPrice: []
+          // features: []
         },
         tempCondition: {
-          area: [0],
-          money: [0],
-          features: []
+          locationName: [],
+          upperPrice: []
+          // features: []
         },
         chooseList: {
-          areas: [1,11,12,13,14,15,16,17,18,19],
-          money: ["不限", "1500元以下", "1500-2500元", "2500-4000元", "4000-6000元", "6000-8000元"],
-          features: [
-            {id: 1, isSelect: false, name: "健身房"},
-            {id: 2, isSelect: false, name: "智能生活"},
-            {id: 3, isSelect: false, name: "新小区"},
-            {id: 4, isSelect: false, name: "有电梯"},
-            {id: 5, isSelect: false, name: "离地铁近"}
-          ]
+          locationName: ["不限", "北碚区", "巴南区", "璧山区","大渡口区", "大足区","涪陵区","合川区", "江北区", "江津区", 
+          "九龙坡区","开州区","梁平区","南岸区", "南川区","黔江区", "綦江区","荣昌区","沙坪坝区",
+          "潼南区","武隆区", "万州区","渝北区", "永川区", "渝中区","长寿区"],
+          upperPrice: ["不限", "1500元以下", "2500元以下", "4000元以下", "6000元以下", "8000元以下"]
+          // features: [
+          //   {id: 1, isSelect: false, name: "健身房"},
+          //   {id: 2, isSelect: false, name: "智能生活"},
+          //   {id: 3, isSelect: false, name: "新小区"},
+          //   {id: 4, isSelect: false, name: "有电梯"},
+          //   {id: 5, isSelect: false, name: "离地铁近"}
+          // ]
         },
         indicatorStyle: 'height: 40px;border:1px solid #ccc;'
       }
@@ -88,37 +90,42 @@
         this.currentOption = index;
         this.$refs. [`popup${index}`].open();
       },
-      areaChange(e) { // 滚动更改“区域”
-        this.tempCondition.area = e.detail.value;
+      locationNameChange(e) { // 滚动更改“区域”
+        this.tempCondition.locationName = e.detail.value;
       },
       confirmArea() { // 确认更换"区域"
-        this.searchCondition.area = this.tempCondition.area;
+        let ln = this.tempCondition.locationName;
+        this.searchCondition.locationName = ln === 0 ? undefined : this.chooseList.locationName[ln];
         this.$refs.popup0.close();
+        this.$emit('refresh', this.searchCondition);
       },
-      moneyChange(e) { // 滚动更改"租金"
-        this.tempCondition.money = e.detail.value;
+      upperPriceChange(e) { // 滚动更改"租金"
+        this.tempCondition.upperPrice = e.detail.value[0];
+        console.log(e.detail.value);
       },
       confirmMoney(e) { // 滚动更改"租金"
-         this.searchCondition.money = this.tempCondition.money;
-         this.$refs.popup2.close();
-      },
-      chooseFeature(item) {
-        item.isSelect = !item.isSelect;
-        if (item.isSelect) { // 若是选中
-          this.tempCondition.features.push(item);
-        } else { // 若是取消选中
-          this.tempCondition.features = this.tempCondition.features.filter(v => {
-            if (v.id === item.id) {
-              return false;
-            }
-            return true;
-          });
-        }
-      },
-      confirmFeatures() { // 确认更改"房源特色"
-        this.searchCondition.features = this.tempCondition.features;
-        this.$refs.popup3.close();
+        let up = this.tempCondition.upperPrice;
+        this.searchCondition.upperPrice = up === 0 ? undefined : parseInt(this.chooseList.upperPrice[up]);
+        this.$refs.popup1.close();
+        this.$emit('refresh', this.searchCondition);
       }
+      // chooseFeature(item) {
+      //   item.isSelect = !item.isSelect;
+      //   if (item.isSelect) { // 若是选中
+      //     this.tempCondition.features.push(item);
+      //   } else { // 若是取消选中
+      //     this.tempCondition.features = this.tempCondition.features.filter(v => {
+      //       if (v.id === item.id) {
+      //         return false;
+      //       }
+      //       return true;
+      //     });
+      //   }
+      // },
+      // confirmFeatures() { // 确认更改"房源特色"
+      //   this.searchCondition.features = this.tempCondition.features;
+      //   this.$refs.popup3.close();
+      // },
     }
   };
 </script>

@@ -10,9 +10,23 @@
         <van-uploader accept="image" :file-list="formData.pics" :max-count="3" @afterRead="afterRead">
         </van-uploader>
       </uni-forms-item>
-      <uni-forms-item label="所在区域" name="region">
-        <uni-easyinput type="text" v-model="formData.region" placeholder="请选择区域" />
-        <view @click="choosePlace">冲冲冲</view>
+      <uni-forms-item label="所在区域" name="location">
+        <uni-list :border="false">
+            <uni-list-item link to="../city/city" :rightText="formData.location?'':'请选择'">
+              <template #body>
+                <text> {{ formData.location }} </text>
+              </template>
+            </uni-list-item>
+        </uni-list>
+      </uni-forms-item>
+      <uni-forms-item label="所在位置" name="region">
+        <uni-list :border="false">
+            <uni-list-item link to="../location/location" :rightText="formData.region?'':'请选择'">
+              <template #body>
+                <text> {{ formData.region }} </text>
+              </template>
+            </uni-list-item>
+        </uni-list>
       </uni-forms-item>
       <uni-forms-item label="具体地址" name="address">
         <uni-easyinput type="text" v-model="formData.address" placeholder="请输入具体地址" />
@@ -21,7 +35,7 @@
         <uni-easyinput type="text" v-model="formData.name" placeholder="请输入房名" />
       </uni-forms-item>
       <uni-forms-item label="房屋简介" name="intro">
-        <uni-easyinput type="text" v-model="formData.intro" placeholder="请输入简介" />
+        <uni-easyinput type="textarea"  v-model="formData.intro" placeholder="请输入简介" :clearable="false" />
       </uni-forms-item>
       <uni-forms-item label="价格" name="price">
         <uni-easyinput type="text" v-model="formData.price" placeholder="请输入价格" />
@@ -116,6 +130,7 @@
           }
         ],
         formData: {
+          location: "",
           pics: [],
           region: "",
           address: "",
@@ -153,13 +168,14 @@
       conditionChange(value) { // 修改房屋条件
         console.log(value);
       },
+      setMyCity(location) { // 设置城区名字
+        this.formData.location = location;
+      },
+      setRegion(region) {
+        this.formData.region = region;
+      },
       submitForm() { // 提交按钮
         console.log("提交");
-      },
-      choosePlace() {
-        uni.navigateTo({
-          url: "../location/location"
-        })
       },
       randomLetters(count) { // 生成count个随机的小写字母
         let str = "";

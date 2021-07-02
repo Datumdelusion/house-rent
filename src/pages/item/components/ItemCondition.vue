@@ -3,25 +3,10 @@
     <view class="condition-title">房屋条件</view>
     <!-- 图标以及相关名字 -->
     <view style="display: flex; align-items: center;">
-      <view class="condition-item">
-        <text class="iconfont icon-youyanji"/>
-        <view>油烟机</view>
+      <view class="condition-item" v-for="item in iconList">
+        <text class="iconfont" :class="item"/>
+        <view>{{ items[item] }}</view>
       </view>
-      
-      <view class="condition-item">
-        <text class="iconfont icon-bingxiang"/>
-        <view>冰箱</view>
-      </view>
-      
-      <view class="condition-item">
-        <text class="iconfont icon-xiyiji"/>
-        <view>洗衣机</view>
-      </view>
-      
-      <view class="condition-item">
-        <text class="iconfont icon-luyouqi"/>
-        <view>路由器</view>
-      </view>      
     </view>
   </view>
 </template>
@@ -29,9 +14,29 @@
 <script>
   export default {
     name: "ItemCondition",
+    props: ["usp"],
+    mounted() {
+      this.$nextTick(function(){
+        console.log(this.$props);
+        console.log(this.usp);
+        // this.iconList = this.$props.usp.filter(v => {
+        //   return this.items.hasOwnProperty(v);
+        // });
+      })
+    },
     data() {
       return {
-        
+        items: {
+            "icon-luyouqi": "路由器",
+            "icon-bingxiang": "冰箱",
+            "icon-kongtiao": "空调",
+            "icon-youyanji": "油烟机",
+            "icon-xiyiji": "洗衣机",
+            "icon-chuang": "床",
+            "icon-weibolu": "微波炉",
+            "icon-yigui": "衣柜"
+        },
+        iconList: []
       }
     }
   }

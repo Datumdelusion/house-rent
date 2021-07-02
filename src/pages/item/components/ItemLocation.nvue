@@ -8,20 +8,36 @@
 <script>
   export default {
     name: "ItemLocation",
+    props: {
+      latitude: {
+        type: Number,
+        default() {
+          return 26.00098;
+        }
+      },
+      longitude: {
+        type: Number,
+        default() {
+          return 114.56463;
+        }
+      },
+      markers: {
+        type: Array,
+        dedfault() {
+          return [
+            {
+              id: 1,
+              latitude: 26.00098,
+              longitude: 114.56463,
+              width: '20',
+              height: '30'
+            }
+          ];
+        }
+      }
+    },
     data() {
       return {
-        longitude: 114.56463,
-        latitude: 26.000098,
-        markers: [
-        	{
-        		id: 1,
-        		latitude: 26.000098,
-        		longitude: 114.56463,
-        		title: '测试marker',
-        		width: '20',
-        		height: '30'
-        	}
-        ]
       }
     }
   }

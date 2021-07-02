@@ -1,7 +1,10 @@
 <template>
   <view class="house-owner-wrapper">
-    <view class="owner-title">转租须知</view>
-    <view class="owner-info">
+    <view class="owner-title">房屋简介</view>
+    <view>
+      {{ brief.length > 0 ? brief : '暂无简介...' }}
+    </view>
+    <!-- <view class="owner-info">
       预计
       <text style="color: red">2021-07-15</text>
       可入住，需签约至
@@ -20,13 +23,20 @@
         <text style="color: #999;">转租者:</text>
       </view>
       小鹿姐姐
-    </view>
+    </view> -->
   </view>
 </template>
 
 <script>
   export default {
-    
+    props: {
+      brief: {
+        type: String,
+        default() {
+          return "";
+        }
+      }
+    }
   }
 </script>
 

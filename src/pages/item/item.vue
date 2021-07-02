@@ -1,19 +1,16 @@
 <template>
 	<view class="item-wrapper">
 		<swiper style="height: 320rpx;" :indicator-dots="true" indicator-active-color="#fff" indicator-color="#999" :autoplay="true" :circular="true" :interval="3000" :duration="1000">
-		  <swiper-item>
-		    <image style="width:100%; height:100%" src="https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg" />
-		  </swiper-item>
-		  <swiper-item>
-		    <image style="width:100%; height:100%" src="https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg" />
+		  <swiper-item v-for="item in info.pics">
+		    <image style="width:100%; height:100%" :src="item" />
 		  </swiper-item>
 		</swiper>
     <view class="item-detail-wrapper">
-      <main-intro />
-      <features-list />
-      <house-owner />
-      <item-condition />
-      <item-location />
+      <main-intro @starUpdate="starUpdate" :name="info.name" :moneyMonth="info.moneyMonth" :area="info.area" :orientation="info.orientation" :style="info.style" :star="info.star"/>
+      <features-list :greenArea="info.greenArea" :elevator="info.elevator" :detailLocation="info.detailLocation" :storey="info.storey" :years="info.years"/>
+      <house-owner :brief="info.brief"/>
+      <item-condition :usp="info.usp"/>
+      <item-location :latitude="info.latitude" :longitude="info.longitude" :markers="markers"/>
     </view>
     <view class="tabbar-button-group">
       <button type="default" v-if="true">想要</button>
@@ -29,6 +26,8 @@
   import ItemCondition from "./components/ItemCondition.vue";
   import ItemLocation from "./components/ItemLocation.nvue";
   
+  import { getHouse } from "../../apis/house.js";
+  
 	export default {
     name: "item",
     components: {
@@ -40,12 +39,38 @@
     },
     onLoad(option) {
       console.log("id: ", option.id);
+      // 获取房屋具体信息
+      getHouse(option.id).then(res => {
+        /* 数据处理 */
+        let data = res.data;
+        if (data.pics.length > 5) {
+          data.pics = data.pics.slice(0, 5);
+        };
+        this.info = data;
+        // 处理markers
+        this.markers = [];
+        this.markers.push({
+          id: 1,
+          latitude: this.info.latitude,
+          longitude: this.info.longitude,
+          width: '20',
+          height: '30'
+        })
+      }).catch(err => {
+        console.log(err);
+      })
     },
 		data() {
 			return {
-				
+				info: {},
+        markers: []
 			};
-		}
+		},
+    methods: {
+      starUpdate() { // 收藏更改
+        
+      }
+    }
 	}
 </script>
 

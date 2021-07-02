@@ -1,21 +1,21 @@
 <template>
   <view class="intro-wrapper">
-    <view style="font-size: 40rpx; font-weight: 700;">观塘云鼎观塘云鼎观塘云鼎观塘云鼎观塘云鼎观塘云鼎</view>
+    <view style="font-size: 40rpx; font-weight: 700;">{{ name }}</view>
     <view style="font-size: 36rpx; color: #f40;">
-      ￥4630/月
-      <text class="mylove-icon iconfont" :class=" isShoucang ? 'icon-xihuan' : 'icon-xihuan-xianxing' "  @click="isShoucang = !isShoucang"/>
+      {{ `￥${moneyMonth}/月` }}
+      <text class="mylove-icon iconfont" :class=" star ? 'icon-xihuan' : 'icon-xihuan-xianxing' "  @click="starUpdate"/>
     </view>
     <view class="main-introduction-wrapper">
       <view class="intro-item">
-        <view class="price">20.5㎡</view>
+        <view class="price">{{  area + "㎡" }}</view>
         <view class="remark">使用面积</view>
       </view>
       <view class="intro-item">
-        <view class="direction">朝南</view>
+        <view class="direction">{{ direction[orientation] }}</view>
         <view class="remark">朝向</view>
       </view>
       <view class="intro-item">
-        <view class="size">三室一厅</view>
+        <view class="size">{{ style }}</view>
         <view class="remark">户型</view>
       </view>
     </view>
@@ -26,9 +26,20 @@
   
   export default {
     name: "MainIntro",
+    props: ["name", "moneyMonth", "area", "orientation", "style", "star"],
     data() {
       return {
-        isShoucang: false
+        direction: {
+          "EAST": "东",
+          "NORTH": "北",
+          "SOUTH": "南",
+          "WEST": "西"
+        }
+      }
+    },
+    methods: {
+      starUpdate() {
+        this.$emit("starUpdate");
       }
     }
   }

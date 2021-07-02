@@ -5,7 +5,7 @@
         <text>{{location}}</text>
         <uni-icons size="20" type="arrowdown"></uni-icons>
       </view>
-      <uni-easyinput placeholder="输入搜索" prefixIcon="search" v-model="textValue" confirmType="search" @confirm="onSearch"/>
+      <uni-easyinput placeholder="输入搜索" prefixIcon="search" v-model="textValue" confirmType="search" @confirm="onSearch" :clearable="false"/>
       <view slot="right" @click="onSearch">搜索</view>
     </uni-nav-bar>
 
@@ -19,10 +19,13 @@
     
     <swiper style="height: 320rpx;" :indicator-dots="true" indicator-active-color="#fff" indicator-color="#999" :autoplay="true" :circular="true" :interval="3000" :duration="1000">
       <swiper-item>
-        <image style="width:100%; height:100%" src="https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg" />
+        <image @click="turn2detail(9)" style="width:100%; height:100%" src="https://imgpro.ziroom.com/f1f50727-70a6-4251-95df-e08e18e42b01_627.jpg_C_400_300_Q100.jpg" />
       </swiper-item>
       <swiper-item>
-        <image style="width:100%; height:100%" src="https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg" />
+        <image @click="turn2detail(16)" style="width:100%; height:100%" src="https://imgpro.ziroom.com/e50701ce-507f-4a98-aedc-30a9be6ad6db_895.jpg_C_400_300_Q100.jpg" />
+      </swiper-item>
+      <swiper-item>
+        <image @click="turn2detail(22)" style="width:100%; height:100%" src="https://imgpro.ziroom.com/ab915113-6442-4da7-b872-b77609cb8bc5_718.jpg_C_400_300_Q100.jpg" />
       </swiper-item>
     </swiper>
     
@@ -30,15 +33,14 @@
     
     <list-card v-for="item in dataList" :key="item.id"
       :no="item.id"
-      :thumb="item.thumb"
-      :tag="item.tag"
-      :head="item.head"
-      :intro="item.intro"
-      :price="item.price"
+      :thumb="item.head"
+      :head="item.name"
+      :intro="item.style+'|'+item.area+'㎡|'+item.neighbourhood"
+      :price="item.moneyMonth"
       :shoucang="item.shoucang"
-      :isShoucang="item.isShoucang"
        />
-    <view class="lookMore" @tap="turn2Application">
+     <van-empty v-if="dataList.length === 0" image="search" description="找到了一片荒漠" />
+    <view class="lookMore" @tap="turn2Application" v-if="dataList.length">
       点击查看更多
       <text class="iconfont icon-shenglve"></text>
     </view>
@@ -49,6 +51,8 @@
 
 <script>
   import { amapPlugin } from '../../utils/importMap.js';
+  // import { loginTest } from "../../apis/login.js";
+  import { pageHouses } from "../../apis/house.js";
 
   export default {
     name: "Home",
@@ -61,40 +65,45 @@
           "海特花园小区",
           "新起点嘉园"
         ],
-        dataList: [
-          {
-            id: 1,
-            thumb: "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
-            tag: "热卖",
-            head: "草桥欣园三区 央产证 南北通透 有钥匙 看两居室",
-            intro: "2室1厅|75.1㎡|草桥欣园三区",
-            price: "6500万",
-            isShoucang: true
-          }
-        ],
+        dataList: [],
         location: "紫禁城"
       }
     },
     onLoad() {
+      // loginTest().then(res => {
+      //   uni.setStorageSync("satoken", res.data.saToken);
+      //   uni.setStorageSync("loginState", true);
+      //   const metoken = uni.getStorageSync("satoken");
+      // }).catch(err => {
+      //   console.log(err);
+      // });
+      
       // #ifdef MP-WEIXIN || APP-PLUS
       /* 获取用户定位信息 */
-      // let _this = this;
-      // uni.showLoading({
-      //   title: "获取地理位置中"
-      // })
-      // amapPlugin.getRegeo({
-      //   success(res) {
-      //     console.log('返回的信息位置', res);
-      //     if(res.length) {
-      //       _this.location = res[0].regeocodeData.addressComponent.district;
-      //       uni.hideLoading();
-      //     }
-      //   },
-      //   fail(err) {
-      //     console.log(err);
-      //      uni.hideLoading();
-      //   }
-      // })
+      let _this = this;
+      uni.showLoading({
+        title: "获取地理位置中"
+      })
+      amapPlugin.getRegeo({
+        success(res) {
+          console.log('返回的信息位置', res);
+          if(res.length) {
+            _this.location = res[0].regeocodeData.addressComponent.district;
+            uni.hideLoading();
+            // 获取房屋信息
+            pageHouses({current: 1, locationName:_this.location, size: 5}).then(res => {
+              _this.dataList = [];
+              _this.dataList = res.data.records;
+            }).catch(err => {
+              console.log(err);
+            })
+          }
+        },
+        fail(err) {
+          console.log(err);
+           uni.hideLoading();
+        }
+      })
       // #endif
     },
     methods: {
@@ -117,6 +126,16 @@
       },
       setMyCity(location) { // 设置城区名字
         this.location = location;
+        let that = this;
+        pageHouses({current: 1, locationName: location, size: 5}).then(res => {
+          that.dataList = [];
+          that.dataList = res.data.records;
+        })
+      },
+      turn2detail(id) {
+        uni.navigateTo({
+          url: `../item/item?id=${id}`
+        })
       }
     }
   }

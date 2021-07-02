@@ -12,35 +12,27 @@
 </template>
 
 <script>
+import { getLocations } from "../../apis/dictionary.js";
 
 export default {
   data() {
     return {
       dataList: [
-        {letter: "A", data: ["A1城市", "A2城市", "A3城市", "A4城市", "A5城市", "A6城市"]},
-        {letter: "B", data: ["B1城市", "B2城市", "B3城市", "B4城市", "B5城市", "B6城市"]},
-        {letter: "C", data: ["C1城市", "C2城市", "C3城市", "C4城市", "C5城市", "C6城市"]},
-        {letter: "D", data: ["D1城市", "D2城市", "D3城市", "D4城市", "D5城市", "D6城市"]},
-        {letter: "E", data: ["E1城市", "E2城市", "E3城市", "E4城市", "E5城市", "E6城市"]},
-        {letter: "F", data: ["F1城市", "F2城市", "F3城市", "F4城市", "F5城市", "F6城市"]},
-        {letter: "G", data: ["G1城市", "G2城市", "G3城市", "G4城市", "G5城市", "G6城市"]},
-        {letter: "H", data: ["H1城市", "H2城市", "H3城市", "H4城市", "H5城市", "H6城市"]},
-        {letter: "I", data: ["I1城市", "I2城市", "I3城市", "I4城市", "I5城市", "I6城市"]},
-        {letter: "J", data: ["J1城市", "J2城市", "J3城市", "J4城市", "J5城市", "J6城市"]},
-        {letter: "K", data: ["K1城市", "K2城市", "K3城市", "K4城市", "K5城市", "K6城市"]},
-        {letter: "L", data: ["L1城市", "L2城市", "L3城市", "L4城市", "L5城市", "L6城市"]},
-        {letter: "M", data: ["M1城市", "M2城市", "M3城市", "M4城市", "M5城市", "M6城市"]},
-        {letter: "N", data: ["N1城市", "N2城市", "N3城市", "N4城市", "N5城市", "N6城市"]},
-        {letter: "O", data: ["O1城市", "O2城市", "O3城市", "O4城市", "O5城市", "O6城市"]},
-        {letter: "P", data: ["P1城市", "P2城市", "P3城市", "P4城市", "P5城市", "P6城市"]},
-        {letter: "Q", data: ["Q1城市", "Q2城市", "Q3城市", "Q4城市", "Q5城市", "Q6城市"]},
-        {letter: "R", data: ["R1城市", "R2城市", "R3城市", "R4城市", "R5城市", "R6城市"]},
-        {letter: "S", data: ["S1城市", "S2城市", "S3城市", "S4城市", "S5城市", "S6城市"]},
-        {letter: "T", data: ["T1城市", "T2城市", "T3城市", "T4城市", "T5城市", "T6城市"]},
-        {letter: "U", data: ["U1城市", "U2城市", "U3城市", "U4城市", "U5城市", "U6城市"]},
-        {letter: "V", data: ["V1城市", "V2城市", "V3城市", "V4城市", "V5城市", "V6城市"]},
-        {letter: "W", data: ["W1城市", "W2城市", "W3城市", "W4城市", "W5城市", "W6城市"]},
-        {letter: "X", data: ["X1城市", "X2城市", "X3城市", "X4城市", "X5城市", "X6城市"]}
+        {letter: "B", data: ["北碚区", "巴南区", "璧山区"]},
+        {letter: "D", data: ["大渡口区", "大足区"]},
+        {letter: "F", data: ["涪陵区"]},
+        {letter: "H", data: ["合川区"]},
+        {letter: "J", data: ["江北区", "江津区", "九龙坡区"]},
+        {letter: "K", data: ["开州区"]},
+        {letter: "L", data: ["梁平区"]},
+        {letter: "N", data: ["南岸区", "南川区"]},
+        {letter: "Q", data: ["黔江区", "綦江区"]},
+        {letter: "R", data: ["荣昌区"]},
+        {letter: "S", data: ["沙坪坝区"]},
+        {letter: "T", data: ["潼南区"]},
+        {letter: "W", data: ["武隆区", "万州区"]},
+        {letter: "Y", data: ["渝北区", "永川区", "渝中区"]},
+        {letter: "Z", data: ["长寿区"]}
       ],
       value: "",
       msg: "",
@@ -51,7 +43,6 @@ export default {
   computed: {},
   methods: {
     onSearch(value) { // TODO:搜索
-      console.log(value);
       uni.showLoading({
         title: "搜索ing..."
       });
@@ -80,7 +71,6 @@ export default {
       let prevPage = pages[pages.length - 2]; // 上一个页面
       if (msg.item) {
         // {"item": {"key":"A", "name": "A2城市", "itemIndex": 1, "checked": false}, "select":[]}
-        // console.log(msg.item.name);
         prevPage.$vm.setMyCity(msg.item.name);
         uni.navigateBack();
       } else {
@@ -93,7 +83,16 @@ export default {
   watch: {},
 
   // 页面周期函数--监听页面加载
-  onLoad() {},
+  onLoad() {
+    getLocations().then(res => { // 获取城区并监听
+      let data = res.data || [];
+      for(let i of data) {
+        // console.log(i);
+      }
+    }).catch(err => {
+      console.log(err);
+    })
+  },
   // 页面周期函数--监听页面初次渲染完成
   onReady() {},
   // 页面周期函数--监听页面显示(not-nvue)

@@ -1,6 +1,6 @@
 <template>
   <view class="mine">
-    <view class="mine-header">
+    <view class="mine-header" @click="turn2login">
       <image style="width: 130rpx; height: 130rpx; background-color: #eeeeee;border-radius: 50%;" src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"></image>
       <text style="margin-left: 30rpx; color: #fff;height: 70rpx;">点击注册/登录</text>
     </view>
@@ -43,6 +43,11 @@ export default {
   },
   computed: {},
   methods: {
+    turn2login() { // 跳转到login页面
+      uni.navigateTo({
+        url: "../login/login"
+      })
+    }
   },
   watch: {},
 

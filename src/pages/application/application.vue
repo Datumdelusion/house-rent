@@ -1,18 +1,16 @@
 <template>
   <view class="application-wrapper">
-    <app-head />
+    <app-head @refresh="refresh"/>
     <view style="margin-top: 78rpx;">
-      <scroll-view scroll-y="true" style="height: 93vh;" @scrolltolower="getCard">
+      <scroll-view scroll-y="true" style="height: 93vh;" @scrolltolower="pullHouses">
         <list-card v-for="item in dataList" :key="item.id"
           :no="item.id"
-          :thumb="item.thumb"
-          :tag="item.tag"
-          :head="item.head"
-          :intro="item.intro"
-          :price="item.price"
-          :shoucang="item.shoucang"
-          :isShoucang="item.isShoucang"
-          @clickShoucang="clickShoucang(item)" />
+          :thumb="item.head"
+          :head="item.name"
+          :intro="item.style+'|'+item.area+'㎡|'+item.neighbourhood"
+          :price="item.moneyMonth"
+        />
+        <van-empty v-if="dataList.length === 0" image="search" description="找到了一片荒漠" />
       </scroll-view>
     </view>
   </view>
@@ -20,6 +18,7 @@
 
 <script>
   import AppHead from "./components/AppHead.vue";
+  import { pageHouses } from "../../apis/house.js";
 
   export default {
     components: {
@@ -27,78 +26,11 @@
     },
     data() {
       return {
-        dataList: [
-          {
-            id: 1,
-            thumb: "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
-            tag: "热卖",
-            head: "草桥欣园三区 央产证 南北通透 有钥匙 看两居室",
-            intro: "2室1厅|75.1㎡|草桥欣园三区",
-            price: "6500万",
-            shoucang: true,
-            isShoucang: false
-          },
-          {
-            id: 2,
-            thumb: "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
-            tag: "HOT",
-            head: "草桥欣园一区 央产证 南北通透 有钥匙 看两居室",
-            intro: "3室2厅|76.1㎡|草桥欣园一区",
-            price: "6500万",
-            shoucang: true,
-            isShoucang: false
-          },
-          {
-            id: 3,
-            thumb: "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
-            tag: "SALE",
-            head: "草桥欣园二区 央产证 南北通透 有钥匙 看两居室",
-            intro: "5室4厅|77.1㎡|草桥欣园二区",
-            price: "6500万",
-            shoucang: true,
-            isShoucang: false
-          },
-          {
-            id: 4,
-            thumb: "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
-            tag: "SALE",
-            head: "草桥欣园二区 央产证 南北通透 有钥匙 看两居室",
-            intro: "5室4厅|77.1㎡|草桥欣园二区",
-            price: "6500万",
-            shoucang: true,
-            isShoucang: false
-          },
-          {
-            id: 5,
-            thumb: "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
-            tag: "SALE",
-            head: "草桥欣园二区 央产证 南北通透 有钥匙 看两居室",
-            intro: "5室4厅|77.1㎡|草桥欣园二区",
-            price: "6500万",
-            shoucang: true,
-            isShoucang: false
-          },
-          {
-            id: 6,
-            thumb: "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
-            tag: "SALE",
-            head: "草桥欣园二区 央产证 南北通透 有钥匙 看两居室",
-            intro: "5室4厅|77.1㎡|草桥欣园二区",
-            price: "6500万",
-            shoucang: true,
-            isShoucang: false
-          },
-          {
-            id: 7,
-            thumb: "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
-            tag: "SALE",
-            head: "草桥欣园二区 央产证 南北通透 有钥匙 看两居室",
-            intro: "5室4厅|77.1㎡|草桥欣园二区",
-            price: "6500万",
-            shoucang: true,
-            isShoucang: false
-          }
-        ]
+        params: {
+          current: 1,
+          size: 7
+        },
+        dataList: []
       }
     },
     computed: {},
@@ -115,12 +47,34 @@
       },
       getCard() { // 滚动到底部拉取更多
         console.log("到底啦！");
+      },
+      refresh(searchCondition) {
+        this.params.total = undefined;
+        this.params.current = 1;
+        this.params.locationName = searchCondition.locationName;
+        this.params.upperPrice = searchCondition.upperPrice;
+        this.dataList = [];
+        this.pullHouses();
+      },
+      pullHouses() {
+        if (!this.params.total || this.params.total > this.dataList.length) {
+          pageHouses(this.params).then(res => {
+            let records = res.data.records || [];
+            this.dataList.push(...records);
+            this.params.total = res.data.total;
+            this.params.current ++;
+          }).catch(err => {
+            console.log(err);
+          })
+        }
       }
     },
     watch: {},
 
     // 页面周期函数--监听页面加载
-    onLoad() {},
+    onLoad() {
+      this.pullHouses();
+    },
     // 页面周期函数--监听页面初次渲染完成
     onReady() {},
     // 页面周期函数--监听页面显示(not-nvue)

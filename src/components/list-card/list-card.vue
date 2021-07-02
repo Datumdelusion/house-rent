@@ -20,7 +20,8 @@
       </slot>
         <view class="list-card-price">
           <text>￥</text>
-          <text style="color: #f40; font-size: 1.2rem;">{{ price }}</text>
+          <text style="color: #f40; font-size: 1.2rem;">{{ parseInt(price)+ "." }}</text>
+          <text style="color: #f40; font-size: 1rem;">{{ Math.round(price*100)%100 }}</text>
         </view>
         <view v-if="shoucang">
           <text class="love-icon iconfont" :class="isShoucang ? 'icon-xihuan' : 'icon-xihuan-xianxing'" @click.stop="clickShoucang(isShoucang)"></text>

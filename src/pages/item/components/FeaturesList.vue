@@ -1,24 +1,24 @@
 <template>
   <view class="feature-list-wrapper">
-    <view class="feature-item-wrapper" style="display: block">
+    <view class="feature-item-wrapper" style="display: block;width: 100%;">
       <text class="name">位置:</text>
-      <text>坐北朝南</text>
+      <text>{{ detailLocation }}</text>
     </view>
     <view class="feature-item-wrapper">
       <text class="name">楼层:</text>
-      <text>1</text>
+      <text>{{ storey }}</text>
     </view>
     <view class="feature-item-wrapper">
       <text class="name">电梯:</text>
-      <text>有</text>
+      <text>{{ elevator ? '有' : '无' }}</text>
     </view>
     <view class="feature-item-wrapper">
       <text class="name">年代:</text>
-      <text>2007年建成</text>
+      <text>{{ `${years}年建成` }}</text>
     </view>
     <view class="feature-item-wrapper">
       <text class="name">绿化:</text>
-      <text>60%</text>
+      <text>{{ parseInt(greenArea*100) + "%" }}</text>
     </view>
   </view>
 </template>
@@ -26,11 +26,7 @@
 <script>
   export default {
     name: "FeaturesList",
-    data() {
-      return {
-        
-      }
-    }
+    props: ["greenArea", "elevator", "detailLocation", "storey", "years"]
   }
 </script>
 
