@@ -10,9 +10,11 @@ import com.datum.houserent.exception.ServiceException;
 import com.datum.houserent.model.entity.Contract;
 import com.datum.houserent.model.entity.House;
 import com.datum.houserent.model.entity.Intention;
+import com.datum.houserent.model.entity.User;
 import com.datum.houserent.model.entity.enums.ContractStatus;
 import com.datum.houserent.model.entity.enums.HouseStatus;
 import com.datum.houserent.model.vo.constract.ConstractVO;
+import com.datum.houserent.model.vo.user.UserVO;
 import com.datum.houserent.service.ContractService;
 import com.datum.houserent.service.HouseService;
 import com.datum.houserent.service.IntentionService;
@@ -29,6 +31,7 @@ import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -107,6 +110,9 @@ public class ContractController {
         if (contract == null) {
             throw new BadRequestException("合约id不存在", "合约已经不存在了");
         }
+        if (!contract.getUserId().equals(StpUtil.getLoginIdAsInt())) {
+            throw new BadRequestException("合约不属于当前操作者", "请操作自己的合约");
+        }
         House house = houseService.getById(contract.getHouseId());
         if (contract.getSuccess() != null && contract.getSuccess()) {
             throw new BadRequestException("合约已经生效了", "该合约已签约，请不要重复操作");
@@ -174,7 +180,7 @@ public class ContractController {
 
         LambdaQueryWrapper<Contract> queryWrapper = null;
         if (wrapper != null) {
-            queryWrapper = new LambdaQueryWrapper<Contract>().eq(Contract::getLessor, lessor).eq(Contract::getSuccess, wrapper?1:0);
+            queryWrapper = new LambdaQueryWrapper<Contract>().eq(Contract::getLessor, lessor).eq(Contract::getSuccess, wrapper ? 1 : 0);
         } else {
             queryWrapper = new LambdaQueryWrapper<Contract>().eq(Contract::getLessor, lessor).isNull(Contract::getSuccess);
         }
@@ -204,6 +210,9 @@ public class ContractController {
         Contract contract = contractService.getById(contractId);
         if (contract == null) {
             throw new BadRequestException("合约id不存在", "合约已经走丢了");
+        }
+        if (!contract.getLessor().equals(StpUtil.getLoginIdAsInt())) {
+            throw new BadRequestException("合约不属于当前操作者", "请操作自己的合约");
         }
         if (contract.getSuccess() != null && contract.getSuccess()) {
             throw new BadRequestException("合约已经签了", "合约已签，不要重复操作");
@@ -242,6 +251,72 @@ public class ContractController {
         }
         return true;
 
+    }
+
+    @ApiOperation("卖家拒绝合约")
+    @SaCheckRole(value = {"admin", "lessor"}, mode = SaMode.OR)
+    @RequestMapping(value = "/lessor/contract/reject/{contractId:\\d+}", method = RequestMethod.PUT)
+    public boolean lessorRejectContract(@ApiParam("合约id") @PathVariable Integer contractId) {
+
+        Contract contract = contractService.getById(contractId);
+
+        if (contract == null) {
+            throw new BadRequestException("合约id不存在", "合约已经走丢了");
+        }
+        if (!contract.getLessor().equals(StpUtil.getLoginIdAsInt())) {
+            throw new BadRequestException("合约不属于当前操作者", "请操作自己的合约");
+        }
+        if (contract.getSuccess() != null) {
+            throw new BadRequestException("合约" + (contract.getSuccess() ? "已生效" : "已失败"), "合约" + (contract.getSuccess() ? "已生效" : "已失败"));
+        }
+        Contract con = new Contract();
+        con.setId(contractId);
+        con.setLessorSign(false);
+        con.setSuccess(false);
+        return contractService.updateById(con);
+    }
+
+    @ApiOperation("买拒绝合约")
+    @SaCheckRole(value = {"admin", "lessor"}, mode = SaMode.OR)
+    @RequestMapping(value = "/user/contract/reject/{contractId:\\d+}", method = RequestMethod.PUT)
+    public boolean userRejectContract(@ApiParam("合约id") @PathVariable Integer contractId) {
+
+        Contract contract = contractService.getById(contractId);
+
+        if (contract == null) {
+            throw new BadRequestException("合约id不存在", "合约已经走丢了");
+        }
+        if (!contract.getUserId().equals(StpUtil.getLoginIdAsInt())) {
+            throw new BadRequestException("合约不属于当前操作者", "请操作自己的合约");
+        }
+        if (contract.getSuccess() != null) {
+            throw new BadRequestException("合约" + (contract.getSuccess() ? "已生效" : "已失败"), "合约" + (contract.getSuccess() ? "已生效" : "已失败"));
+        }
+        Contract con = new Contract();
+        con.setId(contractId);
+        con.setUserSign(false);
+        con.setSuccess(false);
+        return contractService.updateById(con);
+    }
+
+    @ApiOperation("卖家在合约列表通过用户id获得用户姓名电话")
+    @SaCheckRole(value = {"admin", "lessor"}, mode = SaMode.OR)
+    @RequestMapping(value = "/lessor/contract/userInfo/{userId:\\d+}", method = RequestMethod.GET)
+    public UserVO getUserInfo(@ApiParam("用户id")@PathVariable Integer userId) {
+
+        List<Contract> contracts = contractService.list(new LambdaQueryWrapper<Contract>().eq(Contract::getLessor, StpUtil.getLoginIdAsInt()));
+        if (contracts.isEmpty()) {
+            throw new BadRequestException("当前用户id不属于出租者合约中的用户", "该用户不是你的客户");
+        }
+        Set<Integer> userIds = contracts.stream().map(Contract::getUserId).collect(Collectors.toSet());
+        if (!userIds.contains(userId)) {
+            throw new BadRequestException("当前用户id不属于出租者合约中的用户", "该用户不是你的客户");
+        }
+        User user = userService.getById(userId);
+        if (user == null) {
+            throw new BadRequestException("当前用户id信息丢失", "用户信息丢失了");
+        }
+        return BeanUtil.convert(user, UserVO.class);
     }
 }
 
