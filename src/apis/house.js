@@ -49,3 +49,13 @@ export function addHouse(form) {
     data: form
   })
 }
+
+export function shift2shelf(houseId) {
+  return request({
+    url: `/lessor/house/onShelf/${houseId}`,
+    method: "put",
+    data: {
+      houseId
+    }
+  })
+}

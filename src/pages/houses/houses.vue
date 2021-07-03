@@ -72,11 +72,16 @@ export default {
       })
     },
     refreshPage() { // 刷新页面
+      uni.showLoading({
+        title: "奋力加载中……"
+      });
       myHouses().then(res => {
         this.dataList = [];
         this.dataList = res.data;
+        uni.hideLoading();  
       }).catch(err => {
         console.log(err);
+        uni.hideLoading();
       })
     }
   },
