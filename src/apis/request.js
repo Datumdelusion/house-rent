@@ -22,7 +22,7 @@ export function request(config) {
     // if (token) {
     //   config.headers.satoken = token;
     // }
-    config.headers.satoken = "f12c232d-6518-464f-805e-b854bc3656e6";
+    config.headers.satoken = "f79afcc3-c888-42f9-959e-d09063e4f9a5";
     return config;
   },
     (err) => {

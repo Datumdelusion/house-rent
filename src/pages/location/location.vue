@@ -61,7 +61,8 @@ export default {
         success: ({ name, address, longitude, latitude }) => {
           let pages = getCurrentPages();
           let prevPage = pages[pages.length - 2]; // 上一个页面
-          prevPage.$vm.setRegion(address);
+          // prevPage.$vm.setRegion(address);
+          prevPage.$vm.setLocalPosition(longitude, latitude);
           uni.navigateBack();
           console.log(name, address, longitude, latitude);
           this.address = address;

@@ -13,11 +13,10 @@
             <list-card
               style="width: 100%;"
               :no="item.id"
-              :thumb="item.thumb"
-              :tag="item.tag"
-              :head="item.head"
-              :intro="item.intro"
-              :price="item.price"
+              :thumb="item.head"
+              :head="item.name"
+              :intro="item.style+'|'+item.area+'㎡|'+item.neighbourhood"
+              :price="item.moneyMonth"
               :isBtn="true"
               >
                 <template #btnGroup>

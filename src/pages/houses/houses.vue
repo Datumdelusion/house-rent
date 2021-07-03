@@ -17,13 +17,10 @@
             <list-card
               style="width: 100%;"
               :no="item.id"
-              :thumb="item.thumb"
-              :tag="item.tag"
-              :head="item.head"
-              :intro="item.intro"
-              :price="item.price"
-              :shoucang="item.shoucang"
-              :isShoucang="item.isShoucang"
+              :thumb="item.head"
+              :head="item.name"
+              :intro="item.style+'|'+item.area+'㎡|'+item.neighbourhood"
+              :price="item.moneyMonth"
               >
               </list-card>
           </uni-swipe-action-item>
@@ -38,23 +35,14 @@
 </template>
 
 <script>
+import { myHouses } from "../../apis/house.js";
 
 export default {
   name: "shoucang",
   components: {},
   data() {
     return {
-      dataList: [
-          {
-            id: 2,
-            thumb: "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
-            head: "草桥欣园一区 央产证 南北通透 有钥匙 看两居室",
-            intro: "3室2厅|76.1㎡|草桥欣园一区",
-            price: "6500万",
-            shoucang: false,
-            isShoucang: true
-          }
-        ]
+      dataList: []
     }
   },
   computed: {},
@@ -83,7 +71,13 @@ export default {
   // 页面周期函数--监听页面初次渲染完成
   onReady() {},
   // 页面周期函数--监听页面显示(not-nvue)
-  onShow() {},
+  onShow() {
+    myHouses().then(res => {
+      this.dataList = res.data.records;
+    }).catch(err => {
+      console.log(err);
+    })
+  },
   // 页面周期函数--监听页面隐藏
   onHide() {},
   // 页面周期函数--监听页面卸载

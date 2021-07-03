@@ -7,29 +7,29 @@
         </uni-file-picker>
         <button type="default" size="mini" style="background-color: #007AFF; margin-top: 10rpx; color: #fff;"
         @click="click2upload">上传</button> -->
-        <van-uploader accept="image" :file-list="formData.pics" :max-count="3" @afterRead="afterRead">
+        <van-uploader accept="image" :file-list="formData.pics" :max-count="3" @afterRead="afterRead" @delete="deletePics">
         </van-uploader>
       </uni-forms-item>
       <uni-forms-item label="所在区域" name="location" :required="true">
         <uni-list :border="false">
-            <uni-list-item link to="../city/city" :rightText="formData.location?'':'请选择'">
+            <uni-list-item link to="../city/city" :rightText="formData.locationThreeName?'':'请选择'">
               <template #body>
-                <text> {{ formData.location }} </text>
+                <text> {{ formData.locationThreeName }} </text>
               </template>
             </uni-list-item>
         </uni-list>
       </uni-forms-item>
       <uni-forms-item label="所在位置" name="region" :required="true">
         <uni-list :border="false">
-            <uni-list-item link to="../location/location" :rightText="formData.region?'':'请选择'">
+            <uni-list-item link to="../location/location" :rightText="formData.latitude?'':'请选择'">
               <template #body>
-                <text> {{ formData.region }} </text>
+                <text> {{ formData.latitude + " " + formData.longitude }} </text>
               </template>
             </uni-list-item>
         </uni-list>
       </uni-forms-item>
-      <uni-forms-item label="具体地址" name="address">
-        <uni-easyinput type="text" v-model="formData.address" placeholder="请输入具体地址" />
+      <uni-forms-item label="具体地址" name="detailLocation" required>
+        <uni-easyinput type="text" v-model="formData.detailLocation" placeholder="请输入具体地址" />
       </uni-forms-item>
       <uni-forms-item label="房源名称" name="name" :required="true">
         <uni-easyinput type="text" v-model="formData.name" placeholder="请输入房名" />
@@ -52,14 +52,15 @@
       <uni-forms-item label="所在楼层" name="storey" :required="true">
         <uni-easyinput type="text" v-model="formData.storey" placeholder="请输入所在楼层" />
       </uni-forms-item>
-      <uni-forms-item label="有无电梯" name="elevator">
-        <uni-data-checkbox :localdata="range" v-model="elevator"></uni-data-checkbox>
+      <uni-forms-item label="有无电梯" name="elevator" :required="true">
+        <uni-data-checkbox :localdata="range" v-model="formData.elevator"></uni-data-checkbox>
       </uni-forms-item>
       <uni-forms-item label="建造时间" name="years" :required="true">
-        <uni-easyinput type="text" v-model="formData.years" placeholder="请输入建造时间(如2021-7-3)" />
+        <!-- <uni-datetime-picker type="date" return-type="timestamp" placeholder="请选择建造时间" v-model="formData.years" ></uni-datetime-picker> -->
+        <uni-easyinput type="text" v-model="formData.years" placeholder="请输入建造年代" />
       </uni-forms-item>
       <uni-forms-item label="绿化面积" name="greenArea" :required="true">
-        <uni-easyinput type="text" v-model="formData.greenArea" placeholder="请输入绿化百分比" />
+        <uni-easyinput type="text" v-model="formData.greenArea" placeholder="请输入绿化面积(%百分比)" />
       </uni-forms-item>
       <uni-forms-item label="联系方式" name="phone" :required="true">
         <uni-easyinput type="text" v-model="formData.phone" placeholder="请输入联系方式" />
@@ -79,14 +80,25 @@
 <script>
   const qiniu = require("../../utils/qiniuUploader.js");
   import { getUploadToken } from "../../apis/upload.js";
+  import { addHouse, updateHouse } from "../../apis/house.js";
 
   export default {
     name: "addHouse",
     onLoad(options) {
-      console.log("id: ", options.id);
+      // console.log("id: ", options.id);
+      if (options.id) {
+        this.isAdd = false;
+      }
     },
     data() {
       return {
+        direction: {
+          "东": "EAST",
+          "北": "NORTH",
+          "南": "SOUTH",
+          "西": "WEST"
+        },
+        isAdd: true,
         range: [{"value": true, "text": "有"}, {"value": false, "text": "无"}],
         url: "http://qvmeb7fx0.hn-bkt.clouddn.com",
         items: [{
@@ -131,19 +143,22 @@
           }
         ],
         formData: {
-          location: "",
+          locationOne: 50,
+          locationTwo: 5001,
+          locationThreeName: "",
           pics: [],
-          region: "",
-          address: "",
+          detailLocation: "",
           name: "",
           brief: "",
+          longitude: "",
+          latitude: "",
           phone: "",
           area: "",
           moneyMonth: "",
           orientation: "",
           style: "",
           storey: "",
-          elevator: "",
+          elevator: false,
           years: "",
           greenArea: "",
           usp: []
@@ -179,6 +194,12 @@
               errorMessage: "请输入朝向"
             }]
           },
+          detailLocation: {
+            rules: [{
+              required: true,
+              errorMessage: "请输入具体地址"
+            }]
+          },
           style: {
             rules: [{
               required: true,
@@ -195,12 +216,7 @@
             rules: [{
                 required: true,
                 errorMessage: "请输入建造时间"
-              },
-              {
-                "pattern": "^[1-9]\\d{3}-([1-9]|0[1-9]|1[0-2])-([1-9]|0[1-9]|[1-2][0-9]|3[0-1])$",
-                errorMessage: "请输入正确的时间格式, 如2021-7-3"
-              },
-            ]
+              }]
           },
           greenArea: {
             rules: [{
@@ -227,20 +243,54 @@
         this.formData.usp = e.detail.value;
       },
       setMyCity(location) { // 设置城区名字
-        this.formData.location = location;
+        this.formData.locationThreeName = location;
       },
       setRegion(region) {
         this.formData.region = region;
       },
+      setLocalPosition(longitude, latitude) {
+        this.formData.longitude = longitude;
+        this.formData.latitude = latitude;
+      },
       submitForm() { // 提交按钮
         this.$refs.form.submit().then(res => {
           // 判断location、region是否填写完毕
-          if(!this.formData.location || !this.formData.region) {
+          if(!this.formData.locationThreeName || !this.formData.latitude) {
+            console.log(this.formData.elevator);
             throw new Error("没填捏");
           } else { // 发请求
-            console.log("提交", res);
+            if (this.isAdd) {
+              let tempData = Object.assign({}, this.formData);
+              let pics = this.formData.pics;
+              tempData.pics = [];
+              pics.forEach(v => {tempData.pics.push(v.url)});
+              tempData.head = pics[0].url;
+              tempData.greenArea = res.greenArea/100;
+              tempData.orientation = this.direction[res.orientation];
+              addHouse(tempData).then(result => {
+                console.log(result);
+                uni.navigateBack();
+              }).catch(err => {
+                console.log(err);
+              })
+            } else {
+              let tempData = Object.assign({}, this.formData);
+              let pics = this.formData.pics;
+              tempData.pics = [];
+              pics.forEach(v => {tempData.pics.push(v.url)});
+              tempData.head = pics[0].url;
+              tempData.greenArea = res.greenArea/100;
+              tempData.orientation = this.direction[res.orientation];
+              updateHouse(tempData).then(result => {
+                console.log(result);
+                uni.navigateBack();
+              }).catch(err => {
+                console.log(err);
+              })
+            }
           }
         }).catch(err => {
+          console.log(err);
           uni.showModal({
             title: "有点小意外",
             content: '少侠留步, 还没写完呢',
@@ -252,7 +302,12 @@
         console.log(file.file);
         let result = await getUploadToken();
         qiniu.upload(file.file.url, (res) => {
-          console.log(res);
+          this.formData.pics.push({
+            url: res.imageURL,
+            thumb: res.imageURL,
+            name: res.key,
+            type: "image"
+          });
         }, (error) => {
           console.log(error);
         }, {
@@ -261,6 +316,11 @@
           domain: this.url,
           shouldUseQiniuFileName: true
         })
+      },
+      deletePics(e) { // 删除图片
+        console.log(e.detail.index);
+        let index = e.detail.index;
+        this.formData.pics.splice(index, 1);
       },
       afterRead(event) { // 上传文件
         console.log(event.detail);

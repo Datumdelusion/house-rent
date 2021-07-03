@@ -1,41 +1,41 @@
 <template>
   <view class="mine">
     <view class="mine-header" @click="turn2login">
-      <image style="width: 130rpx; height: 130rpx; background-color: #eeeeee;border-radius: 50%;" src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"></image>
+      <image style="width: 130rpx; height: 130rpx; background-color: #eeeeee;border-radius: 50%;" :src="thumb"></image>
       <text style="margin-left: 30rpx; color: #fff;height: 70rpx;">
         {{ title }}
       </text>
     </view>
     <uni-card>
       <uni-list :border="false">
-        <uni-list-item clickable link to="../order/order" :ellipsis="1" title="历史交易">
+        <uni-list-item clickable link @click="turn2page('../order/order')" :ellipsis="1" title="历史交易">
           <template #header>
             <text class="iconfont icon-zhangdan-xianxing" style="font-size: 36rpx; margin-right: 10rpx"/>
           </template>
         </uni-list-item>
-        <uni-list-item clickable link to="../contract/contract" :ellipsis="1" title="我的租房订单">
+        <uni-list-item clickable link @click="turn2page('../contract/contract')" :ellipsis="1" title="我的租房订单">
           <template #header>
             <text class="iconfont icon-btn_addhouse" style="font-size: 36rpx; margin-right: 10rpx"/>
           </template>
         </uni-list-item>
-        <uni-list-item clickable link to="../exchange/exchange" :ellipsis="1" title="我的房源交易">
+        <uni-list-item clickable link @click="turn2page('../exchange/exchange')" :ellipsis="1" title="我的房源交易">
           <template #header>
             <text class="iconfont icon-caiwu-xianxing" style="font-size: 36rpx; margin-right: 10rpx"/>
           </template>
         </uni-list-item>
-        <uni-list-item clickable link to="../houses/houses" :ellipsis="1" title="我的房子">
+        <uni-list-item clickable link @click="turn2page('../houses/houses')" :ellipsis="1" title="我的房子">
           <template #header>
             <text class="iconfont icon-fangwu" style="font-size: 36rpx; margin-right: 10rpx"/>
           </template>
         </uni-list-item>
-        <uni-list-item clickable link="switchTab" to="../shoucang/shoucang" :ellipsis="1" title="我的收藏">
+        <uni-list-item clickable link="switchTab" @click="turn2page('../shoucang/shoucang')" :ellipsis="1" title="我的收藏">
           <template #header>
             <text class="iconfont icon-shoucang-xianxing" style="font-size: 36rpx; margin-right: 10rpx"/>
           </template>
         </uni-list-item>
       </uni-list>
     </uni-card>
-    <button type="default" class="mine-button" v-if="isLogin">退出登录</button>
+    <button type="default" class="mine-button" v-if="isLogin" @click="exitLogin">退出登录</button>
   </view>
 </template>
 
@@ -45,8 +45,9 @@ export default {
   components: {},
   data() {
     return {
-      isLogin: uni.getStorageSync("isLogin") || false,
-      title: "点击注册/登录"
+      isLogin: false,
+      title: "点击注册/登录",
+      thumb: "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
     }
   },
   computed: {},
@@ -57,12 +58,40 @@ export default {
           url: "../login/login"
         });
       }
+    },
+    turn2page(url) { // 跳转到...页面
+      // if (this.isLogin) {
+      //   uni.navigateTo({
+      //     url: url
+      //   })
+      // } else {
+      //   uni.navigateTo({
+      //     url: "../login/login"
+      //   });
+      // }
+        uni.navigateTo({
+          url: url
+        })
+    },
+    exitLogin() { // 退出登录
+      uni.removeStorageSync("isLogin");
+      this.title = "点击注册/登录";
+      this.thumb = "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg";
     }
   },
   watch: {},
 
   // 页面周期函数--监听页面加载
-  onLoad() {},
+  onLoad() {
+    this.isLogin = uni.getStorageSync("isLogin");
+    if (this.isLogin) {
+      this.title = "王自如";
+      this.thumb = ""
+    } else {
+      this.title = "点击注册/登录";
+      this.thumb = "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg";
+    }
+  },
   // 页面周期函数--监听页面初次渲染完成
   onReady() {},
   // 页面周期函数--监听页面显示(not-nvue)
