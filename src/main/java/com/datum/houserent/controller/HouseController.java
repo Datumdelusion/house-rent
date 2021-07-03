@@ -130,16 +130,21 @@ public class HouseController {
     @SaCheckRole(value = {"admin", "lessor"}, mode = SaMode.OR)
     @RequestMapping(value = "/lessor/houses/newHouse", method = RequestMethod.POST)
     @ApiOperation("新建房源")
-    public boolean newHouse(@ApiParam("房屋信息") @RequestBody HouseDTO houseDTO) {
+    public boolean newHouse(@ApiParam("房屋信息") @Valid @RequestBody HouseDTO houseDTO) {
         House house = houseDTO.convertOut();
         house.setLessor(StpUtil.getLoginIdAsInt());
-
         try {
             house.setPics(JsonUtil.toJsonString(houseDTO.getPics()));
             house.setUsp(JsonUtil.toJsonString(houseDTO.getUsp()));
         } catch (JsonProcessingException e) {
             throw new BadRequestException("数组转字符串出错", "数组信息有误");
         }
+        String locationThreeName = houseDTO.getLocationThreeName();
+        Location location = locationService.getOne(new LambdaQueryWrapper<Location>().eq(Location::getName, locationThreeName));
+        if (location == null) {
+            throw new BadRequestException("地理位置不存在" + locationThreeName, "地理位置" + locationThreeName + "不存在");
+        }
+        house.setLocationThree(location.getId());
         return houseService.save(house);
     }
 
@@ -192,6 +197,14 @@ public class HouseController {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
+        String locationThreeName = houseDTO.getLocationThreeName();
+        if (locationThreeName != null) {
+            Location location = locationService.getOne(new LambdaQueryWrapper<Location>().eq(Location::getName, locationThreeName));
+            if (location == null) {
+                throw new BadRequestException("地理位置不存在" + locationThreeName, "地理位置" + locationThreeName + "不存在");
+            }
+            convertOut.setLocationThree(location.getId());
+        }
         return houseService.updateById(convertOut);
     }
 
@@ -220,6 +233,21 @@ public class HouseController {
         houseSave.setId(houseId);
         houseSave.setStatus(HouseStatus.OnShelf);
         return houseService.updateById(houseSave);
+    }
+
+    @ApiOperation("我的房源")
+    @SaCheckRole(value = {"admin", "lessor"}, mode = SaMode.OR)
+    @RequestMapping(value = "/lessor/houses", method = RequestMethod.GET)
+    public List<HouseVO> myHouses() {
+        int lessor = StpUtil.getLoginIdAsInt();
+        List<House> houses = houseService.list(new LambdaQueryWrapper<House>().eq(House::getLessor, lessor));
+        if (houses.isEmpty()) {
+            return Collections.emptyList();
+        }
+        for (House house : houses) {
+            houseService.translateHouseUrl(house);
+        }
+        return BeanUtil.convert(houses, HouseVO.class);
     }
 }
 

@@ -37,4 +37,8 @@ public class HousePageQueryParam extends ConditionPageQueryParam<House> {
     @ApiModelProperty("最低价格")
     @QueryField(value = "money_month", queryType = QueryField.QueryType.GE)
     private Double lowerPrice;
+
+    @ApiModelProperty("搜索房名")
+    @QueryField(value = "name",queryType = QueryField.QueryType.LIKE)
+    private String name;
 }

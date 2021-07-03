@@ -7,6 +7,8 @@ import com.datum.houserent.model.entity.enums.OrientationType;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 /**
@@ -16,30 +18,38 @@ import java.time.LocalDate;
 
 @Data
 public class HouseDTO implements InputConverter<House> {
+    @NotBlank
     @ApiModelProperty(value = "房屋名称")
     private String name;
 
+    @NotBlank
     @ApiModelProperty(value = "主图")
     private String head;
 
+    @NotNull
     @ApiModelProperty(value = "（json）房屋图片")
     private String[] pics;
 
+    @NotNull
     @ApiModelProperty(value = "一级区域")
     @TableField("location_one")
     private Integer locationOne;
 
+    @NotNull
     @ApiModelProperty(value = "二级区域")
     @TableField("location_two")
     private Integer locationTwo;
 
+    @NotNull
     @ApiModelProperty(value = "三级区域")
     @TableField("location_three")
-    private Integer locationThree;
+    private String locationThreeName;
 
+    @NotNull
     @ApiModelProperty(value = "小区名称")
     private String neighbourhood;
 
+    @NotNull
     @ApiModelProperty(value = "具体位置")
     @TableField("detail_location")
     private String detailLocation;
@@ -47,12 +57,15 @@ public class HouseDTO implements InputConverter<House> {
     @ApiModelProperty(value = "（json）房屋配套设施")
     private String[] usp;
 
+    @NotNull
     @ApiModelProperty(value = "面积")
     private Double area;
 
+    @NotNull
     @ApiModelProperty(value = "（枚举）房屋朝向")
     private OrientationType orientation;
 
+    @NotNull
     @ApiModelProperty(value = "（枚举）户型：三室一厅")
     private String style;
 
@@ -86,6 +99,7 @@ public class HouseDTO implements InputConverter<House> {
     @ApiModelProperty(value = "经度")
     private Double longitude;
 
+    @NotNull
     @ApiModelProperty(value = "月付价格")
     @TableField("money_month")
     private Double moneyMonth;
