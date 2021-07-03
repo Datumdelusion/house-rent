@@ -68,7 +68,11 @@
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "订单列表",
-                "enablePullDownRefresh": false
+                "enablePullDownRefresh": false,
+                "usingComponents": {
+                  "van-dropdown-menu": "/wxcomponents/vant/dist/dropdown-menu/index",
+                  "van-dropdown-item": "/wxcomponents/vant/dist/dropdown-item/index"
+                }
             }
             
         }
@@ -107,6 +111,15 @@
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/uncomplete/uncomplete",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "合同确立",
                 "enablePullDownRefresh": false
             }
             

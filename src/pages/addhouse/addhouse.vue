@@ -49,6 +49,16 @@
       <uni-forms-item label="户型" name="style" :required="true">
         <uni-easyinput type="text" v-model="formData.style" placeholder="请输入户型" />
       </uni-forms-item>
+      <uni-forms-item label="小区" name="neighbourhood" :required="true">
+        <uni-easyinput type="text" v-model="formData.neighbourhood" placeholder="请输入小区名称" />
+      </uni-forms-item>
+      <uni-forms-item label="最低租赁时长" name="leaseTerm" :required="true">
+        <uni-easyinput type="text" v-model="formData.leaseTerm" placeholder="请输入最低租赁时长(单位:月)" />
+      </uni-forms-item>
+      <uni-forms-item label="最快入住时间" name="checkInTime" :required="true">
+        <!-- <uni-easyinput type="text" v-model="formData.checkInTime" placeholder="请输入最快入住时间" /> -->
+        <uni-datetime-picker type="date" return-type="string" placeholder="请输入最快入住时间" v-model="formData.checkInTime" ></uni-datetime-picker>
+      </uni-forms-item>
       <uni-forms-item label="所在楼层" name="storey" :required="true">
         <uni-easyinput type="text" v-model="formData.storey" placeholder="请输入所在楼层" />
       </uni-forms-item>
@@ -62,9 +72,9 @@
       <uni-forms-item label="绿化面积" name="greenArea" :required="true">
         <uni-easyinput type="text" v-model="formData.greenArea" placeholder="请输入绿化面积(%百分比)" />
       </uni-forms-item>
-      <uni-forms-item label="联系方式" name="phone" :required="true">
+      <!-- <uni-forms-item label="联系方式" name="phone" :required="true">
         <uni-easyinput type="text" v-model="formData.phone" placeholder="请输入联系方式" />
-      </uni-forms-item>
+      </uni-forms-item> -->
       <uni-forms-item label="房屋条件" name="usp">
         <checkbox-group @change="uspChange">
           <label v-for="item in items" :key="item.value" style="display: block; margin-bottom: 10rpx;">
@@ -85,18 +95,33 @@
   export default {
     name: "addHouse",
     onLoad(options) {
-      // console.log("id: ", options.id);
+      // 存在id即是修改
       if (options.id) {
         this.isAdd = false;
         getHouse(options.id).then(res => {
-          if (res.data.pics.length > 5) {res.data.pics.slice(0, 3);}
+          let pics = res.data.pics;
+          // 避免图片过长
+          if (pics.length > 5) {pics.slice(0, 3);}
+          // 自动*100
           res.data.greenArea = res.data.greenArea * 100;
-          res.data.delete("lessor");
-          this.formData.phone = res.data.phone;
+          // res.data.delete("lessor");
+          // phone get⭐daze
+          // this.formData.phone = res.data.phone;
+          // 赋值
           this.formData = res.data;
+          // 处理图片格式（初始化）
+          this.formData.pics = [];
+          // 处理图片（依据vant-upload组件的格式对数据进行修改）
+          pics.forEach(v => {this.formData.pics.push({url: v, thumb: v, type: "image"});});
           this.formData.locationOne = 50;
           this.formData.locationTwo = 5001;
           this.formData.orientation = this.revertDirection[this.formData.orientation];
+          this.items.forEach(v => { // 根据情况修改勾选条件的checked显示
+            if (res.data.usp.includes(v.value)) {
+              v.checked = true;
+            }
+          })
+          console.log(this.formData);
         }).catch(err => {
           console.log(err);
         })
@@ -166,15 +191,17 @@
           locationThreeName: "",
           pics: [],
           detailLocation: "",
+          checkInTime: "",
           name: "",
           brief: "",
+          leaseTerm: "",
           longitude: "",
           latitude: "",
-          phone: "",
           area: "",
           moneyMonth: "",
           orientation: "",
           style: "",
+          neighbourhood: "",
           storey: "",
           elevator: false,
           years: "",
@@ -240,16 +267,6 @@
             rules: [{
               required: true,
               errorMessage: "请输入绿化面积"
-            }]
-          },
-          phone: {
-            rules: [{
-              required: true,
-              errorMessage: "请输入手机号"
-            },
-            {
-              "pattern": "^\\+?[0-9-]{3,20}$",
-              errorMessage: "请输入正确的手机号"
             }]
           }
         }

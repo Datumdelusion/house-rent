@@ -11,18 +11,18 @@ const UNAUTHORIZED = 401;
 export function request(config) {
   // 1.创建axios实例
   const instance = axios.create({
-    baseURL: process.env.NODE_ENV == 'development' ? "http://192.168.2.8:8888/house-rent-api" : "https://www.baidu.com",
+    baseURL: process.env.NODE_ENV == 'development' ? "http://121.40.192.118:8888/house-rent-api" : "https://www.baidu.com",
     timeout: 5000,
   });
 
   // 2.1请求拦截
   instance.interceptors.request.use((config) => {
     // 获取token, 若token存在则在请求头上添加token  
-    // const token = uni.getStorageSync('satoken');
-    // if (token) {
-    //   config.headers.satoken = token;
-    // }
-    config.headers.satoken = "f79afcc3-c888-42f9-959e-d09063e4f9a5";
+    const token = uni.getStorageSync('satoken');
+    if (token) {
+      config.headers.satoken = token;
+    }
+    // config.headers.satoken = "0f8d4b45-ed76-4642-b452-bd0301ffba22";
     return config;
   },
     (err) => {
@@ -40,12 +40,14 @@ export function request(config) {
       //   alert("登录过期, 请重新登录");
       //   uni.switchTab()
       // }
+      // console.log("response: ", res);
       return res.data;
     }, (err) => {
         // 返回错误信息
-        console.log(err);
+        // console.log("err: ", err.response);
         uni.showToast({
-          title: err.userPromptMsg
+          title: err.response.data.errorMessage.userPromptMsg,
+          icon: "none"
         })
         return Promise.reject(err.response ? err.response.status : err); //返回接口返回的错误信息
     }

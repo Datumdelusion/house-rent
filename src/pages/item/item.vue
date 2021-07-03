@@ -7,7 +7,7 @@
 		</swiper>
     <view class="item-detail-wrapper">
       <main-intro @starUpdate="starUpdate" :name="info.name" :moneyMonth="info.moneyMonth" :area="info.area" :orientation="info.orientation" :style="info.style" :star="info.star"/>
-      <features-list :greenArea="info.greenArea" :elevator="info.elevator" :detailLocation="info.detailLocation" :storey="info.storey" :years="info.years"/>
+      <features-list :neighbourhood="info.neighbourhood" :greenArea="info.greenArea" :elevator="info.elevator" :detailLocation="info.detailLocation" :storey="info.storey" :years="info.years" :leaseTerm="info.leaseTerm"/>
       <house-owner :brief="info.brief"/>
       <item-condition :usp="info.usp"/>
       <item-location :latitude="info.latitude" :longitude="info.longitude" :markers="markers"/>
@@ -17,22 +17,21 @@
         <view style="padding: 10px;">
           <view style="margin-bottom: 20rpx;" class="owner-info">
             预计
-            <text style="color: red">2021-07-15</text>
-            可入住，需签约至
-            <text style="color: red">2022-07-14</text>
+            <text style="color: red">{{ info.checkInTime }}</text>
+            可入住
           </view>
           <view style="margin-bottom: 20rpx;" class="owner-info">
             <view class="owner-info-prefix">
               <text style="color: #ff961e; font-size: 38rpx;" class="iconfont icon-dianhua" />
               <text style="color: #999;">联系方式:</text>
-              <text style="text-decoration: underline;">12345678910</text>
+              <text style="text-decoration: underline;">{{ info.lessor.phone }}</text>
             </view>
           </view>
           <view class="owner-info">
             <view style="margin-bottom: 20rpx;" class="owner-info-prefix">
               <text style="color: #1290BF; font-size: 38rpx;" class="iconfont icon-yonghu"/>
               <text style="color: #999;">转租者:</text>
-              <text>小鹿姐姐</text>
+              <text>{{ info.lessor.name }}</text>
             </view>
           </view>
         </view>
@@ -40,7 +39,7 @@
       </view>
     </uni-popup>
     <view class="tabbar-button-group">
-      <button class="wantBtn" type="default" v-if="true" @click="want">想要</button>
+      <button class="wantBtn" type="default" v-if="!wanna" @click="want">想要</button>
       <button style="color: rgba(0,0,0,.3);background-color: #f7f7f7;" class="chosenBtn" type="default" v-else @click="seewhat">已选</button>
     </view>
 	</view>
@@ -55,6 +54,7 @@
   
   import { getHouse } from "../../apis/house.js";
   import { starIt, cancelStarByHouseId } from "../../apis/star.js";
+  import { wantHouse } from "../../apis/order.js";
   
 	export default {
     name: "item",
@@ -96,7 +96,8 @@
 		data() {
 			return {
 				info: {},
-        markers: []
+        markers: [],
+        wanna: false
 			};
 		},
     methods: {
@@ -128,8 +129,14 @@
           title: '拼命加载中……'
         });
         // 发送请求
-        this.$refs.popup.open();
-        uni.hideLoading();
+        wantHouse(this.info.id).then(res => {
+          this.wanna = true;
+          this.$refs.popup.open();
+          uni.hideLoading();
+        }).catch(err => {
+          console.log(err);
+          uni.hideLoading();
+        });
       },
       seewhat() { // 弹出框
         this.$refs.popup.open();

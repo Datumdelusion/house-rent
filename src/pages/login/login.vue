@@ -2,8 +2,8 @@
   <view class="login-wrapper">
     <uni-card style="position:relative; top:15%" title="登录" v-if="isLogin">
       <uni-forms ref="login_form" :rules="rule1">
-        <uni-forms-item label="用户名" name="username">
-          <uni-easyinput  v-model="loginForm.username" placeholder="请输入用户名" />
+        <uni-forms-item label="用户名" name="name">
+          <uni-easyinput  v-model="loginForm.name" placeholder="请输入用户名" />
         </uni-forms-item>
         <uni-forms-item label="密码" name="password">
           <uni-easyinput type="password"  v-model="loginForm.password" placeholder="请输入密码" />
@@ -15,8 +15,8 @@
     
     <uni-card style="position:relative; top:15%" title="注册" v-else>
       <uni-forms ref="register_form" :rules="rule2">
-        <uni-forms-item label="用户名" name="username">
-          <uni-easyinput  v-model="registerForm.username" placeholder="请输入用户名" />
+        <uni-forms-item label="用户名" name="name">
+          <uni-easyinput  v-model="registerForm.name" placeholder="请输入用户名" />
         </uni-forms-item>
         <uni-forms-item label="密码" name="password">
           <uni-easyinput type="password"  v-model="registerForm.password" placeholder="请输入密码" />
@@ -32,6 +32,8 @@
 </template>
 
 <script>
+  import { login } from "../../apis/login.js";
+  
   export default {
     onShow(option) {
       console.log(option);
@@ -40,37 +42,32 @@
       return {
         isLogin: true,
         loginForm: {
-          username: "",
+          name: "",
           password: ""
         },
         registerForm: {
-          username: "",
+          name: "",
           password: "",
           password2: ""
         },
         rule1: {
-          username: {
+          name: {
             rules: [{required: true, errorMessage: '用户名不能为空'}]
           },
           password: {
-            rules: [{required: true, errorMessage: '密码不能为空'}, 
-            {
-                minLength: 6,
-                maxLength: 12,
-                message: '密码长度应在 6 到 12 个字符',
-            }]
+            rules: [{required: true, errorMessage: '密码不能为空'}]
           }
         },
         rule2: {
-          username: {
+          name: {
             rules: [{required: true, errorMessage: '用户名不能为空'}]
           },
           password: {
             rules: [{required: true, errorMessage: '密码不能为空'}, 
             {
-                minLength: 6,
+                minLength: 3,
                 maxLength: 12,
-                message: '密码长度应在 6 到 12 个字符',
+                message: '密码长度应在 3 到 12 个字符',
             }]
           },
           password2: {
@@ -82,7 +79,15 @@
     methods: {
       loginSubmit() { // 登录
         this.$refs.login_form.submit().then(res => {
-          console.log(res);
+          login(res).then(result => {
+            console.log(result);
+            uni.setStorageSync("satoken", result.data.saToken);
+            uni.setStorageSync("isLogin", true);
+            uni.setStorageSync("name", res.name);
+            uni.navigateBack();
+          }).catch(err => {
+            console.log(err);
+          })
         }).catch(err => {
           console.log(err);
         })
@@ -90,6 +95,7 @@
       registerSubmit() { // 注册
         this.$refs.register_form.submit().then(res => {
           console.log(res);
+          uni.navigateBack();
         }).catch(err => {
           console.log(err);
         })

@@ -44,11 +44,20 @@ export default {
   onReady() {},
   // 页面周期函数--监听页面显示(not-nvue)
   onShow() {
-    myStars().then(res => {
-      this.dataList = res.data;
-    }).catch(err => {
-      console.log(err);
-    })
+    this.isLogin = uni.getStorageSync("isLogin");
+    if(this.isLogin) { //在登陆状态
+      myStars().then(res => {
+        this.dataList = res.data;
+      }).catch(err => {
+        console.log(err);
+      })
+    } else {
+      this.dataList = [];
+      uni.showToast({
+        title: "请登陆后查看",
+        icon: "none"
+      })
+    }
   },
   // 页面周期函数--监听页面隐藏
   onHide() {},

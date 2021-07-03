@@ -25,12 +25,17 @@
 </template>
 
 <script>
+import { pageHouses } from "../../apis/house.js";
 
 export default {
   name: "shoucang",
   components: {},
   data() {
     return {
+      params: {
+        current: 1,
+        size: 7
+      },
       textValue: "",
       location: "",
       dataList: []
@@ -47,24 +52,47 @@ export default {
       });
     },
     setMyCity(location) { // 设置城区名字
-      this.location = location;
-      let that = this;
-      // pageHouses({current: 1, locationName: location, size: 5}).then(res => {
-      //   that.dataList = [];
-      //   that.dataList = res.data.records;
-      // })
+      this.params.locationName = this.location = location;
+      this.dataList = []; // 清空dataList
+      this.params.current = 1; // 初始化页数
+      pageHouses(this.params).then(res => {
+        let records = res.data.records || [];
+        this.dataList.push(...records);
+        this.params.total = res.data.total;
+        this.params.current ++;
+      }).catch(err => {
+        console.log(err);
+      })
     },
     onSearch() {
-      console.log(this.textValue);
+      this.params.name = this.textValue;
+      this.dataList = []; // 清空dataList
+      this.params.current = 1; // 初始化页数
+      pageHouses(this.params).then(res => {
+        let records = res.data.records || [];
+        this.dataList.push(...records);
+        this.params.total = res.data.total;
+        this.params.current ++;
+      }).catch(err => {
+        console.log(err);
+      })
     }
   },
   watch: {},
 
   // 页面周期函数--监听页面加载
   onLoad(options) {
-    this.textValue = options.textValue;
-    this.location = options.location;
+    this.params.name = this.textValue = options.textValue;
+    this.params.locationName = this.location = options.location;
     // 发出请求，搜索相关内容
+    pageHouses(this.params).then(res => {
+      let records = res.data.records || [];
+      this.dataList.push(...records);
+      this.params.total = res.data.total;
+      this.params.current ++;
+    }).catch(err => {
+      console.log(err);
+    })
   },
   // 页面周期函数--监听页面初次渲染完成
   onReady() {},

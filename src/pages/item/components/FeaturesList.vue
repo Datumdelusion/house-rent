@@ -1,6 +1,10 @@
 <template>
   <view class="feature-list-wrapper">
     <view class="feature-item-wrapper" style="display: block;width: 100%;">
+      <text class="name">小区:</text>
+      <text>{{ neighbourhood }}</text>
+    </view>
+    <view class="feature-item-wrapper" style="display: block;width: 100%;">
       <text class="name">位置:</text>
       <text>{{ detailLocation }}</text>
     </view>
@@ -20,13 +24,17 @@
       <text class="name">绿化:</text>
       <text>{{ parseInt(greenArea*100) + "%" }}</text>
     </view>
+    <view class="feature-item-wrapper" style="display: block;width: 100%;">
+      <text class="name">最低租赁时间:</text>
+      <text>{{ leaseTerm + "月" }}</text>
+    </view>
   </view>
 </template>
 
 <script>
   export default {
     name: "FeaturesList",
-    props: ["greenArea", "elevator", "detailLocation", "storey", "years"]
+    props: ["neighbourhood", "greenArea", "elevator", "detailLocation", "storey", "years", "leaseTerm"]
   }
 </script>
 

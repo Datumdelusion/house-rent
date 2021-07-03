@@ -13,7 +13,7 @@
           {{ head }}
         </view>
       </slot>
-      <slot name="content-intro">
+      <slot name="contentIntro">
         <view class="list-card-intro">
           {{ intro }}
         </view>
@@ -90,14 +90,22 @@
         default() {
           return false;
         }
+      },
+      turnable: {
+        type: Boolean,
+        default() {
+          return true;
+        }
       }
     },
     name: "ListCard",
     methods: {
       turn2Page() { // 跳转到具体信息页面
-        uni.navigateTo({
-          url: `/pages/item/item?id=${this.no}`
-        });
+        if (this.turnable) {
+          uni.navigateTo({
+            url: `/pages/item/item?id=${this.no}`
+          });          
+        }
       },
       clickShoucang(isShoucang) { // 点击收藏
         this.$emit('clickShoucang', isShoucang)

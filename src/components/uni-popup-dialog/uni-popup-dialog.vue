@@ -3,10 +3,12 @@
 		<view class="uni-dialog-title">
 			<text class="uni-dialog-title-text" :class="['uni-popup__'+dialogType]">{{title}}</text>
 		</view>
-		<view class="uni-dialog-content">
-			<text class="uni-dialog-content-text" v-if="mode === 'base'">{{content}}</text>
-			<input v-else class="uni-dialog-input" v-model="val" type="text" :placeholder="placeholder" :focus="focus" >
-		</view>
+    <slot>
+      <view class="uni-dialog-content">
+        <text class="uni-dialog-content-text" v-if="mode === 'base'">{{content}}</text>
+        <input v-else class="uni-dialog-input" v-model="val" type="text" :placeholder="placeholder" :focus="focus" >
+      </view>      
+    </slot>
 		<view class="uni-dialog-button-group">
 			<view class="uni-dialog-button" @click="close">
 				<text class="uni-dialog-button-text">取消</text>

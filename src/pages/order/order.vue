@@ -1,114 +1,78 @@
 <template>
   <view class="order-wrapper">
     <view>
-      <scroll-view scroll-y="true" style="height: 100vh;" @scrolltolower="getHistory">
-        <list-card v-for="item in dataList" :key="item.id"
-          :no="item.id"
-          :thumb="item.thumb"
-          :tag="item.tag"
-          :head="item.head"
-          :intro="item.intro"
-          :price="item.price"
-          :isShoucang="item.isShoucang"
-          >
-          </list-card>
-          <van-empty v-if="dataList.length === 0" description="噢, 这里似乎空空如也..." />
+      <van-dropdown-menu>
+        <van-dropdown-item v-model="currentValue" :options="option" @change="changeValue"/>
+      </van-dropdown-menu>
+      <scroll-view scroll-y="true" style="height: 100vh;">
+        <uni-list>
+          <uni-list-item :showArrow="true" :clickable="true" @click="turn2Page(item)" v-for="item in dataList" :key="item.id">
+            <template #body>
+              <view>{{ item.houseName }}</view>
+              <view style="color:#999;font-size:26rpx;margin-bottom: 5rpx;">
+                <view>
+                  {{ "租赁期限: " + (item.time?item.time:'暂未确定') }}
+                </view>
+                <view>
+                  {{ "总价: " + (item.rentMoney?item.rentMoney:'暂未确定') }}
+                </view>
+              </view>
+              <view style="display: flex;">
+                <uni-tag text="出租者同意" size="small" v-if="item.success" :inverted="true" type="success" :circle="true" style="margin-right: 50rpx;"></uni-tag>
+                <uni-tag text="租赁者同意" size="small" v-if="item.userSign" :inverted="true" type="success" :circle="true"></uni-tag>                    
+                <uni-tag text="租赁者拒绝" size="small" v-if="item.userSign===false" :inverted="true" type="error" :circle="true" style="margin-right: 50rpx;"></uni-tag>
+                <uni-tag text="出租者拒绝" size="small" v-if="item.lessorSign===false" :inverted="true" type="error" :circle="true"></uni-tag>                   
+              </view>
+            </template>
+          </uni-list-item>
+        </uni-list> 
+        <van-empty v-if="dataList.length === 0" description="噢, 这里似乎空空如也..." />
       </scroll-view>
     </view>
   </view>
 </template>
 
 <script>
+import { historyOrders } from "../../apis/order.js";
 
 export default {
-  name: "shoucang",
+  name: "order",
   components: {},
   data() {
     return {
-      dataList: [
-          {
-            id: 1,
-            thumb: "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
-            tag: "热卖",
-            head: "草桥欣园三区 央产证 南北通透 有钥匙 看两居室",
-            intro: "2室1厅|75.1㎡|草桥欣园三区",
-            price: "6500万",
-            shoucang: true,
-            isShoucang: true
-          },
-          {
-            id: 2,
-            thumb: "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
-            tag: "HOT",
-            head: "草桥欣园一区 央产证 南北通透 有钥匙 看两居室",
-            intro: "3室2厅|76.1㎡|草桥欣园一区",
-            price: "6500万",
-            shoucang: true,
-            isShoucang: true
-          },
-          {
-            id: 3,
-            thumb: "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
-            tag: "SALE",
-            head: "草桥欣园二区 央产证 南北通透 有钥匙 看两居室",
-            intro: "5室4厅|77.1㎡|草桥欣园二区",
-            price: "6500万",
-            shoucang: true,
-            isShoucang: true
-          },
-          {
-            id: 4,
-            thumb: "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
-            tag: "SALE",
-            head: "草桥欣园二区 央产证 南北通透 有钥匙 看两居室",
-            intro: "5室4厅|77.1㎡|草桥欣园二区",
-            price: "6500万",
-            shoucang: true,
-            isShoucang: true
-          },
-          {
-            id: 5,
-            thumb: "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
-            tag: "SALE",
-            head: "草桥欣园二区 央产证 南北通透 有钥匙 看两居室",
-            intro: "5室4厅|77.1㎡|草桥欣园二区",
-            price: "6500万",
-            shoucang: true,
-            isShoucang: true
-          },
-          {
-            id: 6,
-            thumb: "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
-            tag: "SALE",
-            head: "草桥欣园二区 央产证 南北通透 有钥匙 看两居室",
-            intro: "5室4厅|77.1㎡|草桥欣园二区",
-            price: "6500万",
-            shoucang: true,
-            isShoucang: true
-          },
-          {
-            id: 7,
-            thumb: "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
-            tag: "SALE",
-            head: "草桥欣园二区 央产证 南北通透 有钥匙 看两居室",
-            intro: "5室4厅|77.1㎡|草桥欣园二区",
-            price: "6500万",
-            shoucang: true,
-            isShoucang: true
-          }
-        ]
+      option: [
+        { text: '成功订单', value: "success" },
+        { text: '失败订单', value: "failed" }
+      ],
+      currentValue: "success",
+      dataList: []
     }
   },
   computed: {},
   methods: {
     getHistory() {
-      console.log("到底啦！");
+      historyOrders(this.currentValue).then(res => {
+        this.dataList = [];
+        this.dataList.push(...res.data);
+      }).then(err => {console.log(err);})
+    },
+    changeValue(e) {
+      // console.log(e.detail);
+      this.currentValue = e.detail;
+      this.getHistory();
+    },
+    turn2Page(item) {
+      uni.navigateTo({
+        url: `../item/item?id=${item.houseId}`
+      })
     }
   },
   watch: {},
 
   // 页面周期函数--监听页面加载
-  onLoad() {},
+  onLoad() {
+    this.getHistory();
+  },
   // 页面周期函数--监听页面初次渲染完成
   onReady() {},
   // 页面周期函数--监听页面显示(not-nvue)

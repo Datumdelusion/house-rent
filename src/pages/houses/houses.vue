@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import { myHouses } from "../../apis/house.js";
+import { myHouses, deleteHouse } from "../../apis/house.js";
 
 export default {
   name: "shoucang",
@@ -56,11 +56,27 @@ export default {
       });
     },
     handleDelete(item) { // 点击删除按钮
-      console.log("id: ", item.id);
+      // console.log("id: ", item.id);
+      deleteHouse(item.id).then(res => {
+        uni.showToast({
+          title: "删除成功!"
+        });
+        this.refreshPage();
+      }).catch(err => {
+        console.log(err);
+      })
     },
     handleChange(item) { // 点击修改按钮
       uni.navigateTo({
         url: `../addhouse/addhouse?id=${item.id}`
+      })
+    },
+    refreshPage() { // 刷新页面
+      myHouses().then(res => {
+        this.dataList = [];
+        this.dataList = res.data;
+      }).catch(err => {
+        console.log(err);
       })
     }
   },
@@ -72,11 +88,7 @@ export default {
   onReady() {},
   // 页面周期函数--监听页面显示(not-nvue)
   onShow() {
-    myHouses().then(res => {
-      this.dataList = res.data.records;
-    }).catch(err => {
-      console.log(err);
-    })
+    this.refreshPage();
   },
   // 页面周期函数--监听页面隐藏
   onHide() {},
