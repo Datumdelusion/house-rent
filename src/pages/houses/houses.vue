@@ -14,9 +14,10 @@
                 删除
               </text>
             </template>
-            <!-- <list-card
+            <list-card
               style="width: 100%;"
               :no="item.id"
+              :tag="item.status==='OffShelf'?'Sale':''"
               :thumb="item.head"
               :head="item.name"
               :intro="item.style+'|'+item.area+'㎡|'+item.neighbourhood"
@@ -24,10 +25,11 @@
               :isBtn="true"
               >
                 <template #btnGroup>
-                  <button type="primary" size="mini" @click="return2shelf(item)">上架</button>
+                  <text></text>
+                  <button type="primary" size="mini" v-if="isOffShelf(item)" @click.stop="return2shelf(item)">上架</button>
                 </template>
-              </list-card> -->
-              <list-card
+              </list-card>
+             <!-- <list-card
                 style="width: 100%;"
                 :no="item.id"
                 :thumb="item.head"
@@ -35,7 +37,7 @@
                 :intro="item.style+'|'+item.area+'㎡|'+item.neighbourhood"
                 :price="item.moneyMonth"
                 >
-                </list-card>
+                </list-card> -->
           </uni-swipe-action-item>
         </uni-swipe-action>
         <van-empty v-if="dataList.length === 0" description="噢, 这里似乎空空如也..." />
@@ -58,7 +60,13 @@ export default {
       dataList: []
     }
   },
-  computed: {},
+  computed: {
+    isOffShelf() {
+      return (item) => {
+        return item.status==='OffShelf'
+      }
+    }
+  },
   methods: {
     getShoucang() { // 滚动到底部
       console.log("到底啦！");
@@ -96,12 +104,12 @@ export default {
         console.log(err);
         uni.hideLoading();
       })
+    },
+    return2shelf(item) {
+       shift2shelf(item.id).then(res => {
+         this.refreshPage();
+     }).catch(err => {console.log(err);})
     }
-    // ,return2shelf(item) {
-    //    shift2shelf(item.id).then(res => {
-    //      this.refreshPage();
-    //  }).catch(err => {console.log(err);})
-    // }
   },
   watch: {},
 
