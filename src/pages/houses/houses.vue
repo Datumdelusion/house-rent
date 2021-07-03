@@ -14,15 +14,28 @@
                 删除
               </text>
             </template>
-            <list-card
+            <!-- <list-card
               style="width: 100%;"
               :no="item.id"
               :thumb="item.head"
               :head="item.name"
               :intro="item.style+'|'+item.area+'㎡|'+item.neighbourhood"
               :price="item.moneyMonth"
+              :isBtn="true"
               >
-              </list-card>
+                <template #btnGroup>
+                  <button type="primary" size="mini" @click="return2shelf(item)">上架</button>
+                </template>
+              </list-card> -->
+              <list-card
+                style="width: 100%;"
+                :no="item.id"
+                :thumb="item.head"
+                :head="item.name"
+                :intro="item.style+'|'+item.area+'㎡|'+item.neighbourhood"
+                :price="item.moneyMonth"
+                >
+                </list-card>
           </uni-swipe-action-item>
         </uni-swipe-action>
         <van-empty v-if="dataList.length === 0" description="噢, 这里似乎空空如也..." />
@@ -35,7 +48,7 @@
 </template>
 
 <script>
-import { myHouses, deleteHouse } from "../../apis/house.js";
+import { myHouses, deleteHouse, shift2shelf } from "../../apis/house.js";
 
 export default {
   name: "shoucang",
@@ -84,6 +97,11 @@ export default {
         uni.hideLoading();
       })
     }
+    // ,return2shelf(item) {
+    //    shift2shelf(item.id).then(res => {
+    //      this.refreshPage();
+    //  }).catch(err => {console.log(err);})
+    // }
   },
   watch: {},
 
