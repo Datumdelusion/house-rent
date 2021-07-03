@@ -26,6 +26,10 @@
               </list-card>
           </uni-swipe-action-item>
         </uni-swipe-action>
+        <uni-popup type="dialog" ref="popup">
+          <uni-popup-dialog mode="input" placeholder="合同的截止日期(如2021-7-5)" @close="dialogClose" @confirm="dialogConfirm"></uni-popup-dialog>
+        </uni-popup>
+        
         <van-empty v-if="dataList.length === 0" description="噢, 这里似乎空空如也..." />
       </scroll-view>
     </view>
@@ -39,6 +43,7 @@ export default {
   components: {},
   data() {
     return {
+      textValue: "",
       dataList: [
           {
             id: 2,
@@ -56,10 +61,19 @@ export default {
       console.log("到底啦！");
     },
     handleConfirm() { // 添加房屋
-      console.log("1");
+      // console.log("1");
+      this.$refs.popup.open();
     },
     handleDelete(item) { // 点击删除按钮
       console.log("id: ", item.id);
+    },
+    dialogClose() { // 关闭对话框
+      this.$refs.popup.close();
+    },
+    dialogConfirm(event, value) { // 确认对话框
+      console.log(value);
+      this.textValue = value;
+      this.$refs.popup.close();
     }
   },
   watch: {},

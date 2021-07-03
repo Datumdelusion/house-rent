@@ -12,9 +12,36 @@
       <item-condition :usp="info.usp"/>
       <item-location :latitude="info.latitude" :longitude="info.longitude" :markers="markers"/>
     </view>
+    <uni-popup class="myPopup" ref="popup" type="bottom">
+      <view style="background-color: #fff;border-top-left-radius: 10px;border-top-right-radius: 10px;" class="myPopup-content">
+        <view style="padding: 10px;">
+          <view style="margin-bottom: 20rpx;" class="owner-info">
+            预计
+            <text style="color: red">2021-07-15</text>
+            可入住，需签约至
+            <text style="color: red">2022-07-14</text>
+          </view>
+          <view style="margin-bottom: 20rpx;" class="owner-info">
+            <view class="owner-info-prefix">
+              <text style="color: #ff961e; font-size: 38rpx;" class="iconfont icon-dianhua" />
+              <text style="color: #999;">联系方式:</text>
+              <text style="text-decoration: underline;">12345678910</text>
+            </view>
+          </view>
+          <view class="owner-info">
+            <view style="margin-bottom: 20rpx;" class="owner-info-prefix">
+              <text style="color: #1290BF; font-size: 38rpx;" class="iconfont icon-yonghu"/>
+              <text style="color: #999;">转租者:</text>
+              <text>小鹿姐姐</text>
+            </view>
+          </view>
+        </view>
+        <button type="default" @click="confirm">了解</button>
+      </view>
+    </uni-popup>
     <view class="tabbar-button-group">
-      <button type="default" v-if="true">想要</button>
-      <button :disabled="true" v-else>已选</button>
+      <button class="wantBtn" type="default" v-if="true" @click="want">想要</button>
+      <button style="color: rgba(0,0,0,.3);background-color: #f7f7f7;" class="chosenBtn" type="default" v-else @click="seewhat">已选</button>
     </view>
 	</view>
 </template>
@@ -92,6 +119,20 @@
             console.log(err);
           })
         }
+      },
+      confirm() { // 确定并关闭弹出框
+        this.$refs.popup.close();
+      },
+      want() { // 点击“想要”按钮
+        uni.showLoading({
+          title: '拼命加载中……'
+        });
+        // 发送请求
+        this.$refs.popup.open();
+        uni.hideLoading();
+      },
+      seewhat() { // 弹出框
+        this.$refs.popup.open();
       }
     }
 	}
@@ -107,7 +148,7 @@
     bottom: 0;
     height: 45px;
     width: 100%;
-    button {
+    .wantBtn {
       color: #fff;
       background-color: #ffbf2f;
       border-bottom-left-radius: 0;

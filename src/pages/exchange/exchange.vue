@@ -39,65 +39,6 @@ export default {
             price: "6500万",
             shoucang: true,
             isShoucang: true
-          },
-          {
-            id: 2,
-            thumb: "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
-            head: "草桥欣园一区 央产证 南北通透 有钥匙 看两居室",
-            intro: "3室2厅|76.1㎡|草桥欣园一区",
-            price: "6500万",
-            shoucang: true,
-            isShoucang: true
-          },
-          {
-            id: 3,
-            thumb: "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
-            tag: "SALE",
-            head: "草桥欣园二区 央产证 南北通透 有钥匙 看两居室",
-            intro: "5室4厅|77.1㎡|草桥欣园二区",
-            price: "6500万",
-            shoucang: true,
-            isShoucang: true
-          },
-          {
-            id: 4,
-            thumb: "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
-            tag: "SALE",
-            head: "草桥欣园二区 央产证 南北通透 有钥匙 看两居室",
-            intro: "5室4厅|77.1㎡|草桥欣园二区",
-            price: "6500万",
-            shoucang: true,
-            isShoucang: true
-          },
-          {
-            id: 5,
-            thumb: "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
-            tag: "SALE",
-            head: "草桥欣园二区 央产证 南北通透 有钥匙 看两居室",
-            intro: "5室4厅|77.1㎡|草桥欣园二区",
-            price: "6500万",
-            shoucang: true,
-            isShoucang: true
-          },
-          {
-            id: 6,
-            thumb: "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
-            tag: "SALE",
-            head: "草桥欣园二区 央产证 南北通透 有钥匙 看两居室",
-            intro: "5室4厅|77.1㎡|草桥欣园二区",
-            price: "6500万",
-            shoucang: true,
-            isShoucang: true
-          },
-          {
-            id: 7,
-            thumb: "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
-            tag: "SALE",
-            head: "草桥欣园二区 央产证 南北通透 有钥匙 看两居室",
-            intro: "5室4厅|77.1㎡|草桥欣园二区",
-            price: "6500万",
-            shoucang: true,
-            isShoucang: true
           }
         ]
     }

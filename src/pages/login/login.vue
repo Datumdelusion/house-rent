@@ -6,7 +6,7 @@
           <uni-easyinput  v-model="loginForm.username" placeholder="请输入用户名" />
         </uni-forms-item>
         <uni-forms-item label="密码" name="password">
-          <uni-easyinput  v-model="loginForm.password" placeholder="请输入密码" />
+          <uni-easyinput type="password"  v-model="loginForm.password" placeholder="请输入密码" />
         </uni-forms-item>
       </uni-forms>
       <text @click="isLogin = false" class="tranformText">注册</text>
@@ -19,10 +19,10 @@
           <uni-easyinput  v-model="registerForm.username" placeholder="请输入用户名" />
         </uni-forms-item>
         <uni-forms-item label="密码" name="password">
-          <uni-easyinput  v-model="registerForm.password" placeholder="请输入密码" />
+          <uni-easyinput type="password"  v-model="registerForm.password" placeholder="请输入密码" />
         </uni-forms-item>
         <uni-forms-item label="再次输入" name="password2">
-          <uni-easyinput  v-model="registerForm.password2" placeholder="请再次输入密码" />
+          <uni-easyinput type="password"  v-model="registerForm.password2" placeholder="请再次输入密码" />
         </uni-forms-item>
       </uni-forms>
       <text @click="isLogin = true" class="tranformText">登录</text>

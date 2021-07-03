@@ -33,15 +33,7 @@ export default {
     return {
       textValue: "",
       location: "",
-      dataList: [
-          {
-            id: 1,
-            thumb: "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
-            head: "草桥欣园三区 央产证 南北通透 有钥匙 看两居室",
-            intro: "2室1厅|75.1㎡|草桥欣园三区",
-            price: "6500万"
-          }
-     ]
+      dataList: []
     }
   },
   computed: {},

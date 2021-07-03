@@ -129,7 +129,8 @@
 				this.$emit('confirm', () => {
 					this.popup.close()
 					if (this.mode === 'input') this.val = this.value
-				}, this.mode === 'input' ? this.val : '')
+				}, this.mode === 'input' ? this.val : '');
+        this.value = this.val = '';
 			},
 			/**
 			 * 点击取消按钮

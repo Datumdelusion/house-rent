@@ -1,7 +1,7 @@
 <template>
   <view class="addhouse-wrapper">
     <uni-forms ref="form" :rules="rules">
-      <uni-forms-item label="预览图" name="pics">
+      <uni-forms-item label="预览图" name="pics" :required="true">
         <!-- <uni-file-picker v-model="formData.pics" title="最多选择五张图片" 
         limit="5" file-mediatype="image" :auto-upload="false" ref="files">
         </uni-file-picker>
@@ -53,12 +53,7 @@
         <uni-easyinput type="text" v-model="formData.storey" placeholder="请输入所在楼层" />
       </uni-forms-item>
       <uni-forms-item label="有无电梯" name="elevator">
-        <checkbox-group name="elevator">
-          <label>
-            <checkbox :value="true" /><text>有</text>
-            <checkbox :value="false" :checked="true" /><text>无</text>
-          </label>
-        </checkbox-group>
+        <uni-data-checkbox :localdata="range" v-model="elevator"></uni-data-checkbox>
       </uni-forms-item>
       <uni-forms-item label="建造时间" name="years" :required="true">
         <uni-easyinput type="text" v-model="formData.years" placeholder="请输入建造时间(如2021-7-3)" />
@@ -69,7 +64,7 @@
       <uni-forms-item label="联系方式" name="phone" :required="true">
         <uni-easyinput type="text" v-model="formData.phone" placeholder="请输入联系方式" />
       </uni-forms-item>
-      <uni-forms-item label="房屋条件" name="usp" :required="true">
+      <uni-forms-item label="房屋条件" name="usp">
         <checkbox-group @change="uspChange">
           <label v-for="item in items" :key="item.value" style="display: block; margin-bottom: 10rpx;">
             <checkbox :value="item.value" :checked="item.checked" /> <text>{{item.name}}</text>
@@ -92,6 +87,7 @@
     },
     data() {
       return {
+        range: [{"value": true, "text": "有"}, {"value": false, "text": "无"}],
         url: "http://qvmeb7fx0.hn-bkt.clouddn.com",
         items: [{
             value: "icon-luyouqi",
@@ -153,12 +149,6 @@
           usp: []
         },
         rules: {
-          pics: {
-            rules: [{
-              required: true,
-              errorMessage: "请上传图片"
-            }]
-          },
           name: {
             rules: [{
               required: true,
@@ -227,22 +217,14 @@
               "pattern": "^\\+?[0-9-]{3,20}$",
               errorMessage: "请输入正确的手机号"
             }]
-          },
-          usp: {
-            rules: [{
-              required: true,
-              errorMessage: "请选择房屋条件"
-            }]
           }
         }
       }
     },
     methods: {
-      hasElevatorChange(value) { // 修改是否有电梯
-        console.log(value);
-      },
-      uspChange(value) { // 修改房屋条件
-        console.log(value);
+      uspChange(e) { // 修改房屋条件
+        // console.log(e);
+        this.formData.usp = e.detail.value;
       },
       setMyCity(location) { // 设置城区名字
         this.formData.location = location;
