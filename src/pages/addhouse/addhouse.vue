@@ -94,6 +94,9 @@
           res.data.delete("lessor");
           this.formData.phone = res.data.phone;
           this.formData = res.data;
+          this.formData.locationOne = 50;
+          this.formData.locationTwo = 5001;
+          this.formData.orientation = this.revertDirection[this.formData.orientation];
         }).catch(err => {
           console.log(err);
         })
@@ -106,6 +109,12 @@
           "北": "NORTH",
           "南": "SOUTH",
           "西": "WEST"
+        },
+        revertDirection: {
+          "EAST": "东",
+          "NORTH": "北",
+          "SOUTH": "南",
+          "WEST": "西"
         },
         isAdd: true,
         range: [{"value": true, "text": "有"}, {"value": false, "text": "无"}],
