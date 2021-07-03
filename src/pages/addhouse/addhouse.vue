@@ -80,7 +80,7 @@
 <script>
   const qiniu = require("../../utils/qiniuUploader.js");
   import { getUploadToken } from "../../apis/upload.js";
-  import { addHouse, updateHouse } from "../../apis/house.js";
+  import { addHouse, updateHouse, getHouse } from "../../apis/house.js";
 
   export default {
     name: "addHouse",
@@ -88,6 +88,13 @@
       // console.log("id: ", options.id);
       if (options.id) {
         this.isAdd = false;
+        getHouse(options.id).then(res => {
+          if (res.data.pics.length > 5) {res.data.pics.slice(0, 3);}
+          res.data.greenArea = res.data.greenArea * 100;
+          this.formData = res.data;
+        }).catch(err => {
+          console.log(err);
+        })
       }
     },
     data() {
