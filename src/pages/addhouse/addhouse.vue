@@ -91,6 +91,8 @@
         getHouse(options.id).then(res => {
           if (res.data.pics.length > 5) {res.data.pics.slice(0, 3);}
           res.data.greenArea = res.data.greenArea * 100;
+          res.data.delete("lessor");
+          this.formData.phone = res.data.phone;
           this.formData = res.data;
         }).catch(err => {
           console.log(err);
