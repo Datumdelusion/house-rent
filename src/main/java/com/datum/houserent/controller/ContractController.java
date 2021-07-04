@@ -92,6 +92,7 @@ public class ContractController {
         if (one != null) {
             throw new BadRequestException("合约已存在", "不要重复提价合约");
         }
+        intentionService.removeById(intentionId);
         Contract contract = new Contract();
         contract.setLessor(StpUtil.getLoginIdAsInt());
         contract.setHouseId(intention.getHouseId());
