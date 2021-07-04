@@ -165,7 +165,7 @@ public class HouseController {
             Contract contract = contractService.getOne(new LambdaQueryWrapper<Contract>().eq(Contract::getHouseId, houseId));
             LocalDate time = contract.getTime();
             LocalDate now = LocalDate.now();
-            if (time.isBefore(now)) {
+            if (now.isBefore(time)) {
                 throw new BadRequestException("房源已出租，无法删除", "房源处于租用期间，无法删除");
             }
             return houseService.removeById(houseId);
