@@ -19,9 +19,9 @@
               </view>
               <view style="display: flex;">
                 <uni-tag text="出租者同意" size="small" v-if="item.success" :inverted="true" type="success" :circle="true" style="margin-right: 50rpx;"></uni-tag>
-                <uni-tag text="租赁者同意" size="small" v-if="item.userSign" :inverted="true" type="success" :circle="true"></uni-tag>                    
+                <uni-tag text="租赁者同意" size="small" v-if="item.userSign" :inverted="true" type="success" :circle="true" style="margin-right: 50rpx;"></uni-tag>                    
                 <uni-tag text="租赁者拒绝" size="small" v-if="item.userSign===false" :inverted="true" type="error" :circle="true" style="margin-right: 50rpx;"></uni-tag>
-                <uni-tag text="出租者拒绝" size="small" v-if="item.userSign===null" :inverted="true" type="error" :circle="true"></uni-tag>                   
+                <uni-tag text="出租者拒绝" size="small" v-if="item.userSign===null||item.lessorSign===false" :inverted="true" type="error" :circle="true"></uni-tag>                   
               </view>
             </template>
           </uni-list-item>
