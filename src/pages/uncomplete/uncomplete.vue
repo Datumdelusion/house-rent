@@ -90,18 +90,25 @@
         })
       },
       handleConfirm(item) { // 点击确定合同
-        // console.log("1");
-        uni.showLoading({
-          title: "奋力加载中……"
-        });
-        confirmContract(item.id).then(res => {
-          this.userInfo = res.data;
-          this.refreshPage();
-          uni.hideLoading();
-        }).catch(err => {
-          console.log(err);
-          uni.hideLoading();
-        })
+        if (item.userSign) {
+          // console.log("1");
+          uni.showLoading({
+            title: "奋力加载中……"
+          });
+          confirmContract(item.id).then(res => {
+            this.userInfo = res.data;
+            this.refreshPage();
+            uni.hideLoading();
+          }).catch(err => {
+            console.log(err);
+            uni.hideLoading();
+          })          
+        } else {
+          uni.showToast({
+            title: '等待租赁方同意',
+            icon: "none"
+          })
+        }
       },
       handleDelete(item) { // 点击拒绝按钮
         // console.log("id: ", item.id);
