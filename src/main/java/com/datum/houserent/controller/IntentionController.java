@@ -19,6 +19,7 @@ import com.datum.houserent.utils.BeanUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.bouncycastle.its.asn1.IValue;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -92,11 +93,15 @@ public class IntentionController {
             IntentionVO intentionVO = new IntentionVO();
             intentionVO.setId(intention.getId());
             House house = houseMap.get(intention.getHouseId());
+            if (house == null) {
+                continue;
+            }
+            houseService.translateHouseUrl(house);
             intentionVO.setHouse(BeanUtil.convert(house, HouseVO.class));
             User user = userMap.get(intention.getUserId());
             intentionVO.setUser(BeanUtil.convert(user, UserVO.class));
-            intentionVOs.add(intentionVO);
             intentionVO.setLessor(lessor);
+            intentionVOs.add(intentionVO);
         }
         return intentionVOs;
     }

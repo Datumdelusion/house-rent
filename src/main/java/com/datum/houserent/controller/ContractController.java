@@ -89,7 +89,7 @@ public class ContractController {
                 .eq(Contract::getHouseId, house.getId())
                 .eq(Contract::getLessor, StpUtil.getLoginIdAsInt())
                 .eq(Contract::getUserId, intention.getUserId()));
-        if (one != null) {
+        if (one != null&&one.getSuccess()) {
             throw new BadRequestException("合约已存在", "不要重复提价合约");
         }
         intentionService.removeById(intentionId);
